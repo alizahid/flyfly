@@ -1,0 +1,73 @@
+// fonts
+
+@import url('https://rsms.me/inter/inter.css');
+
+// tailwind
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// global
+
+body {
+  @apply bg-white text-black font-sans cursor-default outline-none;
+}
+
+a,
+button {
+  @apply text-blue-600 duration-200 outline-none;
+
+  &:hover {
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    filter: brightness(0.9);
+  }
+}
+
+// layout
+
+#__next {
+  @apply flex flex-col min-h-screen;
+
+  > main {
+    @apply flex flex-col flex-1 mx-12;
+  }
+}
+
+// components
+
+form {
+  label {
+    @apply block mb-8;
+
+    strong {
+      @apply block mb-2 font-medium;
+    }
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    @apply appearance-none bg-gray-100 rounded-lg p-4 max-w-full;
+
+    &:focus {
+      @apply outline-none;
+    }
+
+    width: 20rem;
+  }
+
+  button {
+    @apply text-black cursor-pointer rounded-full w-auto font-medium py-4 px-8;
+
+    background: linear-gradient(45deg, #d6bcfa, #e9d8fd);
+  }
+
+  textarea {
+    @apply resize-none h-24;
+  }
+}
