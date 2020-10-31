@@ -14,7 +14,7 @@ const Home: NextPage = () => (
       <p className="text-gray-600">Super easy headless forms</p>
 
       <section className="flex flex-col lg:flex-row mt-20">
-        <div className="w-64">
+        <div className="flex-1">
           <h2 className="text-2xl font-medium">How it works</h2>
           <ul>
             <li className="mt-2 text-gray-700">
@@ -28,13 +28,13 @@ const Home: NextPage = () => (
           </ul>
         </div>
 
-        <div className="w-64 mt-12 lg:mt-0 lg:ml-12">
+        <div className="flex-1 mt-12 lg:mt-0 lg:ml-12">
           <h2 className="text-2xl font-medium">Works everywhere</h2>
           <ul>
             <li className="mt-2 text-gray-700">React, Next.js, React Native</li>
             <li className="mt-2 text-gray-700">Node.js, Express, Fastify</li>
             <li className="mt-2 text-gray-700">iOS, Android</li>
-            <li className="mt-2 text-gray-700">Pretty much everything else!</li>
+            <li className="mt-2 text-gray-700">Pretty much everywhere else!</li>
           </ul>
         </div>
       </section>
