@@ -8,6 +8,20 @@ import { Spinner } from './spinner'
 export const Header: FunctionComponent = () => {
   const [session, loading] = useSession()
 
+  const links: { label: string; link: string }[] = []
+
+  if (session) {
+    links.push({
+      label: 'Dashboard',
+      link: '/dashboard'
+    })
+  } else {
+    links.push({
+      label: 'Pricing',
+      link: '/pricing'
+    })
+  }
+
   return (
     <header className="flex flex-col m-12 lg:flex-row items-center lg:justify-between">
       <Link href="/">
@@ -20,8 +34,11 @@ export const Header: FunctionComponent = () => {
         <Spinner className="mt-8 lg:mt-0" />
       ) : (
         <nav className="flex items-center mt-8 lg:mt-0">
-          {session && <NavLink href="/dashboard">Dashboard</NavLink>}
-          <NavLink href="/pricing">Pricing</NavLink>
+          {links.map(({ label, link }) => (
+            <NavLink href={link} key={label}>
+              {label}
+            </NavLink>
+          ))}
           <a
             className="flex items-center text-black leading-none font-medium"
             href="#signout"
