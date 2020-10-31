@@ -897,17 +897,17 @@
     {
       "tag": "CreateField",
       "model": "Form",
-      "field": "submissions",
-      "type": "Submission",
+      "field": "responses",
+      "type": "Response",
       "arity": "List"
     },
     {
       "tag": "CreateModel",
-      "model": "Submission"
+      "model": "Response"
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -917,7 +917,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "id"
         },
         "directive": "id"
@@ -928,7 +928,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "id"
         },
         "directive": "default"
@@ -940,7 +940,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "id"
         },
         "directive": "default"
@@ -950,7 +950,7 @@
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "form",
       "type": "Form",
       "arity": "Required"
@@ -960,7 +960,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "form"
         },
         "directive": "relation"
@@ -972,7 +972,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "form"
         },
         "directive": "relation"
@@ -986,7 +986,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "form"
         },
         "directive": "relation"
@@ -996,28 +996,28 @@
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "formId",
       "type": "Int",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "data",
       "type": "Json",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "meta",
       "type": "Json",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "createdAt",
       "type": "DateTime",
       "arity": "Required"
@@ -1027,7 +1027,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "createdAt"
         },
         "directive": "default"
@@ -1039,7 +1039,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "createdAt"
         },
         "directive": "default"
@@ -1049,7 +1049,7 @@
     },
     {
       "tag": "CreateField",
-      "model": "Submission",
+      "model": "Response",
       "field": "updatedAt",
       "type": "DateTime",
       "arity": "Required"
@@ -1059,7 +1059,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Submission",
+          "model": "Response",
           "field": "updatedAt"
         },
         "directive": "updatedAt"

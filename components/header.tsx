@@ -12,8 +12,8 @@ export const Header: FunctionComponent = () => {
 
   if (session) {
     links.push({
-      label: 'Dashboard',
-      link: '/dashboard'
+      label: 'Projects',
+      link: '/projects'
     })
   } else {
     links.push({

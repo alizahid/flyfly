@@ -80,10 +80,10 @@ model Form {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  submissions Submission[]
+  responses Response[]
 }
 
-model Submission {
+model Response {
   id Int @id @default(autoincrement())
 
   form   Form @relation(fields: [formId], references: [id])
