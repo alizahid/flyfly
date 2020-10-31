@@ -12,7 +12,7 @@ const Error: NextPage<Props> = ({ code }) => (
       <title>{code || 'Error'} / FlyFly</title>
     </Head>
 
-    <main className="items-center justify-center text-center my-12 lg:my-0">
+    <main className="items-center justify-center text-center my-12">
       <img
         alt="FlyFly"
         className="w-40"

@@ -18,7 +18,7 @@ const Dashboard: NextPage<Props> = ({ projects }) => {
         <title>Dashboard / FlyFly</title>
       </Head>
 
-      <main className="my-12 lg:my-0">
+      <main className="my-12">
         <h1 className="text-4xl font-semibold">Projects</h1>
 
         {projects.map((project) => (

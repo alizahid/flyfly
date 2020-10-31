@@ -8,7 +8,7 @@ const Home: NextPage = () => (
       <title>FlyFly: Super easy headless forms</title>
     </Head>
 
-    <main className="items-center justify-center text-center my-12 lg:my-0">
+    <main className="items-center justify-center text-center my-12">
       <img alt="FlyFly" className="w-40" src="/img/flyfly.svg" />
       <h1 className="text-4xl font-semibold mt-8">FlyFly</h1>
       <p className="text-gray-600">Super easy headless forms</p>
