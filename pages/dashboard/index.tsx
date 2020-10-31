@@ -22,7 +22,7 @@ const Dashboard: NextPage<Props> = ({ projects }) => {
         <h1 className="text-4xl font-semibold">Projects</h1>
 
         {projects.map((project) => (
-          <Link href={`/projects/${project.id}`} key={project.id}>
+          <Link href={`/projects/${project.slug}`} key={project.slug}>
             <a className=" mt-8">
               <div>{project.name}</div>
             </a>

@@ -10,7 +10,7 @@ export const Spinner: FunctionComponent<Props> = ({ className }) => (
       .spinner {
         animation: spinner 0.5s linear infinite;
         border-radius: 100%;
-        border: 2px solid #38a169;
+        border: 2px solid #4299e1;
         border-top-color: transparent;
         height: 1.5em;
         width: 1.5em;
