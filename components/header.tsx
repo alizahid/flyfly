@@ -8,7 +8,12 @@ import { Spinner } from './spinner'
 export const Header: FunctionComponent = () => {
   const [session, loading] = useSession()
 
-  const links: { label: string; link: string }[] = []
+  const links = [
+    {
+      label: 'Docs',
+      link: '/docs'
+    }
+  ]
 
   if (session) {
     links.push({
