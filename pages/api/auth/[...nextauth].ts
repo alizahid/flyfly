@@ -11,6 +11,9 @@ const options: InitOptions = {
     prisma
   }),
   callbacks: {
+    async redirect(url, baseUrl) {
+      return `${baseUrl}/projects`
+    },
     async session(session, user: User) {
       session.user = user
 
