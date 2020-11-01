@@ -12,7 +12,7 @@
     "db": "env-cmd prisma migrate save --experimental && env-cmd prisma migrate up --experimental && yarn generate",
     "dev": "next dev",
     "generate": "prisma generate",
-    "lint": "eslint src --ext ts",
+    "lint": "eslint . --ext js,ts,tsx",
     "migrate": "prisma migrate up --experimental",
     "postinstall": "yarn generate",
     "start": "next start",
