@@ -1,7 +1,7 @@
 import pluralize from 'pluralize'
 import React, { FunctionComponent } from 'react'
 
-import { DashboardProject } from '../../types'
+import { DashboardProject } from '@flyfly/types'
 
 interface Props {
   className?: string

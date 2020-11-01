@@ -4,9 +4,9 @@ import Head from 'next/head'
 import Link from 'next/link'
 import React from 'react'
 
-import { ProjectCard } from '../../components'
-import { api } from '../../lib'
-import { DashboardProject } from '../../types'
+import { ProjectCard } from '@flyfly/components'
+import { api } from '@flyfly/lib'
+import { DashboardProject } from '@flyfly/types'
 
 interface Props {
   projects: DashboardProject[]

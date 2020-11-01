@@ -4,7 +4,7 @@ import { Provider } from 'next-auth/client'
 import App from 'next/app'
 import React from 'react'
 
-import { Footer, Header } from '../components'
+import { Footer, Header } from '@flyfly/components'
 
 class FlyFly extends App {
   render(): JSX.Element {

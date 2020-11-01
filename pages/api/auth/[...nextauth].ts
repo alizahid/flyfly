@@ -4,7 +4,7 @@ import NextAuth, { InitOptions } from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
 
-import { prisma } from '../../../lib'
+import { prisma } from '@flyfly/lib'
 
 const options: InitOptions = {
   adapter: Adapters.Prisma.Adapter({

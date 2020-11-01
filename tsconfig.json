@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "allowJs": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -9,6 +10,11 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
+    "paths": {
+      "@flyfly/components": ["./components"],
+      "@flyfly/lib": ["./lib"],
+      "@flyfly/types": ["./types"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": false,

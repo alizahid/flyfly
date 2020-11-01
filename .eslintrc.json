@@ -32,7 +32,18 @@
     "prettier/prettier": "error",
     "react/jsx-sort-props": "error",
     "react/prop-types": "off",
-    "simple-import-sort/sort": "error",
+    "simple-import-sort/sort": [
+      "error",
+      {
+        "groups": [
+          ["^\\u0000"],
+          ["^@?\\w"],
+          ["^[^.]"],
+          ["^(@flyfly)(/.*|$)"],
+          ["^\\."]
+        ]
+      }
+    ],
     "sort-destructure-keys/sort-destructure-keys": "error",
     "sort-keys-fix/sort-keys-fix": "error"
   },

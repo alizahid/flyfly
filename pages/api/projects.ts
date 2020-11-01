@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client'
 
-import { prisma } from '../../lib'
-import { DashboardProject } from '../../types'
+import { prisma } from '@flyfly/lib'
+import { DashboardProject } from '@flyfly/types'
 
 export default async (
   req: NextApiRequest,
