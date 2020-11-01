@@ -1,6 +1,6 @@
 // fonts
 
-@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap');
 
 // tailwind
 
@@ -11,7 +11,7 @@
 // global
 
 body {
-  @apply bg-white text-black font-sans cursor-default outline-none;
+  @apply bg-gray-100 text-black font-sans cursor-default outline-none;
 }
 
 a,

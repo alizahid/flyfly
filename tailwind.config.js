@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: [
-          'Inter',
+          'Rubik',
           '-apple-system',
           'BlinkMacSystemFont',
           'Segoe UI',
