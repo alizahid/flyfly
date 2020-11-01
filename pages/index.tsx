@@ -13,26 +13,24 @@ const Home: NextPage = () => (
       <h1 className="text-4xl font-semibold mt-8">FlyFly</h1>
       <p className="text-gray-600">Super easy headless forms</p>
 
-      <section className="flex flex-col lg:flex-row mt-20">
-        <div className="flex-1">
+      <section className="flex flex-col lg:flex-row justify-center w-full mt-20">
+        <div className="lg:w-1/4">
           <h2 className="text-2xl font-medium">How it works</h2>
           <ul>
             <li className="mt-2 text-gray-700">
               Create a project and add a form
             </li>
             <li className="mt-2 text-gray-700">
-              Use our JavaScript SDK or send a POST request from a library of
-              your choice
+              Send a POST request to our API
             </li>
             <li className="mt-2 text-gray-700">Done!</li>
           </ul>
         </div>
 
-        <div className="flex-1 mt-12 lg:mt-0 lg:ml-12">
+        <div className="lg:w-1/4 mt-12 lg:mt-0 lg:ml-12">
           <h2 className="text-2xl font-medium">Works everywhere</h2>
           <ul>
             <li className="mt-2 text-gray-700">React, Next.js, React Native</li>
-            <li className="mt-2 text-gray-700">Node.js, Express, Fastify</li>
             <li className="mt-2 text-gray-700">iOS, Android</li>
             <li className="mt-2 text-gray-700">Pretty much everywhere else!</li>
           </ul>
