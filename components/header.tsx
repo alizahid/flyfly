@@ -16,10 +16,16 @@ export const Header: FunctionComponent = () => {
   ]
 
   if (session) {
-    links.unshift({
-      label: 'Projects',
-      link: '/projects'
-    })
+    links.unshift(
+      {
+        label: 'Projects',
+        link: '/projects'
+      },
+      {
+        label: 'Account',
+        link: '/account'
+      }
+    )
   } else {
     links.unshift({
       label: 'Pricing',
