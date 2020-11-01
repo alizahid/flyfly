@@ -9,7 +9,7 @@ interface Props {
 const Error: NextPage<Props> = ({ code }) => (
   <>
     <Head>
-      <title>{code || 'Error'} / FlyFly</title>
+      <title>{code === 404 ? 'Not found' : 'Error'} / FlyFly</title>
     </Head>
 
     <main className="items-center justify-center text-center my-12">
@@ -26,14 +26,21 @@ const Error: NextPage<Props> = ({ code }) => (
               }
         }
       />
-      <h1 className="text-5xl font-bold my-8">{code || 'Error'}</h1>
+      <h1 className="text-5xl font-bold mt-8">
+        {code === 404 ? 'Not found' : 'Error'}
+      </h1>
       {code === 404 ? (
         <>
-          <p>Looks what what you were looking for has flown away.</p>
+          <p className="mt-2">
+            Looks what what you were looking for has flown away.
+          </p>
           <p className="mt-2">We have dispatched butterfly collectors.</p>
         </>
       ) : (
-        <p>You killed the butterfly! Fear not, we have dispatched medics.</p>
+        <>
+          <p className="mt-2">You killed the butterfly!</p>
+          <p className="mt-2">Fear not, we have dispatched medics.</p>
+        </>
       )}
     </main>
   </>
