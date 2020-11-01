@@ -1,8 +1,7 @@
-import { sumBy } from 'lodash'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/client'
 
-import { formsForProject, prisma, responsesForForms } from '../../lib'
+import { prisma } from '../../lib'
 import { DashboardProject } from '../../types'
 
 export default async (
@@ -14,33 +13,16 @@ export default async (
   })
 
   const projects = await prisma.project.findMany({
+    include: {
+      forms: true
+    },
     orderBy: {
-      updatedAt: 'desc'
+      createdAt: 'asc'
     },
     where: {
       userId: user.id
     }
   })
 
-  const forms = await formsForProject(projects.map(({ id }) => id))
-
-  const responses = await responsesForForms(forms.map(({ id }) => id))
-
-  const data = projects.map(({ id, name, slug }) => {
-    const projectForms = forms.filter(({ projectId }) => id === projectId)
-
-    const projectResponses = responses.filter(({ formId }) =>
-      projectForms.map(({ id }) => id).includes(formId)
-    )
-
-    return {
-      forms: sumBy(projectForms, 'count'),
-      id,
-      name,
-      responses: sumBy(projectResponses, 'count'),
-      slug
-    }
-  })
-
-  res.json(data)
+  res.json(projects)
 }

@@ -1,7 +1,9 @@
-export type DashboardProject = {
-  id: number
-  forms: number
-  name: string
-  responses: number
-  slug: string
+import { Form, Project } from '@prisma/client'
+
+export type DashboardProject = Project & {
+  forms: Form[]
+  responses?: {
+    formId: number
+    count: number
+  }[]
 }
