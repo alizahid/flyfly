@@ -48,7 +48,7 @@ export const useCreateForm = (): CreateFormReturns => {
         }
 
         queryCache.setQueryData<DashboardProject[]>('projects', (projects) => {
-          const index = projects?.findIndex((project) => project.slug === slug)
+          const index = projects.findIndex((project) => project.slug === slug)
 
           return update(projects, {
             [index]: {

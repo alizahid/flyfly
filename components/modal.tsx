@@ -22,15 +22,17 @@ type AlertProps = {
 }
 
 type ConfirmProps = {
-  destructive: 'yes' | 'no'
+  destructive?: 'yes' | 'no'
   type: 'confirm'
 
-  onResponse: (response: boolean) => void
+  onNo?: () => void
+  onYes: () => void
 }
 
 type PromptProps = {
   placeholder: string
   type: 'prompt'
+  value?: string
 
   onSubmit: (value: string) => void
 }
@@ -50,7 +52,7 @@ export const Modal: FunctionComponent<Props> = ({
   }
 
   const valueRef = useRef<HTMLInputElement>(null)
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState((props as PromptProps).value ?? '')
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -83,7 +85,7 @@ export const Modal: FunctionComponent<Props> = ({
   }
 
   if (type === 'confirm') {
-    const { destructive = 'yes', onResponse } = props as ConfirmProps
+    const { destructive = 'yes', onNo, onYes } = props as ConfirmProps
 
     inner = (
       <div className="flex justify-between mt-4 border-t border-gray-100">
@@ -92,7 +94,7 @@ export const Modal: FunctionComponent<Props> = ({
             destructive === 'no' ? 'text-red-500' : 'text-blue-500'
           }`}
           onClick={() => {
-            onResponse(false)
+            onNo?.()
             onClose()
           }}>
           No
@@ -102,7 +104,7 @@ export const Modal: FunctionComponent<Props> = ({
             destructive === 'yes' ? 'text-red-500' : 'text-blue-500'
           }`}
           onClick={() => {
-            onResponse(true)
+            onYes()
             onClose()
           }}>
           Yes
