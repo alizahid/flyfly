@@ -7,25 +7,36 @@ interface Props {
 export const Spinner: FunctionComponent<Props> = ({ className }) => (
   <>
     <style jsx>{`
-      .spinner {
-        animation: spinner 0.5s linear infinite;
-        border-radius: 100%;
-        border: 2px solid #4299e1;
-        border-top-color: transparent;
-        height: 1.5em;
-        width: 1.5em;
+      span {
+        animation: spinner 1.4s infinite ease-in-out both;
+      }
+
+      .one {
+        animation-delay: -0.32s;
+      }
+
+      .two {
+        animation-delay: -0.16s;
+      }
+
+      .three {
       }
 
       @keyframes spinner {
-        from {
-          transform: rotate(0deg);
+        0%,
+        80%,
+        100% {
+          opacity: 0.1;
         }
-
-        to {
-          transform: rotate(360deg);
+        40% {
+          opacity: 1;
         }
       }
     `}</style>
-    <div className={`spinner ${className}`}></div>
+    <div className={`flex items-center ${className}`}>
+      <span className="one h-2 w-2 bg-blue-500 rounded-full" />
+      <span className="two h-2 w-2 bg-blue-500 rounded-full ml-1" />
+      <span className="three h-2 w-2 bg-blue-500 rounded-full ml-1" />
+    </div>
   </>
 )

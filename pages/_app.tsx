@@ -3,8 +3,10 @@ import '../assets/global.scss'
 import { Provider } from 'next-auth/client'
 import App from 'next/app'
 import React from 'react'
+import { ReactQueryCacheProvider } from 'react-query'
 
 import { Footer, Header } from '@flyfly/components'
+import { queryCache } from '@flyfly/lib'
 
 class FlyFly extends App {
   render(): JSX.Element {
@@ -14,9 +16,11 @@ class FlyFly extends App {
 
     return (
       <Provider session={session}>
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
+        <ReactQueryCacheProvider queryCache={queryCache}>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+        </ReactQueryCacheProvider>
       </Provider>
     )
   }

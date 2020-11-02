@@ -1,10 +1,10 @@
-import { User } from '@prisma/client'
+import { PrismaClient, User } from '@prisma/client'
 import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth, { InitOptions } from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
 
-import { prisma } from '@flyfly/lib'
+const prisma = new PrismaClient()
 
 const options: InitOptions = {
   adapter: Adapters.Prisma.Adapter({

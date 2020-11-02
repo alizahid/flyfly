@@ -7,6 +7,9 @@ module.exports = {
   purge: ['./**/*.tsx', './assets/global.scss'],
   theme: {
     extend: {
+      colors: {
+        modal: 'rgba(0, 0, 0, 0.8)'
+      },
       fontFamily: {
         sans: [
           'Rubik',
@@ -19,6 +22,9 @@ module.exports = {
           'Apple Color Emoji',
           'Segoe UI Emoji'
         ]
+      },
+      maxWidth: {
+        modal: '25rem'
       }
     }
   },

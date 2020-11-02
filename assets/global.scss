@@ -29,6 +29,17 @@ button {
   }
 }
 
+button,
+input,
+select,
+textarea {
+  @apply outline-none;
+
+  &:focus {
+    @apply outline-none;
+  }
+}
+
 // layout
 
 #__next {

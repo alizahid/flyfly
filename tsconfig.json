@@ -12,6 +12,7 @@
     "noEmit": true,
     "paths": {
       "@flyfly/components": ["./components"],
+      "@flyfly/hooks": ["./hooks"],
       "@flyfly/lib": ["./lib"],
       "@flyfly/types": ["./types"]
     },

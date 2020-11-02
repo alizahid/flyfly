@@ -17,7 +17,7 @@ export const FormCard: FunctionComponent<Props> = ({
   project
 }) => {
   const responses =
-    project.responses?.find(({ formId }) => formId === form.id).count ?? 0
+    project.responses?.find(({ formId }) => formId === form.id)?.count ?? 0
 
   return (
     <div

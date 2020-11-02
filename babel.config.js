@@ -5,6 +5,7 @@ module.exports = {
       {
         alias: {
           '@pickle/components': './components',
+          '@pickle/hooks': './hooks',
           '@pickle/lib': './lib',
           '@pickle/types': './types'
         },

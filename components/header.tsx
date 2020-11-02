@@ -84,7 +84,7 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
     <Link href={href}>
       <a
         className={`hover:text-blue-500 leading-none font-medium mr-8 ${
-          asPath === href ? 'text-blue-500' : 'text-black'
+          asPath.indexOf(href.toString()) === 0 ? 'text-blue-500' : 'text-black'
         }`}>
         {children}
       </a>

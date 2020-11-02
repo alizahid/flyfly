@@ -16,7 +16,7 @@ export const Icon: FunctionComponent<Props> = ({
   size = 24
 }) => (
   <img
-    className={className}
+    className={`${onClick && 'cursor-pointer'} ${className}`}
     onClick={onClick}
     src={icons[icon]}
     style={{

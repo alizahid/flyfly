@@ -1,14 +1,15 @@
 import axios from 'axios'
-import { GetServerSidePropsContext } from 'next'
+import { QueryCache } from 'react-query'
 
 class API {
-  async get<T>(context: GetServerSidePropsContext, url: string): Promise<T> {
+  async post<T>(
+    url: string,
+    body: Record<string, string | number | boolean>
+  ): Promise<T> {
     const { data } = await axios.request<T>({
-      headers: {
-        cookie: context.req.headers.cookie
-      },
-      method: 'get',
-      url: `${process.env.NEXTAUTH_URL}/api${url}`
+      data: body,
+      method: 'post',
+      url
     })
 
     return data
@@ -16,3 +17,5 @@ class API {
 }
 
 export const api = new API()
+
+export const queryCache = new QueryCache()
