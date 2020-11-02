@@ -4,19 +4,5 @@
   "scope": "alizahid",
   "version": 2,
   "cleanUrls": true,
-  "trailingSlash": false,
-  "build": {
-    "env": {
-      "DATABASE_URL": "@database_url",
-      "GITHUB_ID": "@githubId",
-      "GITHUB_SECRET": "@githubSecret",
-      "NEXTAUTH_URL": "@url"
-    }
-  },
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "GITHUB_ID": "@githubId",
-    "GITHUB_SECRET": "@githubSecret",
-    "NEXTAUTH_URL": "@url"
-  }
+  "trailingSlash": false
 }
