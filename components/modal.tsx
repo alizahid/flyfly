@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import React, {
   FunctionComponent,
   ReactNode,
@@ -47,10 +48,6 @@ export const Modal: FunctionComponent<Props> = ({
   visible,
   ...props
 }) => {
-  if (!visible) {
-    return null
-  }
-
   const valueRef = useRef<HTMLInputElement>(null)
   const [value, setValue] = useState((props as PromptProps).value ?? '')
 
@@ -74,13 +71,13 @@ export const Modal: FunctionComponent<Props> = ({
     const { buttonLabel } = props as AlertProps
 
     inner = (
-      <div className="mt-4 border-t border-gray-100">
+      <footer className="border-t border-gray-200">
         <button
-          className="p-4 font-medium text-blue-500 w-full"
+          className="p-6 font-medium text-blue-500 w-full"
           onClick={() => onClose()}>
           {buttonLabel ?? 'Okay'}
         </button>
-      </div>
+      </footer>
     )
   }
 
@@ -88,9 +85,9 @@ export const Modal: FunctionComponent<Props> = ({
     const { destructive = 'yes', onNo, onYes } = props as ConfirmProps
 
     inner = (
-      <div className="flex justify-between mt-4 border-t border-gray-100">
+      <footer className="flex justify-between border-t border-gray-200">
         <button
-          className={`flex-1 p-4 font-medium ${
+          className={`flex-1 p-6 font-medium ${
             destructive === 'no' ? 'text-red-500' : 'text-blue-500'
           }`}
           onClick={() => {
@@ -100,7 +97,7 @@ export const Modal: FunctionComponent<Props> = ({
           No
         </button>
         <button
-          className={`flex-1 p-4 font-medium border-l border-gray-100 ${
+          className={`flex-1 p-6 font-medium ${
             destructive === 'yes' ? 'text-red-500' : 'text-blue-500'
           }`}
           onClick={() => {
@@ -109,7 +106,7 @@ export const Modal: FunctionComponent<Props> = ({
           }}>
           Yes
         </button>
-      </div>
+      </footer>
     )
   }
 
@@ -129,7 +126,7 @@ export const Modal: FunctionComponent<Props> = ({
 
     inner = (
       <>
-        <div className="mt-4 mx-4">
+        <div className="mx-6">
           <input
             autoFocus
             className="appearance-none bg-gray-100 rounded-lg w-full p-4"
@@ -145,47 +142,63 @@ export const Modal: FunctionComponent<Props> = ({
             value={value}
           />
         </div>
-        <div className="flex justify-between mt-4 border-t border-gray-100">
+        <footer className="flex mt-6 border-t border-gray-200">
           <button
-            className="flex-1 p-4 font-medium text-red-500"
+            className="flex-1 p-6 font-medium text-red-500"
             onClick={() => onClose()}>
             Cancel
           </button>
           <button
-            className="flex-1 p-4 border-l border-gray-100 font-medium text-green-500"
+            className="flex-1 p-6 font-medium text-green-500"
             onClick={submit}>
             Submit
           </button>
-        </div>
+        </footer>
       </>
     )
   }
 
   return (
-    <div
-      className="flex items-center justify-center fixed bg-modal top-0 right-0 bottom-0 left-0"
-      onClick={(event) => {
-        if (event.currentTarget === event.target) {
-          onClose()
-        }
-      }}>
-      <div className="bg-white rounded-lg w-full max-w-modal shadow-sm m-8">
-        <header className="flex items-stretch justify-between">
-          <h4 className="font-medium text-xl m-4">{title}</h4>
-          <a
-            className="flex items-center p-4"
-            href="#close"
-            onClick={(event) => {
-              event.preventDefault()
-
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          animate={{
+            opacity: 1
+          }}
+          className="flex items-center justify-center fixed bg-modal top-0 right-0 bottom-0 left-0"
+          exit={{
+            opacity: 0
+          }}
+          initial={{
+            opacity: 0
+          }}
+          onClick={(event) => {
+            if (event.currentTarget === event.target) {
               onClose()
-            }}>
-            <Icon icon="close" />
-          </a>
-        </header>
-        <p className="text-gray-700 mx-4">{message}</p>
-        {inner}
-      </div>
-    </div>
+            }
+          }}
+          transition={{
+            duration: 0.1
+          }}>
+          <div className="bg-white rounded-lg w-full max-w-modal shadow-sm m-8">
+            <header className="flex items-stretch justify-between border-b border-gray-200">
+              <h4 className="flex-1 font-medium text-xl m-6">{title}</h4>
+              <a
+                className="flex items-center px-6"
+                href="#close"
+                onClick={(event) => {
+                  event.preventDefault()
+
+                  onClose()
+                }}>
+                <Icon icon="close" />
+              </a>
+            </header>
+            <p className="text-gray-700 m-6">{message}</p>
+            {inner}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

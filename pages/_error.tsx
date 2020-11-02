@@ -12,7 +12,15 @@ const Error: NextPage<Props> = ({ code }) => (
       <title>{code === 404 ? 'Not found' : 'Error'} / FlyFly</title>
     </Head>
 
-    <main className="items-center justify-center text-center my-12">
+    <main className="landing items-center justify-center text-center relative">
+      <div
+        className="bg-blue-200 h-full w-full absolute left-0 top-0"
+        style={{
+          clipPath: 'polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em))',
+          zIndex: -1
+        }}
+      />
+
       <img
         alt="FlyFly"
         className="w-40"

@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion'
 import { signIn, signOut, useSession } from 'next-auth/client'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
@@ -50,7 +51,7 @@ export const Header: FunctionComponent = () => {
         </NavLink>
       ))}
       <a
-        className="flex items-center text-black font-medium"
+        className="flex items-center justify-center text-black font-medium p-8 lg:p-0 w-full lg:w-auto"
         href="#signout"
         onClick={(event) => {
           event.preventDefault()
@@ -85,7 +86,7 @@ export const Header: FunctionComponent = () => {
       ) : (
         <>
           <a
-            className="lg:hidden flex items-center justify-center absolute right-0 top-0 h-24 w-24 z-10"
+            className="lg:hidden flex items-center justify-center absolute right-0 top-0 h-24 w-24 z-20"
             href="#menu"
             onClick={(event) => {
               event.preventDefault()
@@ -94,12 +95,27 @@ export const Header: FunctionComponent = () => {
             }}>
             <Icon icon={visible ? 'close' : 'menu'} />
           </a>
-          {visible && (
-            <nav className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0">
-              {nav}
-            </nav>
-          )}
-          <nav className="hidden lg:flex m-8">{nav}</nav>
+          <AnimatePresence>
+            {visible && (
+              <motion.nav
+                animate={{
+                  opacity: 1
+                }}
+                className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0 z-10"
+                exit={{
+                  opacity: 0
+                }}
+                initial={{
+                  opacity: 0
+                }}
+                transition={{
+                  duration: 0.1
+                }}>
+                {nav}
+              </motion.nav>
+            )}
+          </AnimatePresence>
+          <nav className="hidden lg:flex lg:items-center m-8">{nav}</nav>
         </>
       )}
     </header>
@@ -110,9 +126,9 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
   const { asPath } = useRouter()
 
   return (
-    <Link href={href}>
+    <Link href={href} passHref>
       <a
-        className={`hover:text-blue-500 font-medium mb-8 lg:mb-0 lg:mr-8 ${
+        className={`hover:text-blue-500 font-medium p-8 lg:p-0 w-full lg:w-auto lg:mr-8 text-center ${
           asPath.indexOf(href.toString()) === 0 ? 'text-blue-500' : 'text-black'
         }`}>
         {children}

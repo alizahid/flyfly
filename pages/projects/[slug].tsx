@@ -1,4 +1,5 @@
 import { join, PrismaClient } from '@prisma/client'
+import { motion } from 'framer-motion'
 import { GetServerSideProps, NextPage } from 'next'
 import { getSession } from 'next-auth/client'
 import Head from 'next/head'
@@ -45,42 +46,64 @@ const Project: NextPage<Props> = ({ project }) => {
         <title>{data.name} / Projects / FlyFly</title>
       </Head>
 
-      <main className="my-12">
-        <header className="flex items-center justify-between">
+      <main>
+        <header className="flex items-center justify-between lg:justify-start">
           <h1 className="text-4xl font-semibold text-center lg:text-left">
             {data.name}
           </h1>
           {loading ? (
-            <Spinner />
+            <Spinner className="ml-4" />
           ) : (
-            <Icon icon="add" onClick={() => setNewProjectVisible(true)} />
+            <Icon
+              className="ml-4"
+              icon="add"
+              onClick={() => setNewProjectVisible(true)}
+            />
           )}
         </header>
 
         <h2 className="text-2xl font-medium mt-8">Forms</h2>
-        <div className="flex flex-wrap -mx-4">
-          {data.forms.map((form) => (
-            <Link
-              href={`/projects/${data.slug}/forms/${form.slug}`}
-              key={form.slug}>
-              <a className="w-full lg:w-1/3">
-                <FormCard className="m-4" form={form} project={data} />
-              </a>
-            </Link>
-          ))}
-        </div>
+        {data.forms.length > 0 ? (
+          <div className="flex flex-wrap -mx-4">
+            {data.forms.map((form, index) => (
+              <Link
+                href={`/projects/${data.slug}/forms/${form.slug}`}
+                key={form.slug}
+                passHref>
+                <motion.a
+                  animate={{
+                    opacity: 1
+                  }}
+                  className="w-full lg:w-1/3"
+                  initial={{
+                    opacity: 0
+                  }}
+                  transition={{
+                    delay: index * 0.1,
+                    duration: 0.1
+                  }}>
+                  <FormCard className="m-4" form={form} project={data} />
+                </motion.a>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-gray-700 mt-4">
+            You haven&#39;t created any projects yet.
+          </div>
+        )}
 
         <h2 className="text-2xl font-medium mt-8">Settings</h2>
         <nav className="flex flex-col items-start">
           <a
-            className="flex items-center mt-4 cursor-pointer text-blue-500"
+            className="flex items-center mt-4 cursor-pointer text-black"
             href="#rename"
             onClick={(event) => {
               event.preventDefault()
 
               updateNewProjectVisible(true)
             }}>
-            <Icon className="mr-2" color="blue" icon="createOutline" />
+            <Icon className="mr-2" icon="createOutline" />
             Change name
           </a>
           <a

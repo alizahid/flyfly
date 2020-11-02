@@ -10,10 +10,12 @@
 
 // global
 
+html {
+  @apply bg-blue-100;
+}
+
 body {
   @apply text-black font-sans cursor-default outline-none;
-
-  background: #f9f9f9;
 }
 
 a,
@@ -46,7 +48,11 @@ textarea {
   @apply flex flex-col min-h-screen;
 
   > main {
-    @apply flex flex-col flex-1 mx-8;
+    @apply flex flex-col flex-1 p-8;
+
+    &.landing {
+      @apply p-0;
+    }
   }
 }
 

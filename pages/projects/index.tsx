@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { motion } from 'framer-motion'
 import { GetServerSideProps, NextPage } from 'next'
 import { getSession } from 'next-auth/client'
 import Head from 'next/head'
@@ -27,27 +28,51 @@ const Projects: NextPage<Props> = ({ projects }) => {
         <title>Projects / FlyFly</title>
       </Head>
 
-      <main className="my-12">
-        <header className="flex items-center justify-between">
+      <main>
+        <header className="flex items-center justify-between lg:justify-start">
           <h1 className="text-4xl font-semibold text-center lg:text-left">
             Projects
           </h1>
           {loading ? (
-            <Spinner />
+            <Spinner className="ml-4" />
           ) : (
-            <Icon icon="add" onClick={() => setVisible(true)} />
+            <Icon
+              className="ml-4"
+              icon="add"
+              onClick={() => setVisible(true)}
+            />
           )}
         </header>
 
-        <div className="flex flex-wrap mt-4 -mx-4">
-          {data.map((project) => (
-            <Link href={`/projects/${project.slug}`} key={project.slug}>
-              <a className="w-full lg:w-1/3">
-                <ProjectCard className="m-4" project={project} />
-              </a>
-            </Link>
-          ))}
-        </div>
+        {data.length > 0 ? (
+          <div className="flex flex-wrap mt-4 -mx-4">
+            {data.map((project, index) => (
+              <Link
+                href={`/projects/${project.slug}`}
+                key={project.slug}
+                passHref>
+                <motion.a
+                  animate={{
+                    opacity: 1
+                  }}
+                  className="w-full lg:w-1/3"
+                  initial={{
+                    opacity: 0
+                  }}
+                  transition={{
+                    delay: index * 0.1,
+                    duration: 0.1
+                  }}>
+                  <ProjectCard className="m-4" project={project} />
+                </motion.a>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-1 items-center justify-center text-gray-700">
+            You haven&#39;t created any projects yet.
+          </div>
+        )}
       </main>
 
       <Modal
