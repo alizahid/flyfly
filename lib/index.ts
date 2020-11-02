@@ -1,2 +1,2 @@
 export { api } from './api'
-export { prisma } from './prisma'
+export { prisma, serializeJson } from './prisma'

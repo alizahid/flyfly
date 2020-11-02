@@ -1,3 +1,4 @@
+import { join } from '@prisma/client'
 import { GetServerSideProps, NextPage } from 'next'
 import { getSession } from 'next-auth/client'
 import Head from 'next/head'
@@ -5,7 +6,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import { FormCard } from '@flyfly/components'
-import { api } from '@flyfly/lib'
+import { prisma, serializeJson } from '@flyfly/lib'
 import { DashboardProject } from '@flyfly/types'
 
 interface Props {
@@ -56,20 +57,42 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     params: { slug }
   } = context
 
-  try {
-    const project = await api.get<DashboardProject>(
-      context,
-      `/project?slug=${slug}`
-    )
+  const { user } = session
 
-    return {
-      props: {
-        project
+  const project = await prisma.project.findFirst({
+    include: {
+      forms: {
+        orderBy: {
+          createdAt: 'asc'
+        }
       }
+    },
+    where: {
+      slug: String(slug),
+      userId: user.id
     }
-  } catch {
+  })
+
+  if (!project) {
     return {
       notFound: true
+    }
+  }
+
+  let responses: DashboardProject['responses']
+
+  if (project.forms.length > 0) {
+    responses = await prisma.$queryRaw`SELECT "formId", COUNT(id) AS count FROM "Response" WHERE "formId" IN (${join(
+      project.forms.map(({ id }) => id)
+    )}) GROUP BY "formId"`
+  }
+
+  return {
+    props: {
+      project: serializeJson({
+        ...project,
+        responses
+      })
     }
   }
 }

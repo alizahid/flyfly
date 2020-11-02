@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import { ProjectCard } from '@flyfly/components'
-import { api } from '@flyfly/lib'
+import { prisma, serializeJson } from '@flyfly/lib'
 import { DashboardProject } from '@flyfly/types'
 
 interface Props {
@@ -50,11 +50,23 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   }
 
-  const projects = await api.get<DashboardProject[]>(context, '/projects')
+  const { user } = session
+
+  const projects = await prisma.project.findMany({
+    include: {
+      forms: true
+    },
+    orderBy: {
+      createdAt: 'asc'
+    },
+    where: {
+      userId: user.id
+    }
+  })
 
   return {
     props: {
-      projects
+      projects: serializeJson(projects)
     }
   }
 }
