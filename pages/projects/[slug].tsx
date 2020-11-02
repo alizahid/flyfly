@@ -35,10 +35,11 @@ const Project: NextPage<Props> = ({ project }) => {
           {loading ? (
             <Spinner />
           ) : (
-            <Icon icon="addCircle" onClick={() => setVisible(true)} />
+            <Icon icon="add" onClick={() => setVisible(true)} />
           )}
         </header>
 
+        <h2 className="text-2xl font-medium mt-8">Forms</h2>
         <div className="flex flex-wrap -mx-4">
           {data.forms.map((form) => (
             <Link

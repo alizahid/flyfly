@@ -46,7 +46,7 @@ textarea {
   @apply flex flex-col min-h-screen;
 
   > main {
-    @apply flex flex-col flex-1 mx-12;
+    @apply flex flex-col flex-1 mx-8;
   }
 }
 
@@ -83,4 +83,66 @@ form {
   textarea {
     @apply resize-none h-24;
   }
+}
+
+// ionicon
+
+.ionicon {
+  @apply fill-current;
+}
+
+.ionicon-fill-none {
+  fill: none;
+}
+
+.ionicon-stroke-width {
+  stroke-width: 32px;
+}
+
+.icon-black {
+  @apply text-black;
+}
+
+.icon-white {
+  @apply text-white;
+}
+
+.icon-gray {
+  @apply text-gray-500;
+}
+
+.icon-red {
+  @apply text-red-500;
+}
+
+.icon-orange {
+  @apply text-orange-500;
+}
+
+.icon-yellow {
+  @apply text-yellow-500;
+}
+
+.icon-green {
+  @apply text-green-500;
+}
+
+.icon-teal {
+  @apply text-teal-500;
+}
+
+.icon-blue {
+  @apply text-blue-500;
+}
+
+.icon-indigo {
+  @apply text-indigo-500;
+}
+
+.icon-purple {
+  @apply text-purple-500;
+}
+
+.icon-pink {
+  @apply text-pink-500;
 }

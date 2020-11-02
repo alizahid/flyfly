@@ -1,13 +1,21 @@
 import { signIn, signOut, useSession } from 'next-auth/client'
-import { useRouter } from 'next/dist/client/router'
 import Link, { LinkProps } from 'next/link'
-import React, { FunctionComponent } from 'react'
+import { useRouter } from 'next/router'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 
 import { Icon } from './icon'
 import { Spinner } from './spinner'
 
 export const Header: FunctionComponent = () => {
+  const { asPath } = useRouter()
+
   const [session, loading] = useSession()
+
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    setVisible(false)
+  }, [asPath])
 
   const links = [
     {
@@ -34,44 +42,65 @@ export const Header: FunctionComponent = () => {
     })
   }
 
+  const nav = (
+    <>
+      {links.map(({ label, link }) => (
+        <NavLink href={link} key={label}>
+          {label}
+        </NavLink>
+      ))}
+      <a
+        className="flex items-center text-black font-medium"
+        href="#signout"
+        onClick={(event) => {
+          event.preventDefault()
+
+          if (session) {
+            signOut()
+          } else {
+            signIn('github')
+          }
+        }}>
+        {session ? (
+          'Sign out'
+        ) : (
+          <>
+            Sign in with <Icon className="ml-2" icon="logoGithub" />
+          </>
+        )}
+      </a>
+    </>
+  )
+
   return (
-    <header className="flex flex-col m-12 lg:flex-row items-center lg:justify-between">
+    <header className="flex flex-row items-center justify-between leading-none relative">
       <Link href="/">
-        <a className="flex items-center">
+        <a className="flex items-center m-8">
           <img alt="FlyFly" className="h-8 w-8 mr-4" src="/img/flyfly.svg" />
           <span className="font-medium text-xl text-black">FlyFly</span>
         </a>
       </Link>
       {loading ? (
-        <Spinner className="mt-8 lg:mt-0" />
+        <Spinner className="m-8" />
       ) : (
-        <nav className="flex items-center mt-8 lg:mt-0">
-          {links.map(({ label, link }) => (
-            <NavLink href={link} key={label}>
-              {label}
-            </NavLink>
-          ))}
+        <>
           <a
-            className="flex items-center text-black leading-none font-medium"
-            href="#signout"
+            className="lg:hidden flex items-center justify-center absolute right-0 top-0 h-24 w-24 z-10"
+            href="#menu"
             onClick={(event) => {
               event.preventDefault()
 
-              if (session) {
-                signOut()
-              } else {
-                signIn('github')
-              }
+              setVisible(!visible)
             }}>
-            {session ? (
-              'Sign out'
-            ) : (
-              <>
-                Sign in with <Icon className="ml-2" icon="logoGithub" />
-              </>
-            )}
+            <Icon icon={visible ? 'close' : 'menu'} />
           </a>
-        </nav>
+          {visible && (
+            <nav className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0">
+              {nav}
+            </nav>
+          )}
+          <nav className="hidden lg:flex m-8">{nav}</nav>
+        </>
       )}
     </header>
   )
@@ -83,7 +112,7 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
   return (
     <Link href={href}>
       <a
-        className={`hover:text-blue-500 leading-none font-medium mr-8 ${
+        className={`hover:text-blue-500 font-medium mb-8 lg:mb-0 lg:mr-8 ${
           asPath.indexOf(href.toString()) === 0 ? 'text-blue-500' : 'text-black'
         }`}>
         {children}

@@ -35,11 +35,11 @@ const Projects: NextPage<Props> = ({ projects }) => {
           {loading ? (
             <Spinner />
           ) : (
-            <Icon icon="addCircle" onClick={() => setVisible(true)} />
+            <Icon icon="add" onClick={() => setVisible(true)} />
           )}
         </header>
 
-        <div className="flex flex-wrap -mx-4">
+        <div className="flex flex-wrap mt-4 -mx-4">
           {data.map((project) => (
             <Link href={`/projects/${project.slug}`} key={project.slug}>
               <a className="w-full lg:w-1/3">

@@ -8,7 +8,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        modal: 'rgba(0, 0, 0, 0.8)'
+        modal: 'rgba(0, 0, 0, 0.8)',
+        overlay: 'rgba(255, 255, 255, 0.8)'
       },
       fontFamily: {
         sans: [
