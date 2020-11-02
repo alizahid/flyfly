@@ -3963,6 +3963,11 @@ invariant@^2.2.2:
   dependencies:
     loose-envify "^1.0.0"
 
+ionicons@^5.2.3:
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-5.2.3.tgz#af4018ea7585b1e9ae11757731c77f2f36e0c7ac"
+  integrity sha512-87qtgBkieKVFagwYA9Cf91B3PCahQbEOMwMt8bSvlQSgflZ4eE5qI4MGj2ZlIyadeX0dgo+0CzZsy3ow0CsBAg==
+
 is-accessor-descriptor@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz#a9e12cb3ae8d876727eeef3843f8a0897b5c98d6"

@@ -3,6 +3,7 @@ import { useRouter } from 'next/dist/client/router'
 import Link, { LinkProps } from 'next/link'
 import React, { FunctionComponent } from 'react'
 
+import { Icon } from './icon'
 import { Spinner } from './spinner'
 
 export const Header: FunctionComponent = () => {
@@ -66,8 +67,7 @@ export const Header: FunctionComponent = () => {
               'Sign out'
             ) : (
               <>
-                Sign in with{' '}
-                <img className="h-6 w-6 ml-2" src="/img/github.svg" />
+                Sign in with <Icon className="ml-2" icon="logoGithub" />
               </>
             )}
           </a>
