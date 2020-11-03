@@ -32,7 +32,7 @@ const Home: NextPage = () => {
             <p className="text-gray-700">Super easy headless forms</p>
           </motion.header>
 
-          <section className="grid lg:grid-cols-2 gap-8 mx-auto lg:w-1/2 mt-16">
+          <section className="grid lg:grid-cols-2 gap-8 mx-auto lg:w-2/3 mt-16">
             <motion.div
               animate={{
                 opacity: 1
@@ -101,12 +101,12 @@ const Home: NextPage = () => {
         <div className="fly-two flex flex-col items-center mt-12">
           <h2 className="text-3xl font-semibold">Cool heading</h2>
 
-          <figure className="bg-white mx-8 lg:w-1/2 rounded-lg shadow-sm mt-12">
+          <figure className="bg-white mx-8 lg:w-2/3 rounded-lg shadow-sm mt-12">
             <img className="rounded-lg" src="/img/screenshots/projects.png" />
             <figcaption className="m-4">Some cool copy</figcaption>
           </figure>
 
-          <figure className="bg-white mx-8 lg:w-1/2 rounded-lg shadow-sm mt-12">
+          <figure className="bg-white mx-8 lg:w-2/3 rounded-lg shadow-sm mt-12">
             <img className="rounded-lg" src="/img/screenshots/forms.png" />
             <figcaption className="m-4">Some cool copy</figcaption>
           </figure>
