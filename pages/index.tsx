@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/client'
 import Head from 'next/head'
 import React from 'react'
 
-import { Icon } from '@flyfly/components'
+import { GetStarted } from '@flyfly/components'
 
 const Home: NextPage = () => {
   const [session] = useSession()
@@ -16,15 +16,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="landing justify-center text-center">
-        <div className="relative py-24">
-          <div
-            className="bg-blue-200 h-full w-full absolute left-0 top-0"
-            style={{
-              clipPath: 'polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em))',
-              zIndex: -1
-            }}
-          />
-
+        <div className="fly-one">
           <motion.header
             animate={{
               opacity: 1
@@ -40,12 +32,11 @@ const Home: NextPage = () => {
             <p className="text-gray-700">Super easy headless forms</p>
           </motion.header>
 
-          <section className="flex flex-col lg:flex-row justify-center w-full mt-16">
+          <section className="grid lg:grid-cols-2 gap-8 mx-auto lg:w-1/2 mt-16">
             <motion.div
               animate={{
                 opacity: 1
               }}
-              className="lg:w-1/4"
               initial={{
                 opacity: 0
               }}
@@ -69,7 +60,6 @@ const Home: NextPage = () => {
               animate={{
                 opacity: 1
               }}
-              className="lg:w-1/4 mt-12 lg:mt-0 lg:ml-12"
               initial={{
                 opacity: 0
               }}
@@ -90,7 +80,7 @@ const Home: NextPage = () => {
             </motion.div>
           </section>
 
-          {session && (
+          {!session && (
             <motion.section
               animate={{
                 opacity: 1
@@ -103,26 +93,12 @@ const Home: NextPage = () => {
                 delay: 0.6,
                 duration: 0.2
               }}>
-              <button className="bg-white flex items-center py-4 px-6 rounded-full shadow-sm">
-                <span className="text-black font-medium text-xl">
-                  Get started with GitHub
-                </span>
-                <Icon className="ml-4" icon="logoGithub" />
-              </button>
-              <div className="text-gray-600 mt-4">No credit card required</div>
+              <GetStarted />
             </motion.section>
           )}
         </div>
 
-        <div className="flex flex-col items-center relative mt-12 py-24">
-          <div
-            className="bg-blue-200 h-full w-full absolute left-0 top-0"
-            style={{
-              clipPath: 'polygon(0 2em, 100% 0, 100% 100%, 0 calc(100% - 2em))',
-              zIndex: -1
-            }}
-          />
-
+        <div className="fly-two flex flex-col items-center mt-12">
           <h2 className="text-3xl font-semibold">Cool heading</h2>
 
           <figure className="bg-white mx-8 lg:w-1/2 rounded-lg shadow-sm mt-12">

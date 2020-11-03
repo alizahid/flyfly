@@ -13,15 +13,7 @@ const Error: NextPage<Props> = ({ code }) => (
     </Head>
 
     <main className="landing justify-center">
-      <section className="flex flex-col items-center text-center relative py-24">
-        <div
-          className="bg-blue-200 h-full w-full absolute left-0 top-0"
-          style={{
-            clipPath: 'polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em))',
-            zIndex: -1
-          }}
-        />
-
+      <section className="fly-one flex flex-col items-center text-center">
         <img
           alt="FlyFly"
           className="w-40"

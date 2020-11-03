@@ -1,5 +1,6 @@
 export { Code, InlineCode } from './code'
 export { Footer } from './footer'
+export { GetStarted } from './get-started'
 export { Header } from './header'
 export { Icon } from './icon'
 export { Loading } from './loading'

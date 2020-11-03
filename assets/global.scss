@@ -91,6 +91,52 @@ form {
   }
 }
 
+.fly-one,
+.fly-two,
+.fly-three,
+.fly-four {
+  @apply relative py-24;
+
+  &:before {
+    @apply bg-blue-500 block h-full w-full absolute left-0 top-0;
+
+    content: '';
+    z-index: -1;
+  }
+}
+
+.fly-one {
+  &:before {
+    @apply bg-blue-200;
+
+    clip-path: polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em));
+  }
+}
+
+.fly-two {
+  &:before {
+    @apply bg-blue-200;
+
+    clip-path: polygon(0 2em, 100% 0, 100% calc(100% - 2em), 0% 100%);
+  }
+}
+
+.fly-three {
+  &:before {
+    @apply bg-green-200;
+
+    clip-path: polygon(0 2em, 100% 0, 100% 100%, 0 calc(100% - 2em));
+  }
+}
+
+.fly-four {
+  &:before {
+    @apply bg-indigo-200;
+
+    clip-path: polygon(0 0, 100% 2em, 100% calc(100% - 2em), 0% 100%);
+  }
+}
+
 // ionicon
 
 .ionicon {
