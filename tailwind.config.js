@@ -8,10 +8,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        highlight: 'rgba(0, 0, 0, 0.5)',
         modal: 'rgba(0, 0, 0, 0.8)',
         overlay: 'rgba(255, 255, 255, 0.975)'
       },
       fontFamily: {
+        mono: [
+          'IBM Plex Mono',
+          'Consolas',
+          'Menlo',
+          'Monaco',
+          'Liberation Mono',
+          'Courier New',
+          'monospace'
+        ],
         sans: [
           'Rubik',
           '-apple-system',

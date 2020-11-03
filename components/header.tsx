@@ -76,7 +76,7 @@ export const Header: FunctionComponent = () => {
   return (
     <header className="flex flex-row items-center justify-between leading-none relative">
       <Link href="/">
-        <a className="flex items-center m-8">
+        <a className="flex items-center p-8">
           <img alt="FlyFly" className="h-8 w-8 mr-4" src="/img/flyfly.svg" />
           <span className="font-medium text-xl text-black">FlyFly</span>
         </a>

@@ -73,7 +73,7 @@ export const Modal: FunctionComponent<Props> = ({
     inner = (
       <footer className="border-t border-gray-200">
         <button
-          className="p-6 font-medium text-blue-500 w-full"
+          className="p-4 font-medium text-blue-500 w-full"
           onClick={() => onClose()}>
           {buttonLabel ?? 'Okay'}
         </button>
@@ -87,7 +87,7 @@ export const Modal: FunctionComponent<Props> = ({
     inner = (
       <footer className="flex justify-between border-t border-gray-200">
         <button
-          className={`flex-1 p-6 font-medium ${
+          className={`flex-1 p-4 font-medium ${
             destructive === 'no' ? 'text-red-500' : 'text-blue-500'
           }`}
           onClick={() => {
@@ -98,7 +98,7 @@ export const Modal: FunctionComponent<Props> = ({
           No
         </button>
         <button
-          className={`flex-1 p-6 font-medium ${
+          className={`flex-1 p-4 font-medium ${
             destructive === 'yes' ? 'text-red-500' : 'text-blue-500'
           }`}
           onClick={() => {
@@ -128,7 +128,7 @@ export const Modal: FunctionComponent<Props> = ({
 
     inner = (
       <>
-        <div className="mx-6">
+        <div className="mx-4">
           <input
             autoFocus
             className="appearance-none bg-gray-100 rounded-lg w-full p-4"
@@ -144,14 +144,14 @@ export const Modal: FunctionComponent<Props> = ({
             value={value}
           />
         </div>
-        <footer className="flex mt-6 border-t border-gray-200">
+        <footer className="flex mt-4 border-t border-gray-200">
           <button
-            className="flex-1 p-6 font-medium text-red-500"
+            className="flex-1 p-4 font-medium text-red-500"
             onClick={() => onClose()}>
             Cancel
           </button>
           <button
-            className="flex-1 p-6 font-medium text-green-500"
+            className="flex-1 p-4 font-medium text-green-500"
             onClick={submit}>
             Submit
           </button>
@@ -184,9 +184,9 @@ export const Modal: FunctionComponent<Props> = ({
           }}>
           <div className="bg-white rounded-lg w-full max-w-modal shadow-sm m-8">
             <header className="flex items-stretch justify-between border-b border-gray-200">
-              <h4 className="flex-1 font-medium text-xl m-6">{title}</h4>
+              <h4 className="flex-1 font-medium text-xl m-4">{title}</h4>
               <a
-                className="flex items-center px-6"
+                className="flex items-center px-4"
                 href="#close"
                 onClick={(event) => {
                   event.preventDefault()
@@ -196,7 +196,7 @@ export const Modal: FunctionComponent<Props> = ({
                 <Icon icon="close" />
               </a>
             </header>
-            <p className="text-gray-700 m-6">{message}</p>
+            <p className="text-gray-700 m-4">{message}</p>
             {inner}
           </div>
         </motion.div>

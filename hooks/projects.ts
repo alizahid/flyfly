@@ -9,6 +9,8 @@ import {
   ProjectWithFormsWithResponseCount
 } from '@flyfly/types'
 
+// projects
+
 type ProjectsReturns = {
   projects: ProjectWithFormCount[]
 }
@@ -25,6 +27,8 @@ export const useProjects = (
   }
 }
 
+// project
+
 type ProjectReturns = {
   project: ProjectWithFormsWithResponseCount
 }
@@ -40,6 +44,8 @@ export const useProject = (
     project: data
   }
 }
+
+// create project
 
 type CreateProjectReturns = {
   loading: boolean
@@ -81,6 +87,8 @@ export const useCreateProject = (): CreateProjectReturns => {
   }
 }
 
+// update project
+
 type UpdateProjectReturns = {
   loading: boolean
 
@@ -120,24 +128,24 @@ export const useUpdateProject = (): UpdateProjectReturns => {
           'projects'
         )
 
-        if (!exists) {
-          return
-        }
+        if (exists) {
+          queryCache.setQueryData<ProjectWithFormCount[]>(
+            'projects',
+            (projects) => {
+              const index = projects.findIndex(
+                (project) => project.slug === slug
+              )
 
-        queryCache.setQueryData<ProjectWithFormCount[]>(
-          'projects',
-          (projects) => {
-            const index = projects.findIndex((project) => project.slug === slug)
-
-            return update(projects, {
-              [index]: {
-                name: {
-                  $set: name
+              return update(projects, {
+                [index]: {
+                  name: {
+                    $set: name
+                  }
                 }
-              }
-            })
-          }
-        )
+              })
+            }
+          )
+        }
       }
     }
   )
@@ -156,6 +164,8 @@ export const useUpdateProject = (): UpdateProjectReturns => {
     updateProject
   }
 }
+
+// delete project
 
 type DeleteProjectReturns = {
   loading: boolean
@@ -178,20 +188,20 @@ export const useDeleteProject = (): DeleteProjectReturns => {
           'projects'
         )
 
-        if (!exists) {
-          return
+        if (exists) {
+          queryCache.setQueryData<ProjectWithFormCount[]>(
+            'projects',
+            (projects) => {
+              const index = projects.findIndex(
+                (project) => project.slug === slug
+              )
+
+              return update(projects, {
+                $splice: [[index, 1]]
+              })
+            }
+          )
         }
-
-        queryCache.setQueryData<ProjectWithFormCount[]>(
-          'projects',
-          (projects) => {
-            const index = projects.findIndex((project) => project.slug === slug)
-
-            return update(projects, {
-              $splice: [[index, 1]]
-            })
-          }
-        )
       }
     }
   )

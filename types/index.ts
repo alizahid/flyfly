@@ -1,4 +1,4 @@
-import { Form, Project } from '@prisma/client'
+import { Form, Project, Response } from '@prisma/client'
 
 export type ProjectWithFormCount = Project & {
   forms: number
@@ -10,4 +10,8 @@ export type ProjectWithFormsWithResponseCount = Project & {
 
 export type FormWithResponseCount = Form & {
   responses: number
+}
+
+export type FormWithResponses = Form & {
+  responses: Response[]
 }

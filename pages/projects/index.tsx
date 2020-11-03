@@ -30,9 +30,7 @@ const Projects: NextPage<Props> = (props) => {
 
       <main>
         <header className="flex items-center justify-between lg:justify-start">
-          <h1 className="text-4xl font-semibold text-center lg:text-left">
-            Projects
-          </h1>
+          <h1 className="text-4xl font-semibold">Projects</h1>
           {loading ? (
             <Spinner className="ml-4" />
           ) : (
@@ -45,7 +43,7 @@ const Projects: NextPage<Props> = (props) => {
         </header>
 
         {projects.length > 0 ? (
-          <div className="flex flex-wrap mt-4 -mx-4">
+          <div className="grid lg:grid-cols-3 gap-8 mt-8">
             {projects.map((project, index) => (
               <Link
                 href={`/projects/${project.slug}`}
@@ -55,7 +53,6 @@ const Projects: NextPage<Props> = (props) => {
                   animate={{
                     opacity: 1
                   }}
-                  className="w-full lg:w-1/3"
                   initial={{
                     opacity: 0
                   }}
@@ -63,7 +60,7 @@ const Projects: NextPage<Props> = (props) => {
                     delay: index * 0.1,
                     duration: 0.1
                   }}>
-                  <ProjectCard className="m-4" project={project} />
+                  <ProjectCard project={project} />
                 </motion.a>
               </Link>
             ))}
