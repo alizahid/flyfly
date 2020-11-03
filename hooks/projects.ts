@@ -4,59 +4,71 @@ import { useCallback } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
 import { api, queryCache } from '@flyfly/lib'
-import { DashboardProject } from '@flyfly/types'
+import {
+  ProjectWithFormCount,
+  ProjectWithFormsWithResponseCount
+} from '@flyfly/types'
 
 type ProjectsReturns = {
-  data: DashboardProject[]
+  projects: ProjectWithFormCount[]
 }
 
 export const useProjects = (
-  initialData: DashboardProject[]
+  initialData: ProjectWithFormCount[]
 ): ProjectsReturns => {
   const { data } = useQuery('projects', {
     initialData
   })
 
   return {
-    data
+    projects: data
   }
 }
 
 type ProjectReturns = {
-  data: DashboardProject
+  project: ProjectWithFormsWithResponseCount
 }
 
-export const useProject = (initialData: DashboardProject): ProjectReturns => {
+export const useProject = (
+  initialData: ProjectWithFormsWithResponseCount
+): ProjectReturns => {
   const { data } = useQuery(`project-${initialData.slug}`, {
     initialData
   })
 
   return {
-    data
+    project: data
   }
 }
 
 type CreateProjectReturns = {
   loading: boolean
 
-  createProject: (name: string) => Promise<DashboardProject>
+  createProject: (name: string) => Promise<ProjectWithFormCount>
 }
 
 export const useCreateProject = (): CreateProjectReturns => {
-  const [mutate, { isLoading }] = useMutation<DashboardProject, void, string>(
+  const [mutate, { isLoading }] = useMutation<
+    ProjectWithFormCount,
+    void,
+    string
+  >(
     async (name) => {
-      const project = await api.post<DashboardProject>('/api/create-project', {
-        name
-      })
+      const project = await api.post<ProjectWithFormCount>(
+        '/api/create-project',
+        {
+          name
+        }
+      )
 
       return project
     },
     {
       onSuccess(project) {
-        queryCache.setQueryData<DashboardProject[]>('projects', (projects) => [
-          ...projects,
-          project
-        ])
+        queryCache.setQueryData<ProjectWithFormCount[]>(
+          'projects',
+          (projects) => [...projects, project]
+        )
       }
     }
   )
@@ -72,12 +84,12 @@ export const useCreateProject = (): CreateProjectReturns => {
 type UpdateProjectReturns = {
   loading: boolean
 
-  updateProject: (project: Project, name: string) => Promise<DashboardProject>
+  updateProject: (project: Project, name: string) => Promise<Project>
 }
 
 export const useUpdateProject = (): UpdateProjectReturns => {
   const [mutate, { isLoading }] = useMutation<
-    DashboardProject,
+    Project,
     void,
     {
       project: Project
@@ -85,7 +97,7 @@ export const useUpdateProject = (): UpdateProjectReturns => {
     }
   >(
     async ({ name, project: { slug } }) => {
-      const project = await api.post<DashboardProject>('/api/update-project', {
+      const project = await api.post<Project>('/api/update-project', {
         name,
         slug
       })
@@ -94,7 +106,7 @@ export const useUpdateProject = (): UpdateProjectReturns => {
     },
     {
       onSuccess(project, { name, project: { slug } }) {
-        queryCache.setQueryData<DashboardProject>(
+        queryCache.setQueryData<ProjectWithFormCount>(
           `project-${project.slug}`,
           (data) =>
             update(data, {
@@ -104,23 +116,28 @@ export const useUpdateProject = (): UpdateProjectReturns => {
             })
         )
 
-        const exists = queryCache.getQueryData<DashboardProject[]>('projects')
+        const exists = queryCache.getQueryData<ProjectWithFormCount[]>(
+          'projects'
+        )
 
         if (!exists) {
           return
         }
 
-        queryCache.setQueryData<DashboardProject[]>('projects', (projects) => {
-          const index = projects.findIndex((project) => project.slug === slug)
+        queryCache.setQueryData<ProjectWithFormCount[]>(
+          'projects',
+          (projects) => {
+            const index = projects.findIndex((project) => project.slug === slug)
 
-          return update(projects, {
-            [index]: {
-              name: {
-                $set: name
+            return update(projects, {
+              [index]: {
+                name: {
+                  $set: name
+                }
               }
-            }
-          })
-        })
+            })
+          }
+        )
       }
     }
   )
@@ -149,7 +166,7 @@ type DeleteProjectReturns = {
 export const useDeleteProject = (): DeleteProjectReturns => {
   const [mutate, { isLoading }] = useMutation<void, void, string>(
     async (slug) => {
-      await api.post<DashboardProject>('/api/delete-project', {
+      await api.post<ProjectWithFormCount>('/api/delete-project', {
         slug
       })
     },
@@ -157,19 +174,24 @@ export const useDeleteProject = (): DeleteProjectReturns => {
       onSuccess(response, slug) {
         queryCache.setQueryData(`project-${slug}`, null)
 
-        const exists = queryCache.getQueryData<DashboardProject[]>('projects')
+        const exists = queryCache.getQueryData<ProjectWithFormCount[]>(
+          'projects'
+        )
 
         if (!exists) {
           return
         }
 
-        queryCache.setQueryData<DashboardProject[]>('projects', (projects) => {
-          const index = projects.findIndex((project) => project.slug === slug)
+        queryCache.setQueryData<ProjectWithFormCount[]>(
+          'projects',
+          (projects) => {
+            const index = projects.findIndex((project) => project.slug === slug)
 
-          return update(projects, {
-            $splice: [[index, 1]]
-          })
-        })
+            return update(projects, {
+              $splice: [[index, 1]]
+            })
+          }
+        )
       }
     }
   )

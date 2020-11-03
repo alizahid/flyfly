@@ -93,6 +93,7 @@ export const Modal: FunctionComponent<Props> = ({
           onClick={() => {
             onNo?.()
             onClose()
+            setValue('')
           }}>
           No
         </button>
@@ -103,6 +104,7 @@ export const Modal: FunctionComponent<Props> = ({
           onClick={() => {
             onYes()
             onClose()
+            setValue('')
           }}>
           Yes
         </button>

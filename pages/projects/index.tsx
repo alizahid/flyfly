@@ -9,14 +9,14 @@ import React, { useState } from 'react'
 import { Icon, Modal, ProjectCard, Spinner } from '@flyfly/components'
 import { useCreateProject, useProjects } from '@flyfly/hooks'
 import { serializeJson } from '@flyfly/lib'
-import { DashboardProject } from '@flyfly/types'
+import { ProjectWithFormCount } from '@flyfly/types'
 
 interface Props {
-  projects: DashboardProject[]
+  projects: ProjectWithFormCount[]
 }
 
-const Projects: NextPage<Props> = ({ projects }) => {
-  const { data } = useProjects(projects)
+const Projects: NextPage<Props> = (props) => {
+  const { projects } = useProjects(props.projects)
 
   const { createProject, loading } = useCreateProject()
 
@@ -44,9 +44,9 @@ const Projects: NextPage<Props> = ({ projects }) => {
           )}
         </header>
 
-        {data.length > 0 ? (
+        {projects.length > 0 ? (
           <div className="flex flex-wrap mt-4 -mx-4">
-            {data.map((project, index) => (
+            {projects.map((project, index) => (
               <Link
                 href={`/projects/${project.slug}`}
                 key={project.slug}
@@ -118,9 +118,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   })
 
+  const next: ProjectWithFormCount[] = projects.map((project) => ({
+    ...project,
+    forms: project.forms.length
+  }))
+
   return {
     props: {
-      projects: serializeJson(projects)
+      projects: serializeJson(next)
     }
   }
 }

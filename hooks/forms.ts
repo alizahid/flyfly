@@ -1,28 +1,34 @@
-import { Form, Project } from '@prisma/client'
 import update from 'immutability-helper'
 import { useCallback } from 'react'
 import { useMutation } from 'react-query'
 
 import { api, queryCache } from '@flyfly/lib'
-import { DashboardProject } from '@flyfly/types'
+import {
+  FormWithResponseCount,
+  ProjectWithFormCount,
+  ProjectWithFormsWithResponseCount
+} from '@flyfly/types'
 
 type CreateFormReturns = {
   loading: boolean
 
-  createForm: (project: Project, name: string) => Promise<Form>
+  createForm: (
+    project: ProjectWithFormsWithResponseCount,
+    name: string
+  ) => Promise<FormWithResponseCount>
 }
 
 export const useCreateForm = (): CreateFormReturns => {
   const [mutate, { isLoading }] = useMutation<
-    Form,
+    FormWithResponseCount,
     void,
     {
-      project: Project
+      project: ProjectWithFormsWithResponseCount
       name: string
     }
   >(
     async ({ name, project: { slug } }) => {
-      const form = await api.post<Form>('/api/create-form', {
+      const form = await api.post<FormWithResponseCount>('/api/create-form', {
         name,
         slug
       })
@@ -30,8 +36,8 @@ export const useCreateForm = (): CreateFormReturns => {
       return form
     },
     {
-      onSuccess(form, { project: { slug } }) {
-        queryCache.setQueryData<DashboardProject>(
+      onSuccess(form, { project: { forms, slug } }) {
+        queryCache.setQueryData<ProjectWithFormsWithResponseCount>(
           `project-${slug}`,
           (project) =>
             update(project, {
@@ -41,29 +47,34 @@ export const useCreateForm = (): CreateFormReturns => {
             })
         )
 
-        const exists = queryCache.getQueryData<DashboardProject[]>('projects')
+        const exists = queryCache.getQueryData<ProjectWithFormCount[]>(
+          'projects'
+        )
 
         if (!exists) {
           return
         }
 
-        queryCache.setQueryData<DashboardProject[]>('projects', (projects) => {
-          const index = projects.findIndex((project) => project.slug === slug)
+        queryCache.setQueryData<ProjectWithFormCount[]>(
+          'projects',
+          (projects) => {
+            const index = projects.findIndex((project) => project.slug === slug)
 
-          return update(projects, {
-            [index]: {
-              forms: {
-                $push: [form]
+            return update(projects, {
+              [index]: {
+                forms: {
+                  $set: forms.length + 1
+                }
               }
-            }
-          })
-        })
+            })
+          }
+        )
       }
     }
   )
 
   const createForm = useCallback(
-    (project: Project, name: string) =>
+    (project: ProjectWithFormsWithResponseCount, name: string) =>
       mutate({
         name,
         project

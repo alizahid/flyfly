@@ -3,11 +3,11 @@ import { generateSlug } from 'lib/helpers'
 import { NextApiHandler } from 'next'
 import { getSession } from 'next-auth/client'
 
-import { DashboardProject } from '@flyfly/types'
+import { ProjectWithFormCount } from '@flyfly/types'
 
 const prisma = new PrismaClient()
 
-const handler: NextApiHandler<DashboardProject> = async (req, res) => {
+const handler: NextApiHandler<ProjectWithFormCount> = async (req, res) => {
   const { user } = await getSession({
     req
   })
@@ -25,13 +25,13 @@ const handler: NextApiHandler<DashboardProject> = async (req, res) => {
           id: user.id
         }
       }
-    },
-    include: {
-      forms: true
     }
   })
 
-  res.json(project)
+  res.json({
+    ...project,
+    forms: 0
+  })
 }
 
 export default handler

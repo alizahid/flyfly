@@ -15,16 +15,16 @@ import {
   useUpdateProject
 } from '@flyfly/hooks'
 import { serializeJson } from '@flyfly/lib'
-import { DashboardProject } from '@flyfly/types'
+import { ProjectWithFormsWithResponseCount } from '@flyfly/types'
 
 interface Props {
-  project: DashboardProject
+  project: ProjectWithFormsWithResponseCount
 }
 
-const Project: NextPage<Props> = ({ project }) => {
+const Project: NextPage<Props> = (props) => {
   const { replace } = useRouter()
 
-  const { data } = useProject(project)
+  const { project } = useProject(props.project)
 
   const { createForm, loading } = useCreateForm()
   const { deleteProject } = useDeleteProject()
@@ -34,7 +34,7 @@ const Project: NextPage<Props> = ({ project }) => {
   const [updateProjectVisible, updateNewProjectVisible] = useState(false)
   const [deleteProjectVisible, deleteNewProjectVisible] = useState(false)
 
-  if (!data) {
+  if (!project) {
     replace('/projects')
 
     return <Loading />
@@ -43,12 +43,12 @@ const Project: NextPage<Props> = ({ project }) => {
   return (
     <>
       <Head>
-        <title>{data.name} / Projects / FlyFly</title>
+        <title>{project.name} / Projects / FlyFly</title>
       </Head>
 
       <main>
         <h1 className="text-4xl font-semibold text-center lg:text-left">
-          {data.name}
+          {project.name}
         </h1>
 
         <header className="flex items-center justify-between lg:justify-start mt-8">
@@ -63,11 +63,11 @@ const Project: NextPage<Props> = ({ project }) => {
             />
           )}
         </header>
-        {data.forms.length > 0 ? (
+        {project.forms.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
-            {data.forms.map((form, index) => (
+            {project.forms.map((form, index) => (
               <Link
-                href={`/projects/${data.slug}/forms/${form.slug}`}
+                href={`/projects/${project.slug}/forms/${form.slug}`}
                 key={form.slug}
                 passHref>
                 <motion.a
@@ -82,7 +82,7 @@ const Project: NextPage<Props> = ({ project }) => {
                     delay: index * 0.1,
                     duration: 0.1
                   }}>
-                  <FormCard className="m-4" form={form} project={data} />
+                  <FormCard className="m-4" form={form} />
                 </motion.a>
               </Link>
             ))}
@@ -123,7 +123,7 @@ const Project: NextPage<Props> = ({ project }) => {
       <Modal
         message="What would you like to call it?"
         onClose={() => setNewProjectVisible(false)}
-        onSubmit={(name) => createForm(data, name)}
+        onSubmit={(name) => createForm(project, name)}
         placeholder="Name"
         title="Create a new form"
         type="prompt"
@@ -133,18 +133,18 @@ const Project: NextPage<Props> = ({ project }) => {
       <Modal
         message="What would you like to call it?"
         onClose={() => updateNewProjectVisible(false)}
-        onSubmit={(name) => updateProject(data, name)}
+        onSubmit={(name) => updateProject(project, name)}
         placeholder="Name"
         title="Change project name"
         type="prompt"
-        value={data.name}
+        value={project.name}
         visible={updateProjectVisible}
       />
 
       <Modal
         message="Are you sure you want to delete this project? All forms and responses will also be deleted. This cannot be undone."
         onClose={() => deleteNewProjectVisible(false)}
-        onYes={() => deleteProject(data.slug)}
+        onYes={() => deleteProject(project.slug)}
         title="Delete project"
         type="confirm"
         visible={deleteProjectVisible}
@@ -195,7 +195,10 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   }
 
-  let responses: DashboardProject['responses']
+  let responses: {
+    count: number
+    formId: number
+  }[] = []
 
   if (project.forms.length > 0) {
     responses = await prisma.$queryRaw`SELECT "formId", COUNT(id) AS count FROM "Response" WHERE "formId" IN (${join(
@@ -203,12 +206,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     )}) GROUP BY "formId"`
   }
 
+  const next: ProjectWithFormsWithResponseCount = {
+    ...project,
+    forms: project.forms.map((form) => ({
+      ...form,
+      responses: responses.find(({ formId }) => formId === form.id)?.count ?? 0
+    }))
+  }
+
   return {
     props: {
-      project: serializeJson({
-        ...project,
-        responses
-      })
+      project: serializeJson(next)
     }
   }
 }
