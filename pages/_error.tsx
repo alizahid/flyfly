@@ -12,54 +12,48 @@ const Error: NextPage<Props> = ({ code }) => (
       <title>{code === 404 ? 'Not found' : 'Error'} / FlyFly</title>
     </Head>
 
-    <main className="landing items-center justify-center text-center relative">
-      <div
-        className="bg-blue-200 h-full w-full absolute left-0 top-0"
-        style={{
-          clipPath: 'polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em))',
-          zIndex: -1
-        }}
-      />
+    <main className="landing justify-center">
+      <section className="flex flex-col items-center text-center relative py-24">
+        <div
+          className="bg-blue-200 h-full w-full absolute left-0 top-0"
+          style={{
+            clipPath: 'polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em))',
+            zIndex: -1
+          }}
+        />
 
-      <img
-        alt="FlyFly"
-        className="w-40"
-        src="/img/flyfly.svg"
-        style={
-          code === 404
-            ? undefined
-            : {
-                filter:
-                  'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8)'
-              }
-        }
-      />
-      <h1 className="text-5xl font-bold mt-8">
-        {code === 404 ? 'Not found' : 'Error'}
-      </h1>
-      {code === 404 ? (
-        <>
-          <p className="mt-2">
-            Looks what what you were looking for has flown away.
-          </p>
-          <p className="mt-2">We have dispatched butterfly collectors.</p>
-        </>
-      ) : (
-        <>
-          <p className="mt-2">You killed the butterfly!</p>
-          <p className="mt-2">Fear not, we have dispatched medics.</p>
-        </>
-      )}
+        <img
+          alt="FlyFly"
+          className="w-40"
+          src="/img/flyfly.svg"
+          style={
+            code === 404
+              ? undefined
+              : {
+                  filter:
+                    'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8)'
+                }
+          }
+        />
+        <h1 className="text-5xl font-bold mt-8">
+          {code === 404 ? 'Not found' : 'Error'}
+        </h1>
+        {code === 404 ? (
+          <>
+            <p className="mt-2">
+              Looks what what you were looking for has flown away.
+            </p>
+            <p className="mt-2">We have dispatched butterfly collectors.</p>
+          </>
+        ) : (
+          <>
+            <p className="mt-2">You killed the butterfly!</p>
+            <p className="mt-2">Fear not, we have dispatched medics.</p>
+          </>
+        )}
+      </section>
     </main>
   </>
 )
-
-Error.getInitialProps = async ({ err }) => {
-  const code = err?.statusCode ?? 404
-
-  return {
-    code
-  }
-}
 
 export default Error
