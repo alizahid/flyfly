@@ -45,7 +45,7 @@ textarea {
 // layout
 
 #__next {
-  @apply flex flex-col min-h-screen;
+  @apply flex flex-col min-h-screen max-w-screen-lg mx-auto;
 
   > main {
     @apply flex flex-col flex-1 p-8;
