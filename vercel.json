@@ -2,7 +2,5 @@
   "name": "flyfly",
   "region": "dub1",
   "scope": "alizahid",
-  "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false
+  "version": 2
 }
