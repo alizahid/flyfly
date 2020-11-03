@@ -47,10 +47,12 @@ const Project: NextPage<Props> = ({ project }) => {
       </Head>
 
       <main>
-        <header className="flex items-center justify-between lg:justify-start">
-          <h1 className="text-4xl font-semibold text-center lg:text-left">
-            {data.name}
-          </h1>
+        <h1 className="text-4xl font-semibold text-center lg:text-left">
+          {data.name}
+        </h1>
+
+        <header className="flex items-center justify-between lg:justify-start mt-8">
+          <h2 className="text-2xl font-medium">Forms</h2>
           {loading ? (
             <Spinner className="ml-4" />
           ) : (
@@ -61,8 +63,6 @@ const Project: NextPage<Props> = ({ project }) => {
             />
           )}
         </header>
-
-        <h2 className="text-2xl font-medium mt-8">Forms</h2>
         {data.forms.length > 0 ? (
           <div className="flex flex-wrap -mx-4">
             {data.forms.map((form, index) => (
