@@ -76,7 +76,7 @@ const Pricing: NextPage<Props> = ({ plans }) => {
           </a>
         </motion.div>
 
-        <section className="flex flex-col lg:flex-row justify-center mt-4 lg:mt-16">
+        <section className="flex flex-col lg:flex-row justify-center mt-4 lg:mt-16 mb-8">
           {plans.map((plan, index) => (
             <motion.div
               animate={{
@@ -136,7 +136,7 @@ const Pricing: NextPage<Props> = ({ plans }) => {
             animate={{
               opacity: 1
             }}
-            className="flex flex-col items-center mt-16"
+            className="flex flex-col items-center mb-8 mt-16"
             initial={{
               opacity: 0
             }}

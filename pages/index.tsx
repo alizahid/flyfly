@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="landing justify-center text-center">
-        <div className="fly-one">
+        <div className="fly-one mt-8">
           <motion.header
             animate={{
               opacity: 1
@@ -98,7 +98,7 @@ const Home: NextPage = () => {
           )}
         </div>
 
-        <div className="fly-two flex flex-col items-center mt-12">
+        <div className="fly-two flex flex-col items-center mt-12 mb-8">
           <h2 className="text-3xl font-semibold">Cool heading</h2>
 
           <figure className="bg-white mx-8 lg:w-2/3 rounded-lg shadow-sm mt-12">

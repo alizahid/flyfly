@@ -13,7 +13,7 @@ const Error: NextPage<Props> = ({ code }) => (
     </Head>
 
     <main className="landing justify-center">
-      <section className="fly-one flex flex-col items-center text-center">
+      <section className="fly-one flex flex-col items-center text-center my-8">
         <img
           alt="FlyFly"
           className="w-40"
