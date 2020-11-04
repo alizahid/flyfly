@@ -63,7 +63,10 @@ const Pricing: NextPage<Props> = ({ plans }) => {
                   duration: 0.2
                 }}>
                 <h2 className="text-2xl font-medium">{plan.name}</h2>
-                <h3 className="text-4xl font-semibold mt-2">${plan.price}</h3>
+                <h3 className="text-4xl font-semibold mt-2">
+                  ${plan.price}
+                  <span className="block text-base text-gray-700">/month</span>
+                </h3>
                 <ul>
                   <li className="text-gray-800 mt-2">
                     {millify(plan.submissions)}{' '}
