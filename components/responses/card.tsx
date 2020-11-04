@@ -39,7 +39,7 @@ export const ResponseCard: FunctionComponent<Props> = ({
             animate={{
               height: 'auto'
             }}
-            className="border-t border-gray-200 grid lg:grid-cols-4 gap-4 p-4"
+            className="overflow-hidden"
             exit={{
               height: 0
             }}
@@ -49,12 +49,14 @@ export const ResponseCard: FunctionComponent<Props> = ({
             transition={{
               duration: 0.2
             }}>
-            {Object.entries(response.data).map(([key, value]) => (
-              <div key={`${response.id}-data-${key}`}>
-                <div className="text-gray-600">{key}</div>
-                <Value value={value} />
-              </div>
-            ))}
+            <div className="border-t border-gray-200 grid lg:grid-cols-4 gap-4 p-4">
+              {Object.entries(response.data).map(([key, value]) => (
+                <div key={`${response.id}-data-${key}`}>
+                  <div className="text-gray-600">{key}</div>
+                  <Value value={value} />
+                </div>
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

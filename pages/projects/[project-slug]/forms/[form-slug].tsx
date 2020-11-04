@@ -42,7 +42,7 @@ const Form: NextPage<Props> = (props) => {
 
   const { project } = props
 
-  const url = `${process.env.NEXTAUTH_URL}/form/${form.slug}`
+  const url = `${process.env.NEXTAUTH_URL}/submit/${form.slug}`
 
   return (
     <>
@@ -87,7 +87,7 @@ const Form: NextPage<Props> = (props) => {
               animate={{
                 height: 'auto'
               }}
-              className="overflow-hidden mt-4"
+              className="overflow-hidden"
               exit={{
                 height: 0
               }}
@@ -97,8 +97,9 @@ const Form: NextPage<Props> = (props) => {
               transition={{
                 duration: 0.2
               }}>
-              <Code
-                code={`await fetch('${url}', {
+              <div className="mt-4">
+                <Code
+                  code={`await fetch('${url}', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -108,14 +109,15 @@ const Form: NextPage<Props> = (props) => {
     email: 'hi@flyfly.dev'
   })
 })`}
-                language="typescript"
-              />
-              <div className="mt-4">
-                View{' '}
-                <Link href="/docs">
-                  <a>docs</a>
-                </Link>{' '}
-                for more examples.
+                  language="typescript"
+                />
+                <div className="mt-4">
+                  View{' '}
+                  <Link href="/docs">
+                    <a>docs</a>
+                  </Link>{' '}
+                  for more examples.
+                </div>
               </div>
             </motion.div>
           )}
