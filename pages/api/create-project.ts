@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { generateSlug } from 'lib/helpers'
 import { NextApiHandler } from 'next'
 import { getSession } from 'next-auth/client'
 
+import { generateSlug } from '@flyfly/lib'
 import { ProjectWithFormCount } from '@flyfly/types'
 
 const prisma = new PrismaClient()
