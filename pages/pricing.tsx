@@ -1,12 +1,19 @@
+import { Plan, PrismaClient } from '@prisma/client'
 import { motion } from 'framer-motion'
-import { NextPage } from 'next'
+import millify from 'millify'
+import { GetServerSideProps, NextPage } from 'next'
 import { useSession } from 'next-auth/client'
 import Head from 'next/head'
+import pluralize from 'pluralize'
 import React from 'react'
 
 import { GetStarted } from '@flyfly/components'
 
-const Pricing: NextPage = () => {
+interface Props {
+  plans: Plan[]
+}
+
+const Pricing: NextPage<Props> = ({ plans }) => {
   const [session] = useSession()
 
   return (
@@ -34,72 +41,44 @@ const Pricing: NextPage = () => {
             </p>
           </motion.header>
 
-          <section className="flex flex-col lg:flex-row justify-center mt-16 mb-8">
-            <motion.div
-              animate={{
-                opacity: 1
-              }}
-              className="fly-four lg:w-1/4 px-8"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.2,
-                duration: 0.2
-              }}>
-              <h2 className="text-2xl font-medium">Free</h2>
-              <h3 className="text-4xl font-semibold mt-2">$0</h3>
-              <ul>
-                <li className="text-gray-800 mt-2">100 submissions</li>
-                <li className="text-gray-800 mt-2">10 forms</li>
-                <li className="text-gray-800 mt-2">Unlimited projects</li>
-                <li className="text-gray-800 mt-2">30 day retention</li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              animate={{
-                opacity: 1
-              }}
-              className="fly-one lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.4,
-                duration: 0.2
-              }}>
-              <h2 className="text-2xl font-medium">Basic</h2>
-              <h3 className="text-4xl font-semibold mt-2">$10</h3>
-              <ul>
-                <li className="text-gray-800 mt-2">1,000 submissions</li>
-                <li className="text-gray-800 mt-2">25 forms</li>
-                <li className="text-gray-800 mt-2">Unlimited projects</li>
-                <li className="text-gray-800 mt-2">90 day retention</li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              animate={{
-                opacity: 1
-              }}
-              className="fly-three lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.6,
-                duration: 0.2
-              }}>
-              <h2 className="text-2xl font-medium">Pro</h2>
-              <h3 className="text-4xl font-semibold mt-2">$20</h3>
-              <ul>
-                <li className="text-gray-800 mt-2">10,000 submissions</li>
-                <li className="text-gray-800 mt-2">100 forms</li>
-                <li className="text-gray-800 mt-2">Unlimited projects</li>
-                <li className="text-gray-800 mt-2">365 day retention</li>
-              </ul>
-            </motion.div>
+          <section className="flex flex-col lg:flex-row justify-center mt-4 lg:mt-16 mb-8">
+            {plans.map((plan) => (
+              <motion.div
+                animate={{
+                  opacity: 1
+                }}
+                className={`lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12 fly-${
+                  plan.id === 'free'
+                    ? 'four'
+                    : plan.id === 'basic'
+                    ? 'one'
+                    : 'three'
+                }`}
+                initial={{
+                  opacity: 0
+                }}
+                key={plan.id}
+                transition={{
+                  delay: 0.2,
+                  duration: 0.2
+                }}>
+                <h2 className="text-2xl font-medium">{plan.name}</h2>
+                <h3 className="text-4xl font-semibold mt-2">${plan.price}</h3>
+                <ul>
+                  <li className="text-gray-800 mt-2">
+                    {millify(plan.submissions)}{' '}
+                    {pluralize('response', plan.submissions)}
+                  </li>
+                  <li className="text-gray-800 mt-2">
+                    {pluralize('form', plan.forms, true)}
+                  </li>
+                  <li className="text-gray-800 mt-2">Unlimited projects</li>
+                  <li className="text-gray-800 mt-2">
+                    {plan.archive} day archive
+                  </li>
+                </ul>
+              </motion.div>
+            ))}
           </section>
 
           {!session && (
@@ -122,6 +101,25 @@ const Pricing: NextPage = () => {
       </main>
     </>
   )
+}
+
+const prisma = new PrismaClient()
+
+export const getServerSideProps: GetServerSideProps<Props> = async () => {
+  const plans = await prisma.plan.findMany({
+    orderBy: {
+      price: 'asc'
+    },
+    where: {
+      visible: true
+    }
+  })
+
+  return {
+    props: {
+      plans
+    }
+  }
 }
 
 export default Pricing
