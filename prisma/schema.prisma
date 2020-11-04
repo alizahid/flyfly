@@ -39,20 +39,6 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-model Plan {
-  id String @unique
-
-  visible Boolean
-
-  name        String
-  price       Int
-  submissions Int
-  forms       Int
-  archive     Int
-
-  users User[]
-}
-
 model User {
   id Int @id @default(autoincrement())
 
@@ -61,10 +47,8 @@ model User {
   emailVerified DateTime?
   image         String?
 
-  plan   Plan   @relation(fields: [planId], references: [id])
-  planId String @default("free")
-
   stripeId String?
+  planId   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

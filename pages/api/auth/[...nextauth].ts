@@ -38,6 +38,7 @@ const options: InitOptions = {
 
         await prisma.user.update({
           data: {
+            planId: process.env.DEFAULT_PLAN_ID,
             stripeId: id
           },
           where: {
