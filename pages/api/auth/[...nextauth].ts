@@ -3,8 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth, { InitOptions } from 'next-auth'
 import Adapters from 'next-auth/adapters'
 import Providers from 'next-auth/providers'
+import Stripe from 'stripe'
 
 const prisma = new PrismaClient()
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2020-08-27'
+})
 
 const options: InitOptions = {
   adapter: Adapters.Prisma.Adapter({
@@ -18,6 +23,28 @@ const options: InitOptions = {
       session.user = user
 
       return session
+    }
+  },
+  events: {
+    async signIn({ isNewUser, user }) {
+      if (isNewUser) {
+        const userId = user.id
+
+        const { id } = await stripe.customers.create({
+          metadata: {
+            userId
+          }
+        })
+
+        await prisma.user.update({
+          data: {
+            stripeId: id
+          },
+          where: {
+            id: userId
+          }
+        })
+      }
     }
   },
   providers: [
