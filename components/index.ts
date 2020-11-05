@@ -1,4 +1,5 @@
 export { Code, InlineCode } from './code'
+export { Counter } from './counter'
 export { Footer } from './footer'
 export { GetStarted } from './get-started'
 export { Header } from './header'

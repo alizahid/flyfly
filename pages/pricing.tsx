@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import millify from 'millify'
 import { GetServerSideProps, NextPage } from 'next'
 import { useSession } from 'next-auth/client'
@@ -7,7 +7,7 @@ import pluralize from 'pluralize'
 import React, { useState } from 'react'
 import Stripe from 'stripe'
 
-import { GetStarted } from '@flyfly/components'
+import { Counter, GetStarted } from '@flyfly/components'
 import { dollarDiscount, parsePlans } from '@flyfly/lib'
 import { Plan } from '@flyfly/types'
 
@@ -46,7 +46,7 @@ const Pricing: NextPage<Props> = ({ plans }) => {
           animate={{
             opacity: 1
           }}
-          className="self-center bg-white rounded-lg shadow-sm overflow-hidden flex mt-16"
+          className="self-center bg-white rounded-lg shadow-sm leading-none flex mt-16 p-1"
           initial={{
             opacity: 0
           }}
@@ -54,26 +54,28 @@ const Pricing: NextPage<Props> = ({ plans }) => {
             delay: 0.2,
             duration: 0.2
           }}>
-          <a
-            className={`text-black py-2 px-3 ${yearly ? '' : 'bg-blue-200'}`}
-            href="#montly"
+          <button
+            className={`static text-black cursor-pointer p-2 rounded ${
+              yearly ? '' : 'bg-blue-200'
+            }`}
             onClick={(event) => {
               event.preventDefault()
 
               setYearly(false)
             }}>
             Montly
-          </a>
-          <a
-            className={`text-black py-2 px-3 ${yearly ? 'bg-blue-200' : ''}`}
-            href="#yearly"
+          </button>
+          <button
+            className={`static text-black cursor-pointer p-2 rounded ${
+              yearly ? 'bg-blue-200' : ''
+            }`}
             onClick={(event) => {
               event.preventDefault()
 
               setYearly(true)
             }}>
             Yearly
-          </a>
+          </button>
         </motion.div>
 
         <section className="flex flex-col lg:flex-row justify-center mt-4 lg:mt-16 mb-8">
@@ -82,7 +84,7 @@ const Pricing: NextPage<Props> = ({ plans }) => {
               animate={{
                 opacity: 1
               }}
-              className={`lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12 fly-${
+              className={`flex flex-col items-center justify-center lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12 fly-${
                 index === 0 ? 'four' : index === 1 ? 'one' : 'three'
               }`}
               initial={{
@@ -94,26 +96,36 @@ const Pricing: NextPage<Props> = ({ plans }) => {
                 duration: 0.2
               }}>
               <h2 className="text-2xl font-medium">{plan.name}</h2>
-              {yearly ? (
-                <div className="text-4xl font-semibold mt-2">
-                  ${plan.priceYearly}
-                  <span className="text-base font-normal text-gray-700">
-                    /year
-                  </span>
-                  {plan.priceYearly > 0 && (
-                    <span className="block font-medium text-xl mt-2">
+              <div className="text-4xl font-semibold overflow-hidden">
+                $
+                <Counter
+                  value={yearly ? plan.priceYearly : plan.priceMonthly}
+                />
+                <span className="text-base font-normal text-gray-700">
+                  {plan.priceMonthly + plan.priceYearly > 0 &&
+                    `/${yearly ? 'year' : 'month'}`}
+                </span>
+                <AnimatePresence>
+                  {yearly && plan.priceYearly > 0 && (
+                    <motion.span
+                      animate={{
+                        height: 'auto'
+                      }}
+                      className="block font-medium text-xl"
+                      exit={{
+                        height: 0
+                      }}
+                      initial={{
+                        height: 0
+                      }}
+                      transition={{
+                        duration: 0.2
+                      }}>
                       {dollarDiscount(plan.priceMonthly, plan.priceYearly)} off
-                    </span>
+                    </motion.span>
                   )}
-                </div>
-              ) : (
-                <div className="text-4xl font-semibold mt-2">
-                  ${plan.priceMonthly}
-                  <span className="text-base font-normal text-gray-700">
-                    /month
-                  </span>
-                </div>
-              )}
+                </AnimatePresence>
+              </div>
               <ul>
                 <li className="text-gray-800 mt-2">
                   {millify(plan.responses)}{' '}
