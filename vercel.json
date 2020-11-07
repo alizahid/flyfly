@@ -1,6 +1,4 @@
 {
-  "name": "flyfly",
-  "region": "dub1",
-  "scope": "alizahid",
-  "version": 2
+  "version": 2,
+  "regions": ["dub1"]
 }

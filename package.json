@@ -13,7 +13,7 @@
     "dev": "next dev",
     "generate": "prisma generate",
     "lint": "eslint . --ext js,ts,tsx",
-    "migrate": "prisma migrate up --experimental",
+    "migrate": "env-cmd -f .env.production prisma migrate up --experimental",
     "postinstall": "yarn generate",
     "start": "next start",
     "studio": "env-cmd prisma studio"
