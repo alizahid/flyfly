@@ -38,9 +38,15 @@ type PromptProps = {
   onSubmit: (value: string) => void
 }
 
-type Props = CommonProps & (AlertProps | ConfirmProps | PromptProps)
+type CustomProps = {
+  type: 'custom'
+}
+
+type Props = CommonProps &
+  (AlertProps | ConfirmProps | PromptProps | CustomProps)
 
 export const Modal: FunctionComponent<Props> = ({
+  children,
   message,
   onClose,
   title,
@@ -160,6 +166,10 @@ export const Modal: FunctionComponent<Props> = ({
     )
   }
 
+  if (type === 'custom') {
+    inner = children
+  }
+
   return (
     <AnimatePresence>
       {visible && (
@@ -167,7 +177,7 @@ export const Modal: FunctionComponent<Props> = ({
           animate={{
             opacity: 1
           }}
-          className="flex items-center justify-center fixed bg-modal top-0 right-0 bottom-0 left-0"
+          className="flex items-center justify-center fixed bg-modal top-0 right-0 bottom-0 left-0 z-30"
           exit={{
             opacity: 0
           }}

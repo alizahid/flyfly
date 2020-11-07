@@ -197,10 +197,6 @@
             {
               "name": "",
               "value": "[providerAccountId]"
-            },
-            {
-              "name": "name",
-              "value": "\"providerAccountId\""
             }
           ]
         },
@@ -217,10 +213,6 @@
             {
               "name": "",
               "value": "[providerId]"
-            },
-            {
-              "name": "name",
-              "value": "\"providerId\""
             }
           ]
         },
@@ -237,10 +229,6 @@
             {
               "name": "",
               "value": "[userId]"
-            },
-            {
-              "name": "name",
-              "value": "\"userId\""
             }
           ]
         },
@@ -396,6 +384,63 @@
     },
     {
       "tag": "CreateModel",
+      "model": "Plan"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Plan",
+      "field": "id",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Plan",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Plan",
+      "field": "visible",
+      "type": "Boolean",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Plan",
+      "field": "name",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Plan",
+      "field": "price",
+      "type": "Float",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Plan",
+      "field": "forms",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Plan",
+      "field": "responses",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
       "model": "User"
     },
     {
@@ -477,20 +522,6 @@
       "tag": "CreateField",
       "model": "User",
       "field": "image",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "User",
-      "field": "stripeId",
-      "type": "String",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "User",
-      "field": "planId",
       "type": "String",
       "arity": "Optional"
     },

@@ -33,7 +33,7 @@ export const Spinner: FunctionComponent<Props> = ({ className }) => (
         }
       }
     `}</style>
-    <div className={`flex items-center ${className}`}>
+    <div className={`flex items-center w-8 ${className}`}>
       <span className="one h-2 w-2 bg-blue-500 rounded-full" />
       <span className="two h-2 w-2 bg-blue-500 rounded-full ml-1" />
       <span className="three h-2 w-2 bg-blue-500 rounded-full ml-1" />

@@ -1,22 +1,21 @@
+import { Plan, PrismaClient } from '@prisma/client'
 import { AnimatePresence, motion } from 'framer-motion'
 import millify from 'millify'
-import { GetServerSideProps, NextPage } from 'next'
+import { GetStaticProps, NextPage } from 'next'
 import { useSession } from 'next-auth/client'
 import Head from 'next/head'
 import pluralize from 'pluralize'
 import React, { useState } from 'react'
-import Stripe from 'stripe'
 
-import { Counter, GetStarted } from '@flyfly/components'
-import { dollarDiscount, parsePlans } from '@flyfly/lib'
-import { Plan } from '@flyfly/types'
+import { Counter, GetStarted, Spinner } from '@flyfly/components'
+import { serializeJson } from '@flyfly/lib'
 
 interface Props {
   plans: Plan[]
 }
 
 const Pricing: NextPage<Props> = ({ plans }) => {
-  const [session] = useSession()
+  const [session, loading] = useSession()
 
   const [yearly, setYearly] = useState(false)
 
@@ -31,7 +30,7 @@ const Pricing: NextPage<Props> = ({ plans }) => {
           animate={{
             opacity: 1
           }}
-          className="mt-8"
+          className="mt-8 mx-8"
           initial={{
             opacity: 0
           }}
@@ -39,7 +38,9 @@ const Pricing: NextPage<Props> = ({ plans }) => {
             duration: 0.2
           }}>
           <h1 className="text-4xl font-semibold">Pricing</h1>
-          <p className="text-xl text-gray-700">Flexible pricing as you grow</p>
+          <p className="text-xl text-gray-700">
+            Everything is unlimited during the beta period
+          </p>
         </motion.header>
 
         <motion.div
@@ -96,92 +97,87 @@ const Pricing: NextPage<Props> = ({ plans }) => {
                 duration: 0.2
               }}>
               <h2 className="text-2xl font-medium">{plan.name}</h2>
-              <div className="text-4xl font-semibold overflow-hidden">
+              <div className="text-4xl font-semibold">
                 $
                 <Counter
-                  value={yearly ? plan.priceYearly : plan.priceMonthly}
+                  value={
+                    plan.price * (yearly ? 12 : 1) -
+                    (yearly ? plan.price * 12 * 0.2 : 0)
+                  }
                 />
-                <span className="text-base font-normal text-gray-700">
-                  {plan.priceMonthly + plan.priceYearly > 0 &&
-                    `/${yearly ? 'year' : 'month'}`}
-                </span>
-                <AnimatePresence>
-                  {yearly && plan.priceYearly > 0 && (
-                    <motion.span
-                      animate={{
-                        height: 'auto'
-                      }}
-                      className="block font-medium text-xl"
-                      exit={{
-                        height: 0
-                      }}
-                      initial={{
-                        height: 0
-                      }}
-                      transition={{
-                        duration: 0.2
-                      }}>
-                      {dollarDiscount(plan.priceMonthly, plan.priceYearly)} off
-                    </motion.span>
-                  )}
-                </AnimatePresence>
               </div>
+              <AnimatePresence>
+                {yearly && plan.price * 12 - plan.price * 12 * 0.2 > 0 && (
+                  <motion.div
+                    animate={{
+                      height: 'auto'
+                    }}
+                    className="overflow-hidden font-medium text-xl line-through text-gray-700"
+                    exit={{
+                      height: 0
+                    }}
+                    initial={{
+                      height: 0
+                    }}
+                    transition={{
+                      duration: 0.2
+                    }}>
+                    ${plan.price * 12}
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <ul>
                 <li className="text-gray-800 mt-2">
                   {millify(plan.responses)}{' '}
                   {pluralize('response', plan.responses)}
+                  <span className="text-sm text-gray-700">/month</span>
                 </li>
                 <li className="text-gray-800 mt-2">
                   {pluralize('form', plan.forms, true)}
                 </li>
                 <li className="text-gray-800 mt-2">&#8734; projects</li>
-                <li className="text-gray-800 mt-2">
-                  {plan.archiveDays} day archive
-                </li>
               </ul>
             </motion.div>
           ))}
         </section>
 
-        {!session && (
-          <motion.section
-            animate={{
-              opacity: 1
-            }}
-            className="flex flex-col items-center mb-8 mt-16"
-            initial={{
-              opacity: 0
-            }}
-            transition={{
-              delay: 1,
-              duration: 0.2
-            }}>
-            <GetStarted />
-          </motion.section>
+        {loading ? (
+          <Spinner className="mt-16 mx-auto" />
+        ) : (
+          !session && (
+            <motion.section
+              animate={{
+                opacity: 1
+              }}
+              className="flex flex-col items-center mb-8 mt-16"
+              initial={{
+                opacity: 0
+              }}
+              transition={{
+                delay: 1,
+                duration: 0.2
+              }}>
+              <GetStarted />
+            </motion.section>
+          )
         )}
       </main>
     </>
   )
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2020-08-27'
-})
+const prisma = new PrismaClient()
 
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const products = await stripe.products.list({
-    active: true
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const plans = await prisma.plan.findMany({
+    orderBy: {
+      price: 'asc'
+    }
   })
-
-  const prices = await stripe.prices.list({
-    active: true
-  })
-
-  const plans = parsePlans(products.data, prices.data)
 
   return {
     props: {
-      plans
+      plans: serializeJson(plans)
     }
   }
 }

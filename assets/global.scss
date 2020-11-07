@@ -20,14 +20,18 @@ body {
 
 a,
 button {
-  @apply text-blue-600 duration-200 outline-none;
+  @apply text-blue-600  outline-none;
 
-  &:hover {
-    filter: brightness(1.1);
-  }
+  &:not(.static) {
+    @apply duration-200;
 
-  &:active {
-    filter: brightness(0.9);
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &:active {
+      filter: brightness(0.9);
+    }
   }
 }
 
@@ -60,7 +64,11 @@ textarea {
 
 form {
   label {
-    @apply block mb-8;
+    @apply block;
+
+    &:not(:last-of-type) {
+      @apply mb-4;
+    }
 
     strong {
       @apply block mb-2 font-medium;
@@ -71,19 +79,15 @@ form {
   input,
   select,
   textarea {
-    @apply appearance-none bg-gray-100 rounded-lg p-4 max-w-full;
+    @apply appearance-none bg-gray-100 rounded-lg p-4 w-full;
 
     &:focus {
       @apply outline-none;
     }
-
-    width: 20rem;
   }
 
   button {
     @apply text-black cursor-pointer rounded-full w-auto font-medium py-4 px-8;
-
-    background: linear-gradient(45deg, #d6bcfa, #e9d8fd);
   }
 
   textarea {

@@ -22,9 +22,9 @@ model Account {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([providerAccountId], name: "providerAccountId")
-  @@index([providerId], name: "providerId")
-  @@index([userId], name: "userId")
+  @@index([providerAccountId])
+  @@index([providerId])
+  @@index([userId])
 }
 
 model Session {
@@ -39,6 +39,16 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
+model Plan {
+  id String @id
+
+  visible   Boolean
+  name      String
+  price     Float
+  forms     Int
+  responses Int
+}
+
 model User {
   id Int @id @default(autoincrement())
 
@@ -46,9 +56,6 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-
-  stripeId String?
-  planId   String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

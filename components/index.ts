@@ -9,5 +9,7 @@ export { Modal } from './modal'
 export { Spinner } from './spinner'
 
 export { FormCard } from './forms/card'
+export { PlanCard } from './user/plan'
+export { ProfileCard } from './user/profile'
 export { ProjectCard } from './projects/card'
 export { ResponseCard } from './responses/card'

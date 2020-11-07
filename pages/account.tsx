@@ -1,13 +1,19 @@
-import { motion } from 'framer-motion'
-import { NextPage } from 'next'
-import { useSession } from 'next-auth/client'
+import { User } from '@prisma/client'
+import { GetServerSideProps, NextPage } from 'next'
+import { getSession } from 'next-auth/client'
 import Head from 'next/head'
 import React from 'react'
 
-import { GetStarted } from '@flyfly/components'
+import { PlanCard, ProfileCard } from '@flyfly/components'
+import { useProfile } from '@flyfly/hooks'
+import { serializeJson } from '@flyfly/lib'
 
-const Account: NextPage = () => {
-  const [session] = useSession()
+interface Props {
+  user: User
+}
+
+const Account: NextPage<Props> = (props) => {
+  const { profile } = useProfile(props.user)
 
   return (
     <>
@@ -15,113 +21,40 @@ const Account: NextPage = () => {
         <title>Account / FlyFly</title>
       </Head>
 
-      <main className="landing justify-center text-center">
-        <div>
-          <motion.header
-            animate={{
-              opacity: 1
-            }}
-            className="mt-8"
-            initial={{
-              opacity: 0
-            }}
-            transition={{
-              duration: 0.2
-            }}>
-            <h1 className="text-4xl font-semibold">Pricing</h1>
-            <p className="text-xl text-gray-700">
-              Flexible pricing as you grow
-            </p>
-          </motion.header>
+      <main>
+        <h1 className="text-4xl font-semibold">Account</h1>
 
-          <section className="flex flex-col lg:flex-row justify-center mt-16 mb-8">
-            <motion.div
-              animate={{
-                opacity: 1
-              }}
-              className="fly-four lg:w-1/4 px-8"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.2,
-                duration: 0.2
-              }}>
-              <h2 className="text-2xl font-medium">Free</h2>
-              <h3 className="text-4xl font-semibold mt-2">$0</h3>
-              <ul>
-                <li className="text-gray-800 mt-2">100 submissions</li>
-                <li className="text-gray-800 mt-2">10 forms</li>
-                <li className="text-gray-800 mt-2">Unlimited projects</li>
-                <li className="text-gray-800 mt-2">30 day retention</li>
-              </ul>
-            </motion.div>
+        <h2 className="text-2xl font-medium mt-8">Profile</h2>
+        <ProfileCard className="mt-4" profile={profile} />
 
-            <motion.div
-              animate={{
-                opacity: 1
-              }}
-              className="fly-one lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.4,
-                duration: 0.2
-              }}>
-              <h2 className="text-2xl font-medium">Basic</h2>
-              <h3 className="text-4xl font-semibold mt-2">$10</h3>
-              <ul>
-                <li className="text-gray-800 mt-2">1,000 submissions</li>
-                <li className="text-gray-800 mt-2">25 forms</li>
-                <li className="text-gray-800 mt-2">Unlimited projects</li>
-                <li className="text-gray-800 mt-2">90 day retention</li>
-              </ul>
-            </motion.div>
-
-            <motion.div
-              animate={{
-                opacity: 1
-              }}
-              className="fly-three lg:w-1/4 px-8 mt-12 lg:mt-0 lg:ml-12"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.6,
-                duration: 0.2
-              }}>
-              <h2 className="text-2xl font-medium">Pro</h2>
-              <h3 className="text-4xl font-semibold mt-2">$20</h3>
-              <ul>
-                <li className="text-gray-800 mt-2">10,000 submissions</li>
-                <li className="text-gray-800 mt-2">100 forms</li>
-                <li className="text-gray-800 mt-2">Unlimited projects</li>
-                <li className="text-gray-800 mt-2">365 day retention</li>
-              </ul>
-            </motion.div>
-          </section>
-
-          {!session && (
-            <motion.section
-              animate={{
-                opacity: 1
-              }}
-              className="flex flex-col items-center mt-16"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.8,
-                duration: 0.2
-              }}>
-              <GetStarted />
-            </motion.section>
-          )}
-        </div>
+        <h2 className="text-2xl font-medium mt-16">Plan</h2>
+        <PlanCard className="mt-4" profile={profile} />
       </main>
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false
+      }
+    }
+  }
+
+  const { user } = session
+
+  return {
+    props: {
+      user: serializeJson(user)
+    }
+  }
 }
 
 export default Account

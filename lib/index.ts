@@ -1,3 +1,4 @@
-export { api, queryCache } from './api'
+export { api } from './api'
+export { queryCache } from './cache'
 
 export * from './helpers'

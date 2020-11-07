@@ -1,8 +1,4 @@
-import { orderBy } from 'lodash'
 import { generate } from 'shortid'
-import Stripe from 'stripe'
-
-import { Plan } from '@flyfly/types'
 
 export const serializeJson = <T>(data: T): T => JSON.parse(JSON.stringify(data))
 
@@ -57,46 +53,3 @@ export const prettyLanguageName = (language: string): string => {
       return language
   }
 }
-
-export const parsePlans = (
-  products: Stripe.Product[],
-  prices: Stripe.Price[]
-): Plan[] =>
-  orderBy(
-    products.map(
-      ({ id, metadata: { archiveDays, forms, responses }, name }) => {
-        const pricesForPlan = prices.filter((price) => price.product === id)
-
-        const monthly = pricesForPlan.find(
-          ({ recurring: { interval } }) => interval === 'month'
-        )
-
-        const yearly = pricesForPlan.find(
-          ({ recurring: { interval } }) => interval === 'year'
-        )
-
-        return {
-          archiveDays: Number(archiveDays),
-          forms: Number(forms),
-          id,
-          name,
-          priceMonthly: monthly ? monthly.unit_amount / 100 : 0,
-          priceYearly: yearly ? yearly.unit_amount / 100 : 0,
-          responses: Number(responses)
-        }
-      }
-    ),
-    'priceMonthly',
-    'asc'
-  )
-
-export const dollarDiscount = (
-  priceMonthly: number,
-  priceYearly: number
-): string => `$${priceMonthly * 12 - priceYearly}`
-
-export const percentDiscount = (
-  priceMonthly: number,
-  priceYearly: number
-): string =>
-  `${((priceMonthly * 12 - priceYearly) / (priceMonthly * 12)) * 100}%`

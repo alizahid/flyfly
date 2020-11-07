@@ -4,10 +4,10 @@ import { useSession } from 'next-auth/client'
 import Head from 'next/head'
 import React from 'react'
 
-import { GetStarted } from '@flyfly/components'
+import { GetStarted, Spinner } from '@flyfly/components'
 
 const Home: NextPage = () => {
-  const [session] = useSession()
+  const [session, loading] = useSession()
 
   return (
     <>
@@ -16,7 +16,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="landing justify-center text-center">
-        <div className="fly-one mt-8">
+        <div className="fly-one my-8">
           <motion.header
             animate={{
               opacity: 1
@@ -80,36 +80,26 @@ const Home: NextPage = () => {
             </motion.div>
           </section>
 
-          {!session && (
-            <motion.section
-              animate={{
-                opacity: 1
-              }}
-              className="flex flex-col items-center mt-16"
-              initial={{
-                opacity: 0
-              }}
-              transition={{
-                delay: 0.6,
-                duration: 0.2
-              }}>
-              <GetStarted />
-            </motion.section>
+          {loading ? (
+            <Spinner className="mt-16 mx-auto" />
+          ) : (
+            !session && (
+              <motion.section
+                animate={{
+                  opacity: 1
+                }}
+                className="flex flex-col items-center mt-16"
+                initial={{
+                  opacity: 0
+                }}
+                transition={{
+                  delay: 0.6,
+                  duration: 0.2
+                }}>
+                <GetStarted />
+              </motion.section>
+            )
           )}
-        </div>
-
-        <div className="fly-two flex flex-col items-center mt-12 mb-8">
-          <h2 className="text-3xl font-semibold">Cool heading</h2>
-
-          <figure className="bg-white mx-8 lg:w-2/3 rounded-lg shadow-sm mt-12">
-            <img className="rounded-lg" src="/img/screenshots/projects.png" />
-            <figcaption className="m-4">Some cool copy</figcaption>
-          </figure>
-
-          <figure className="bg-white mx-8 lg:w-2/3 rounded-lg shadow-sm mt-12">
-            <img className="rounded-lg" src="/img/screenshots/forms.png" />
-            <figcaption className="m-4">Some cool copy</figcaption>
-          </figure>
         </div>
       </main>
     </>

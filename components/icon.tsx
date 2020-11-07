@@ -20,7 +20,7 @@ const icons = Object.keys(ionicons)
     }
   })
   .reduce((icons, { icon, name }) => {
-    icons[name] = icon.default
+    icons[name] = icon.default.replace(/<title>([\w\s]+)<\/title>/, '')
 
     return icons
   }, {})
@@ -42,6 +42,7 @@ interface Props {
     | 'pink'
   icon: keyof typeof ionicons
   size?: number
+  title?: string
 
   onClick?: () => void
 }
@@ -51,7 +52,8 @@ export const Icon: FunctionComponent<Props> = ({
   color = 'black',
   icon,
   onClick,
-  size = 24
+  size = 24,
+  title
 }) => (
   <div
     className={`icon-${color} ${onClick && 'cursor-pointer'} ${className}`}
@@ -63,5 +65,6 @@ export const Icon: FunctionComponent<Props> = ({
       height: size,
       width: size
     }}
+    title={title}
   />
 )
