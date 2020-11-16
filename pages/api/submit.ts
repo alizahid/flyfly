@@ -11,10 +11,21 @@ export const config = {
 }
 
 const handler: NextApiHandler<{
+  message?: string
   status: 'ok' | 'error'
 }> = async (req, res) => {
   if (req.method.toLowerCase() !== 'post') {
     res.json({
+      message: 'Method should be POST',
+      status: 'error'
+    })
+
+    return
+  }
+
+  if (!req.headers['content-type'].startsWith('application/json')) {
+    res.json({
+      message: 'Body should be JSON',
       status: 'error'
     })
 
