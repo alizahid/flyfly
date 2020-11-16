@@ -2,11 +2,11 @@ import millify from 'millify'
 import pluralize from 'pluralize'
 import React, { FunctionComponent } from 'react'
 
-import { FormWithResponseCount } from '@flyfly/types'
+import { Form } from '@flyfly/types'
 
 interface Props {
   className?: string
-  form: FormWithResponseCount
+  form: Form
 }
 
 export const FormCard: FunctionComponent<Props> = ({ className, form }) => (
