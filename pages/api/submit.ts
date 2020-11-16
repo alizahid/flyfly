@@ -1,4 +1,6 @@
-import { NextApiHandler } from 'next'
+import cors from 'cors'
+import { NextApiRequest, NextApiResponse } from 'next'
+import connect from 'next-connect'
 
 import { submitForm } from '@flyfly/server'
 
@@ -10,38 +12,28 @@ export const config = {
   }
 }
 
-const handler: NextApiHandler<{
-  message?: string
-  status: 'ok' | 'error'
-}> = async (req, res) => {
-  if (req.method.toLowerCase() !== 'post') {
+const handler = connect<NextApiRequest, NextApiResponse>()
+  .use(cors())
+  .post(async (req, res) => {
+    if (!req.headers['content-type'].startsWith('application/json')) {
+      res.json({
+        message: 'Body should be JSON',
+        status: 'error'
+      })
+
+      return
+    }
+
+    const {
+      body,
+      query: { id }
+    } = req
+
+    const status = await submitForm(String(id), body)
+
     res.json({
-      message: 'Method should be POST',
-      status: 'error'
+      status
     })
-
-    return
-  }
-
-  if (!req.headers['content-type'].startsWith('application/json')) {
-    res.json({
-      message: 'Body should be JSON',
-      status: 'error'
-    })
-
-    return
-  }
-
-  const {
-    body,
-    query: { id }
-  } = req
-
-  const status = await submitForm(String(id), body)
-
-  res.json({
-    status
   })
-}
 
 export default handler
