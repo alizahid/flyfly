@@ -29,6 +29,8 @@ const Account: NextPage<Props> = (props) => {
         <h2 className="text-2xl font-medium mt-16">Plan</h2>
         <PlanCard className="mt-4" profile={profile} />
 
+        <h2 className="text-2xl font-medium mt-16">Notifications</h2>
+
         <h2 className="text-2xl font-medium mt-16">Usage</h2>
       </main>
     </>

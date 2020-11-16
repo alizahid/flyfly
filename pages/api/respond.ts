@@ -26,10 +26,10 @@ const handler = connect<NextApiRequest, NextApiResponse>()
 
     const {
       body,
-      query: { id }
+      query: { slug }
     } = req
 
-    const status = await submitForm(String(id), body)
+    const status = await submitForm(String(slug), body)
 
     res.json({
       status

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import { orderBy } from 'lodash'
 import { ObjectId } from 'mongodb'
+import { nanoid } from 'nanoid'
 
 import { Form, User } from '@flyfly/types'
 
@@ -12,6 +13,7 @@ const parseForm = ({
   name,
   projectId,
   responses,
+  slug,
   updatedAt
 }: MongoForm & {
   responses: number
@@ -20,8 +22,19 @@ const parseForm = ({
   name,
   projectId: String(projectId),
   responses: responses ?? 0,
+  slug,
   updatedAt: dayjs(updatedAt).toISOString()
 })
+
+const slug = (): string => {
+  const id = nanoid(6).toLowerCase()
+
+  if (id.match(/([^a-z0-9]+)/)) {
+    return slug()
+  }
+
+  return id
+}
 
 export const createForm = async (
   user: User,
@@ -33,6 +46,7 @@ export const createForm = async (
   const { insertedId } = await db.collection('forms').insertOne({
     name,
     projectId: new ObjectId(projectId),
+    slug: slug(),
     updatedAt: new Date(),
     userId: new ObjectId(user.id)
   })

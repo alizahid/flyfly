@@ -5,8 +5,8 @@ module.exports = {
   async rewrites() {
     return [
       {
-        destination: '/api/submit',
-        source: '/submit/:id'
+        destination: '/api/respond',
+        source: '/f/:slug'
       }
     ]
   }

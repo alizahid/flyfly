@@ -30,6 +30,7 @@ export type MongoProject = {
 
 export type MongoForm = {
   _id: ObjectId
+  slug: string
   name: string
   projectId: ObjectId
   userId: ObjectId

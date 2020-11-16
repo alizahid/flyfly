@@ -71,7 +71,7 @@ const FormPage: NextPage<Props> = (props) => {
         </div>
         <InlineCode
           className="mt-4"
-          text={`${process.env.URL}/submit/${form.id}`}
+          text={`${process.env.URL}/f/${form.slug}`}
         />
         <div className="mt-4">
           View{' '}

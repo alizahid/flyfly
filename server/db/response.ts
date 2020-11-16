@@ -7,13 +7,13 @@ import { mongo } from '.'
 import { MongoForm, MongoResponse } from './models'
 
 export const submitForm = async (
-  formId: string,
+  slug: string,
   data: Record<string, unknown>
 ): Promise<'ok' | 'error'> => {
   const db = await mongo()
 
   const form: MongoForm = await db.collection('forms').findOne({
-    _id: new ObjectId(formId)
+    slug
   })
 
   if (!form) {

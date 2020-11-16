@@ -26,6 +26,7 @@ export type Project = {
 
 export type Form = {
   id: string
+  slug: string
   projectId: string
   name: string
   responses: number
