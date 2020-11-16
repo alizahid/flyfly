@@ -7,7 +7,7 @@ class FlyFly extends Document {
       <Html>
         <Head />
 
-        <body>
+        <body className="container mx-auto">
           <Main />
           <NextScript />
         </body>

@@ -1,18 +1,23 @@
 import axios from 'axios'
 
-class API {
-  async post<T>(
-    url: string,
-    body?: Record<string, string | number | boolean>
-  ): Promise<T> {
-    const { data } = await axios.request<T>({
-      data: body,
-      method: 'post',
-      url
-    })
+export const apiGet = async <T>(url: string): Promise<T> => {
+  const { data } = await axios.request<T>({
+    method: 'get',
+    url
+  })
 
-    return data
-  }
+  return data
 }
 
-export const api = new API()
+export const apiPost = async <T>(
+  url: string,
+  body?: Record<string, string | number | boolean>
+): Promise<T> => {
+  const { data } = await axios.request<T>({
+    data: body,
+    method: 'post',
+    url
+  })
+
+  return data
+}

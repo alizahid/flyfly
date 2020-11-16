@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 
 import { Icon } from './icon'
+import { Spinner } from './spinner'
 
 type CommonProps = {
   message: string
@@ -24,18 +25,20 @@ type AlertProps = {
 
 type ConfirmProps = {
   destructive?: 'yes' | 'no'
+  loading?: boolean
   type: 'confirm'
 
   onNo?: () => void
-  onYes: () => void
+  onYes: () => Promise<unknown> | void
 }
 
 type PromptProps = {
+  loading?: boolean
   placeholder: string
   type: 'prompt'
   value?: string
 
-  onSubmit: (value: string) => void
+  onSubmit: (value: string) => Promise<unknown> | void
 }
 
 type CustomProps = {
@@ -88,7 +91,7 @@ export const Modal: FunctionComponent<Props> = ({
   }
 
   if (type === 'confirm') {
-    const { destructive = 'yes', onNo, onYes } = props as ConfirmProps
+    const { destructive = 'yes', loading, onNo, onYes } = props as ConfirmProps
 
     inner = (
       <footer className="flex justify-between border-t border-gray-200">
@@ -98,6 +101,7 @@ export const Modal: FunctionComponent<Props> = ({
           }`}
           onClick={() => {
             onNo?.()
+
             onClose()
             setValue('')
           }}>
@@ -107,29 +111,35 @@ export const Modal: FunctionComponent<Props> = ({
           className={`flex-1 p-4 font-medium ${
             destructive === 'yes' ? 'text-red-500' : 'text-blue-500'
           }`}
-          onClick={() => {
-            onYes()
+          onClick={async () => {
+            await onYes()
+
             onClose()
             setValue('')
           }}>
-          Yes
+          {loading ? <Spinner className="mx-auto" /> : 'Yes'}
         </button>
       </footer>
     )
   }
 
   if (type === 'prompt') {
-    const { onSubmit, placeholder } = props as PromptProps
+    const { loading, onSubmit, placeholder } = props as PromptProps
 
-    const submit = () => {
+    const submit = async () => {
       if (!value) {
         valueRef.current.focus()
 
         return
       }
 
-      onSubmit(value)
+      await onSubmit(value)
+
       onClose()
+
+      if (!(props as PromptProps).value) {
+        setValue('')
+      }
     }
 
     inner = (
@@ -158,8 +168,9 @@ export const Modal: FunctionComponent<Props> = ({
           </button>
           <button
             className="flex-1 p-4 font-medium text-green-500"
+            disabled={loading}
             onClick={submit}>
-            Submit
+            {loading ? <Spinner className="mx-auto" /> : 'Submit'}
           </button>
         </footer>
       </>

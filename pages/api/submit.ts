@@ -1,37 +1,36 @@
-import { PrismaClient } from '@prisma/client'
 import { NextApiHandler } from 'next'
 
-const prisma = new PrismaClient()
+import { submitForm } from '@flyfly/server'
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '100kb'
+    }
+  }
+}
 
 const handler: NextApiHandler<{
   status: 'ok' | 'error'
 }> = async (req, res) => {
-  const {
-    body,
-    query: { slug }
-  } = req
-
-  try {
-    await prisma.response.create({
-      data: {
-        data: body,
-        form: {
-          connect: {
-            slug: String(slug)
-          }
-        },
-        meta: {}
-      }
-    })
-
+  if (req.method.toLowerCase() !== 'post') {
     res.json({
-      status: 'ok'
-    })
-  } catch {
-    res.status(500).json({
       status: 'error'
     })
+
+    return
   }
+
+  const {
+    body,
+    query: { id }
+  } = req
+
+  const status = await submitForm(String(id), body)
+
+  res.json({
+    status
+  })
 }
 
 export default handler

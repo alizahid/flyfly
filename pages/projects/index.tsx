@@ -1,23 +1,20 @@
-import { PrismaClient } from '@prisma/client'
 import { motion } from 'framer-motion'
 import { GetServerSideProps, NextPage } from 'next'
-import { getSession } from 'next-auth/client'
 import Head from 'next/head'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-import { Icon, Modal, ProjectCard, Spinner } from '@flyfly/components'
+import { Icon, Modal, ProjectCard } from '@flyfly/components'
 import { useCreateProject, useProjects } from '@flyfly/hooks'
-import { serializeJson } from '@flyfly/lib'
-import { ProjectWithFormCount } from '@flyfly/types'
+import { getProjects, getUser } from '@flyfly/server'
+import { Project } from '@flyfly/types'
 
 interface Props {
-  projects: ProjectWithFormCount[]
+  projects: Project[]
 }
 
 const Projects: NextPage<Props> = (props) => {
   const { projects } = useProjects(props.projects)
-
   const { createProject, loading } = useCreateProject()
 
   const [visible, setVisible] = useState(false)
@@ -31,24 +28,13 @@ const Projects: NextPage<Props> = (props) => {
       <main>
         <header className="flex items-center justify-between lg:justify-start">
           <h1 className="text-4xl font-semibold">Projects</h1>
-          {loading ? (
-            <Spinner className="ml-4" />
-          ) : (
-            <Icon
-              className="ml-4"
-              icon="add"
-              onClick={() => setVisible(true)}
-            />
-          )}
+          <Icon className="ml-4" icon="add" onClick={() => setVisible(true)} />
         </header>
 
         {projects.length > 0 ? (
           <div className="grid lg:grid-cols-3 gap-8 mt-8">
             {projects.map((project, index) => (
-              <Link
-                href={`/projects/${project.slug}`}
-                key={project.slug}
-                passHref>
+              <Link href={`/projects/${project.id}`} key={project.id} passHref>
                 <motion.a
                   animate={{
                     opacity: 1
@@ -73,6 +59,7 @@ const Projects: NextPage<Props> = (props) => {
       </main>
 
       <Modal
+        loading={loading}
         message="What would you like to call it?"
         onClose={() => setVisible(false)}
         onSubmit={(name) => createProject(name)}
@@ -85,14 +72,12 @@ const Projects: NextPage<Props> = (props) => {
   )
 }
 
-const prisma = new PrismaClient()
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req
+}) => {
+  const user = await getUser(req)
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const session = await getSession(context)
-
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: '/',
@@ -101,28 +86,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   }
 
-  const { user } = session
-
-  const projects = await prisma.project.findMany({
-    include: {
-      forms: true
-    },
-    orderBy: {
-      createdAt: 'asc'
-    },
-    where: {
-      userId: user.id
-    }
-  })
-
-  const next: ProjectWithFormCount[] = projects.map((project) => ({
-    ...project,
-    forms: project.forms.length
-  }))
+  const projects = await getProjects(user)
 
   return {
     props: {
-      projects: serializeJson(next)
+      projects,
+      user
     }
   }
 }

@@ -14,6 +14,7 @@
       "@flyfly/components": ["./components"],
       "@flyfly/hooks": ["./hooks"],
       "@flyfly/lib": ["./lib"],
+      "@flyfly/server": ["./server"],
       "@flyfly/types": ["./types"]
     },
     "resolveJsonModule": true,
@@ -21,6 +22,6 @@
     "strict": false,
     "target": "es5"
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", ".next", ".vercel", ".vscode"],
   "include": ["*.d.ts", "**/*.ts", "**/*.tsx"]
 }

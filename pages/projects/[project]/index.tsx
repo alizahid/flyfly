@@ -1,32 +1,33 @@
-import { join, PrismaClient } from '@prisma/client'
 import { motion } from 'framer-motion'
 import { GetServerSideProps, NextPage } from 'next'
-import { getSession } from 'next-auth/client'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import React, { useState } from 'react'
 
-import { FormCard, Icon, Loading, Modal, Spinner } from '@flyfly/components'
+import { FormCard, Icon, Loading, Modal } from '@flyfly/components'
 import {
   useCreateForm,
   useDeleteProject,
+  useForms,
   useProject,
   useUpdateProject
 } from '@flyfly/hooks'
-import { serializeJson } from '@flyfly/lib'
-import { ProjectWithFormsWithResponseCount } from '@flyfly/types'
+import { getForms, getProject, getUser } from '@flyfly/server'
+import { Form, Project } from '@flyfly/types'
 
 interface Props {
-  project: ProjectWithFormsWithResponseCount
+  project: Project
+  forms: Form[]
 }
 
-const Project: NextPage<Props> = (props) => {
+const ProjectPage: NextPage<Props> = (props) => {
   const { project } = useProject(props.project)
+  const { forms } = useForms(props.project.id, props.forms)
 
-  const { createForm, loading } = useCreateForm()
-  const { deleteProject } = useDeleteProject()
-  const { updateProject } = useUpdateProject()
+  const { createForm, loading: creating } = useCreateForm()
+  const { deleteProject, loading: deleting } = useDeleteProject()
+  const { loading: updating, updateProject } = useUpdateProject()
 
   const [newProjectVisible, setNewProjectVisible] = useState(false)
   const [updateProjectVisible, setUpdateProjectVisible] = useState(false)
@@ -43,26 +44,28 @@ const Project: NextPage<Props> = (props) => {
       </Head>
 
       <main>
-        <h1 className="text-4xl font-semibold">{project.name}</h1>
+        <Link href="/projects">
+          <a className="flex items-center text-gray-700">
+            <Icon className="mr-2" color="gray" icon="arrowBack" size={16} />
+            Projects
+          </a>
+        </Link>
+        <h1 className="text-4xl font-semibold mt-4">{project.name}</h1>
 
         <header className="flex items-center justify-between lg:justify-start mt-8">
           <h2 className="text-2xl font-medium">Forms</h2>
-          {loading ? (
-            <Spinner className="ml-4" />
-          ) : (
-            <Icon
-              className="ml-4"
-              icon="add"
-              onClick={() => setNewProjectVisible(true)}
-            />
-          )}
+          <Icon
+            className="ml-4"
+            icon="add"
+            onClick={() => setNewProjectVisible(true)}
+          />
         </header>
-        {project.forms.length > 0 ? (
+        {forms.length > 0 ? (
           <div className="grid lg:grid-cols-3 gap-8 mt-4">
-            {project.forms.map((form, index) => (
+            {forms.map((form, index) => (
               <Link
-                href={`/projects/${project.slug}/forms/${form.slug}`}
-                key={form.slug}
+                href={`/projects/${project.id}/forms/${form.id}`}
+                key={form.id}
                 passHref>
                 <motion.a
                   animate={{
@@ -114,9 +117,10 @@ const Project: NextPage<Props> = (props) => {
       </main>
 
       <Modal
+        loading={creating}
         message="What would you like to call it?"
         onClose={() => setNewProjectVisible(false)}
-        onSubmit={(name) => createForm(project, name)}
+        onSubmit={(name) => createForm(project.id, name)}
         placeholder="Name"
         title="Create a new form"
         type="prompt"
@@ -124,9 +128,10 @@ const Project: NextPage<Props> = (props) => {
       />
 
       <Modal
+        loading={updating}
         message="What would you like to call it?"
         onClose={() => setUpdateProjectVisible(false)}
-        onSubmit={(name) => updateProject(project, name)}
+        onSubmit={(name) => updateProject(project.id, name)}
         placeholder="Name"
         title="Change project name"
         type="prompt"
@@ -135,10 +140,11 @@ const Project: NextPage<Props> = (props) => {
       />
 
       <Modal
+        loading={deleting}
         message="Are you sure you want to delete this project? All forms and responses will also be deleted. This cannot be undone."
         onClose={() => setDeleteProjectVisible(false)}
-        onYes={() => {
-          deleteProject(project.slug)
+        onYes={async () => {
+          await deleteProject(project.id)
 
           Router.replace('/projects')
         }}
@@ -150,14 +156,13 @@ const Project: NextPage<Props> = (props) => {
   )
 }
 
-const prisma = new PrismaClient()
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  params,
+  req
+}) => {
+  const user = await getUser(req)
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const session = await getSession(context)
-
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: '/',
@@ -166,25 +171,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   }
 
-  const { params } = context
+  const id = String(params.project)
 
-  const slug = String(params['project-slug'])
-
-  const { user } = session
-
-  const project = await prisma.project.findFirst({
-    include: {
-      forms: {
-        orderBy: {
-          createdAt: 'asc'
-        }
-      }
-    },
-    where: {
-      slug,
-      userId: user.id
-    }
-  })
+  const project = await getProject(user, id)
 
   if (!project) {
     return {
@@ -192,30 +181,15 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   }
 
-  let responses: {
-    count: number
-    formId: number
-  }[] = []
-
-  if (project.forms.length > 0) {
-    responses = await prisma.$queryRaw`SELECT "formId", COUNT(id) AS count FROM "Response" WHERE "formId" IN (${join(
-      project.forms.map(({ id }) => id)
-    )}) GROUP BY "formId"`
-  }
-
-  const next: ProjectWithFormsWithResponseCount = {
-    ...project,
-    forms: project.forms.map((form) => ({
-      ...form,
-      responses: responses.find(({ formId }) => formId === form.id)?.count ?? 0
-    }))
-  }
+  const forms = await getForms(user, id)
 
   return {
     props: {
-      project: serializeJson(next)
+      forms,
+      project,
+      user
     }
   }
 }
 
-export default Project
+export default ProjectPage

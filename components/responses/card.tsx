@@ -1,9 +1,9 @@
-import { Response } from '@prisma/client'
 import dayjs from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { FunctionComponent, useState } from 'react'
 
 import { parseValue } from '@flyfly/lib'
+import { Response } from '@flyfly/types'
 
 import { Icon } from '../icon'
 

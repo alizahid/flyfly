@@ -1,39 +1,96 @@
-import { Form, Project } from '@prisma/client'
 import update from 'immutability-helper'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { api, queryCache } from '@flyfly/lib'
-import {
-  FormWithResponseCount,
-  FormWithResponses,
-  ProjectWithFormCount,
-  ProjectWithFormsWithResponseCount
-} from '@flyfly/types'
+import { apiGet, apiPost, queryCache } from '@flyfly/lib'
+import { Form, Project, Response } from '@flyfly/types'
+
+// forms
+
+type FormsReturns = {
+  forms: Form[]
+}
+
+export const useForms = (
+  projectId: string,
+  initialData: Form[]
+): FormsReturns => {
+  const { data } = useQuery(`forms-${projectId}`, {
+    initialData
+  })
+
+  return {
+    forms: data
+  }
+}
 
 // form
 
 type FormReturns = {
-  form: FormWithResponses
+  form: Form
+}
+
+export const useForm = (initialData: Form): FormReturns => {
+  const { data } = useQuery(`form-${initialData.id}`, {
+    initialData
+  })
+
+  return {
+    form: data
+  }
+}
+
+// responses
+
+type ResponsesReturns = {
   loading: boolean
+  responses: Response[]
 
   fetchMore: () => void
   refetch: () => void
 }
 
-export const useForm = (initialData: FormWithResponses): FormReturns => {
-  const { data, fetchMore, isFetching, refetch } = useQuery(
-    `form-${initialData.slug}`,
-    {
-      initialData
-    }
-  )
+export const useResponses = (
+  formId: string,
+  initial: Response[]
+): ResponsesReturns => {
+  const [responses, setResponses] = useState<Response[]>(initial)
+  const [loading, setLoading] = useState(false)
+  const [skip, setSkip] = useState(0)
+
+  useEffect(() => {
+    setSkip(responses.length)
+  }, [responses.length])
+
+  const fetch = async (formId: string, skip: number) => {
+    setLoading(true)
+
+    const next = await apiGet<Response[]>(
+      `/api/forms/responses?formId=${formId}&skip=${skip}`
+    )
+
+    setLoading(false)
+
+    return next
+  }
+
+  const refetch = useCallback(async () => {
+    const responses = await fetch(formId, 0)
+
+    setResponses(responses)
+  }, [])
+
+  const fetchMore = useCallback(async () => {
+    const next = await fetch(formId, skip)
+
+    setResponses([...responses, ...next])
+  }, [skip])
 
   return {
     fetchMore,
-    form: data,
-    loading: isFetching,
-    refetch
+    loading,
+    refetch,
+    responses
   }
 }
 
@@ -42,74 +99,61 @@ export const useForm = (initialData: FormWithResponses): FormReturns => {
 type CreateFormReturns = {
   loading: boolean
 
-  createForm: (
-    project: ProjectWithFormsWithResponseCount,
-    name: string
-  ) => Promise<FormWithResponseCount>
+  createForm: (projectId: string, name: string) => Promise<Form>
 }
 
 type CreateFormVariables = {
   name: string
-  project: ProjectWithFormsWithResponseCount
+  projectId: string
 }
 
 export const useCreateForm = (): CreateFormReturns => {
-  const [mutate, { isLoading }] = useMutation<
-    FormWithResponseCount,
-    void,
-    CreateFormVariables
-  >(
-    async ({ name, project: { slug } }) => {
-      const form = await api.post<FormWithResponseCount>('/api/create-form', {
+  const [mutate, { isLoading }] = useMutation<Form, void, CreateFormVariables>(
+    async ({ name, projectId }) => {
+      const form = await apiPost<Form>('/api/forms/create', {
         name,
-        slug
+        projectId
       })
 
       return form
     },
     {
-      onSuccess(form, { project: { forms, slug } }) {
-        queryCache.setQueryData<ProjectWithFormsWithResponseCount>(
-          `project-${slug}`,
-          (project) =>
-            update(project, {
-              forms: {
-                $push: [form]
+      onSuccess(response, { projectId }) {
+        queryCache.setQueryData<Form[]>(`forms-${projectId}`, (project) =>
+          update(project, {
+            $unshift: [response]
+          })
+        )
+
+        const projects = queryCache.getQueryData<Project[]>('projects')
+
+        if (projects) {
+          queryCache.setQueryData<Project[]>('projects', (projects) => {
+            const forms = queryCache.getQueryData<Form[]>(`forms-${projectId}`)
+              .length
+
+            const index = projects.findIndex(
+              (project) => project.id === projectId
+            )
+
+            return update(projects, {
+              [index]: {
+                forms: {
+                  $set: forms
+                }
               }
             })
-        )
-
-        const exists = queryCache.getQueryData<ProjectWithFormCount[]>(
-          'projects'
-        )
-
-        if (exists) {
-          queryCache.setQueryData<ProjectWithFormCount[]>(
-            'projects',
-            (projects) => {
-              const index = projects.findIndex(
-                (project) => project.slug === slug
-              )
-
-              return update(projects, {
-                [index]: {
-                  forms: {
-                    $set: forms.length + 1
-                  }
-                }
-              })
-            }
-          )
+          })
         }
       }
     }
   )
 
   const createForm = useCallback(
-    (project: ProjectWithFormsWithResponseCount, name: string) =>
+    (projectId: string, name: string) =>
       mutate({
         name,
-        project
+        projectId
       }),
     []
   )
@@ -125,28 +169,25 @@ export const useCreateForm = (): CreateFormReturns => {
 type UpdateFormReturns = {
   loading: boolean
 
-  updateForm: (project: Project, form: Form, name: string) => Promise<Form>
+  updateForm: (projectId: string, formId: string, name: string) => Promise<Form>
 }
 
 type UpdateFormVariables = {
-  form: Form
+  formId: string
   name: string
-  project: Project
+  projectId: string
 }
 
 export const useUpdateForm = (): UpdateFormReturns => {
   const [mutate, { isLoading }] = useMutation<Form, void, UpdateFormVariables>(
-    async ({ form: { slug }, name }) => {
-      const form = await api.post<Form>('/api/update-form', {
-        name,
-        slug
-      })
-
-      return form
-    },
+    ({ formId, name }) =>
+      apiPost<Form>('/api/forms/update', {
+        formId,
+        name
+      }),
     {
-      onSuccess(form, { form: { slug }, name, project }) {
-        queryCache.setQueryData<FormWithResponses>(`form-${slug}`, (data) =>
+      onSuccess(response, { formId, name, projectId }) {
+        queryCache.setQueryData<Form>(`form-${formId}`, (data) =>
           update(data, {
             name: {
               $set: name
@@ -154,36 +195,31 @@ export const useUpdateForm = (): UpdateFormReturns => {
           })
         )
 
-        const exists = queryCache.getQueryData(`project-${project.slug}`)
+        const forms = queryCache.getQueryData(`forms-${projectId}`)
 
-        if (exists) {
-          queryCache.setQueryData<ProjectWithFormsWithResponseCount>(
-            `project-${project.slug}`,
-            (data) => {
-              const index = data.forms.findIndex((form) => form.slug === slug)
+        if (forms) {
+          queryCache.setQueryData<Form[]>(`forms-${projectId}`, (forms) => {
+            const index = forms.findIndex(({ id }) => id === formId)
 
-              return update(data, {
-                forms: {
-                  [index]: {
-                    name: {
-                      $set: name
-                    }
-                  }
+            return update(forms, {
+              [index]: {
+                name: {
+                  $set: name
                 }
-              })
-            }
-          )
+              }
+            })
+          })
         }
       }
     }
   )
 
   const updateForm = useCallback(
-    (project: Project, form: Form, name: string) =>
+    (projectId: string, formId: string, name: string) =>
       mutate({
-        form,
+        formId,
         name,
-        project
+        projectId
       }),
     []
   )
@@ -199,52 +235,60 @@ export const useUpdateForm = (): UpdateFormReturns => {
 type DeleteFormReturns = {
   loading: boolean
 
-  deleteForm: (project: Project, slug: string) => Promise<Form>
+  deleteForm: (projectId: string, formId: string) => Promise<Form>
 }
 
 type DeleteFormVariables = {
-  project: Project
-  slug: string
+  formId: string
+  projectId: string
 }
 
 export const useDeleteForm = (): DeleteFormReturns => {
   const [mutate, { isLoading }] = useMutation<Form, void, DeleteFormVariables>(
-    async ({ slug }) => {
-      const form = await api.post<Form>('/api/delete-form', {
-        slug
-      })
-
-      return form
-    },
+    ({ formId }) =>
+      apiPost('/api/forms/delete', {
+        formId
+      }),
     {
-      onSuccess(response, { project, slug }) {
-        queryCache.setQueryData<FormWithResponses>(`form-${slug}`, null)
+      onSuccess(response, { formId, projectId }) {
+        queryCache.setQueryData<Form>(`form-${formId}`, null)
 
-        const exists = queryCache.getQueryData(`project-${project.slug}`)
+        const forms = queryCache.getQueryData(`forms-${projectId}`)
 
-        if (exists) {
-          queryCache.setQueryData<ProjectWithFormsWithResponseCount>(
-            `project-${project.slug}`,
-            (data) => {
-              const index = data.forms.findIndex((form) => form.slug === slug)
+        if (forms) {
+          queryCache.setQueryData<Form[]>(`forms-${projectId}`, (forms) => {
+            const index = forms.findIndex(({ id }) => id === formId)
 
-              return update(data, {
+            return update(forms, {
+              $splice: [[index, 1]]
+            })
+          })
+        }
+
+        const projects = queryCache.getQueryData(`project-${projectId}`)
+
+        if (projects) {
+          queryCache.setQueryData<Project[]>('projects', (projects) => {
+            const index = projects.findIndex(({ id }) => id === projectId)
+
+            return update(projects, {
+              [index]: {
                 forms: {
-                  $splice: [[index, 1]]
+                  $set: projects[index].forms - 1
                 }
-              })
-            }
-          )
+              }
+            })
+          })
         }
       }
     }
   )
 
   const deleteForm = useCallback(
-    (project: Project, slug: string) =>
+    (projectId: string, formId: string) =>
       mutate({
-        project,
-        slug
+        formId,
+        projectId
       }),
     []
   )

@@ -7,6 +7,7 @@ module.exports = {
           '@pickle/components': './components',
           '@pickle/hooks': './hooks',
           '@pickle/lib': './lib',
+          '@pickle/server': './server',
           '@pickle/types': './types'
         },
         extensions: ['.ts', '.tsx'],

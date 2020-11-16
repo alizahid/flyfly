@@ -1,16 +1,18 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { signIn, signOut, useSession } from 'next-auth/client'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 
+import { User } from '@flyfly/types'
+
 import { Icon } from './icon'
-import { Spinner } from './spinner'
 
-export const Header: FunctionComponent = () => {
+interface Props {
+  user?: User
+}
+
+export const Header: FunctionComponent<Props> = ({ user }) => {
   const { asPath } = useRouter()
-
-  const [session, loading] = useSession()
 
   const [visible, setVisible] = useState(false)
 
@@ -25,17 +27,24 @@ export const Header: FunctionComponent = () => {
     }
   ]
 
-  if (session) {
+  if (user) {
     links.unshift(
-      {
-        label: 'Projects',
-        link: '/projects'
-      },
-      {
-        label: 'Account',
-        link: '/account'
-      }
+      ...[
+        {
+          label: 'Projects',
+          link: '/projects'
+        },
+        {
+          label: 'Account',
+          link: '/account'
+        }
+      ]
     )
+
+    links.push({
+      label: 'Sign out',
+      link: '/api/auth/sign-out'
+    })
   } else {
     links.unshift({
       label: 'Pricing',
@@ -50,26 +59,13 @@ export const Header: FunctionComponent = () => {
           {label}
         </NavLink>
       ))}
-      <a
-        className="flex items-center justify-center text-black font-medium p-8 lg:p-0 w-full lg:w-auto"
-        href="#signout"
-        onClick={(event) => {
-          event.preventDefault()
-
-          if (session) {
-            signOut()
-          } else {
-            signIn('github')
-          }
-        }}>
-        {session ? (
-          'Sign out'
-        ) : (
-          <>
-            Sign in with <Icon className="ml-2" icon="logoGithub" />
-          </>
-        )}
-      </a>
+      {!user && (
+        <a
+          className="flex items-center justify-center text-black p-8 lg:p-0 w-full lg:w-auto"
+          href="/api/auth/sign-in">
+          Sign in with <Icon className="ml-2" icon="logoGithub" />
+        </a>
+      )}
     </>
   )
 
@@ -81,43 +77,37 @@ export const Header: FunctionComponent = () => {
           <span className="font-medium text-xl text-black">FlyFly</span>
         </a>
       </Link>
-      {loading ? (
-        <Spinner className="m-8" />
-      ) : (
-        <>
-          <a
-            className="lg:hidden flex items-center justify-center absolute right-0 top-0 h-24 w-24 z-20"
-            href="#menu"
-            onClick={(event) => {
-              event.preventDefault()
+      <a
+        className="lg:hidden flex items-center justify-center absolute right-0 top-0 h-24 w-24 z-20"
+        href="#menu"
+        onClick={(event) => {
+          event.preventDefault()
 
-              setVisible(!visible)
+          setVisible(!visible)
+        }}>
+        <Icon icon={visible ? 'close' : 'menu'} />
+      </a>
+      <AnimatePresence>
+        {visible && (
+          <motion.nav
+            animate={{
+              opacity: 1
+            }}
+            className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0 z-10"
+            exit={{
+              opacity: 0
+            }}
+            initial={{
+              opacity: 0
+            }}
+            transition={{
+              duration: 0.1
             }}>
-            <Icon icon={visible ? 'close' : 'menu'} />
-          </a>
-          <AnimatePresence>
-            {visible && (
-              <motion.nav
-                animate={{
-                  opacity: 1
-                }}
-                className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0 z-10"
-                exit={{
-                  opacity: 0
-                }}
-                initial={{
-                  opacity: 0
-                }}
-                transition={{
-                  duration: 0.1
-                }}>
-                {nav}
-              </motion.nav>
-            )}
-          </AnimatePresence>
-          <nav className="hidden lg:flex lg:items-center m-8">{nav}</nav>
-        </>
-      )}
+            {nav}
+          </motion.nav>
+        )}
+      </AnimatePresence>
+      <nav className="hidden lg:flex lg:items-center m-8">{nav}</nav>
     </header>
   )
 }
@@ -128,7 +118,7 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
   return (
     <Link href={href} passHref>
       <a
-        className={`hover:text-blue-500 font-medium p-8 lg:p-0 w-full lg:w-auto lg:mr-8 text-center ${
+        className={`hover:text-blue-500 p-8 lg:p-0 w-full lg:w-auto lg:mr-8 text-center ${
           asPath.indexOf(href.toString()) === 0 ? 'text-blue-500' : 'text-black'
         }`}>
         {children}

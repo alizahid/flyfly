@@ -2,9 +2,10 @@ import React, { FunctionComponent } from 'react'
 
 interface Props {
   className?: string
+  light?: boolean
 }
 
-export const Spinner: FunctionComponent<Props> = ({ className }) => (
+export const Spinner: FunctionComponent<Props> = ({ className, light }) => (
   <>
     <style jsx>{`
       span {
@@ -34,9 +35,21 @@ export const Spinner: FunctionComponent<Props> = ({ className }) => (
       }
     `}</style>
     <div className={`flex items-center w-8 ${className}`}>
-      <span className="one h-2 w-2 bg-blue-500 rounded-full" />
-      <span className="two h-2 w-2 bg-blue-500 rounded-full ml-1" />
-      <span className="three h-2 w-2 bg-blue-500 rounded-full ml-1" />
+      <span
+        className={`one h-2 w-2 rounded-full ${
+          light ? 'bg-white' : 'bg-blue-500'
+        }`}
+      />
+      <span
+        className={`two h-2 w-2 rounded-full ml-1 ${
+          light ? 'bg-white' : 'bg-blue-500'
+        }`}
+      />
+      <span
+        className={`three h-2 w-2 rounded-full ml-1 ${
+          light ? 'bg-white' : 'bg-blue-500'
+        }`}
+      />
     </div>
   </>
 )

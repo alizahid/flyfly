@@ -1,12 +1,11 @@
-import { User } from '@prisma/client'
 import { GetServerSideProps, NextPage } from 'next'
-import { getSession } from 'next-auth/client'
 import Head from 'next/head'
 import React from 'react'
 
 import { PlanCard, ProfileCard } from '@flyfly/components'
 import { useProfile } from '@flyfly/hooks'
-import { serializeJson } from '@flyfly/lib'
+import { getUser } from '@flyfly/server'
+import { User } from '@flyfly/types'
 
 interface Props {
   user: User
@@ -29,17 +28,19 @@ const Account: NextPage<Props> = (props) => {
 
         <h2 className="text-2xl font-medium mt-16">Plan</h2>
         <PlanCard className="mt-4" profile={profile} />
+
+        <h2 className="text-2xl font-medium mt-16">Usage</h2>
       </main>
     </>
   )
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (
-  context
-) => {
-  const session = await getSession(context)
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+  req
+}) => {
+  const user = await getUser(req, true)
 
-  if (!session) {
+  if (!user) {
     return {
       redirect: {
         destination: '/',
@@ -48,11 +49,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
     }
   }
 
-  const { user } = session
-
   return {
     props: {
-      user: serializeJson(user)
+      user
     }
   }
 }

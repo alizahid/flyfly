@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         highlight: 'rgba(0, 0, 0, 0.5)',
         modal: 'rgba(0, 0, 0, 0.8)',
-        overlay: 'rgba(255, 255, 255, 0.975)'
+        overlay: 'rgba(255, 255, 255, 0.95)'
       },
       fontFamily: {
         mono: [

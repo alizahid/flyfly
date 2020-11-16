@@ -1,17 +1,39 @@
-import { Form, Project, Response } from '@prisma/client'
-
-export type ProjectWithFormCount = Project & {
+export type Plan = {
+  id: string
+  name: string
+  price: number
   forms: number
-}
-
-export type ProjectWithFormsWithResponseCount = Project & {
-  forms: FormWithResponseCount[]
-}
-
-export type FormWithResponseCount = Form & {
   responses: number
+  archive: number
 }
 
-export type FormWithResponses = Form & {
-  responses: Response[]
+export type User = {
+  id: string
+  email: string
+  name: string
+  image: string
+  verified: boolean
+  plan?: Plan
+}
+
+export type Project = {
+  id: string
+  name: string
+  forms: number
+  responses: number
+  updatedAt: string
+}
+
+export type Form = {
+  id: string
+  projectId: string
+  name: string
+  responses: number
+  updatedAt: string
+}
+
+export type Response = {
+  id: string
+  data: Record<string, unknown>
+  createdAt: string
 }
