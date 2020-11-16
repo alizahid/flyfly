@@ -1,21 +1,13 @@
 import axios from 'axios'
 
-export const apiGet = async <T>(url: string): Promise<T> => {
-  const { data } = await axios.request<T>({
-    method: 'get',
-    url
-  })
-
-  return data
-}
-
-export const apiPost = async <T>(
+export const api = async <T>(
   url: string,
+  method: 'get' | 'post' | 'put' | 'delete' = 'get',
   body?: Record<string, string | number | boolean>
 ): Promise<T> => {
   const { data } = await axios.request<T>({
     data: body,
-    method: 'post',
+    method,
     url
   })
 

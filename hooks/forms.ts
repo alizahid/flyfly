@@ -2,7 +2,7 @@ import update from 'immutability-helper'
 import { useCallback, useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { apiGet, apiPost, queryCache } from '@flyfly/lib'
+import { api, queryCache } from '@flyfly/lib'
 import { Form, Project, Response } from '@flyfly/types'
 
 // forms
@@ -65,8 +65,8 @@ export const useResponses = (
   const fetch = async (formId: string, skip: number) => {
     setLoading(true)
 
-    const next = await apiGet<Response[]>(
-      `/api/forms/responses?formId=${formId}&skip=${skip}`
+    const next = await api<Response[]>(
+      `/api/responses?formId=${formId}&skip=${skip}`
     )
 
     setLoading(false)
@@ -109,14 +109,11 @@ type CreateFormVariables = {
 
 export const useCreateForm = (): CreateFormReturns => {
   const [mutate, { isLoading }] = useMutation<Form, void, CreateFormVariables>(
-    async ({ name, projectId }) => {
-      const form = await apiPost<Form>('/api/forms/create', {
+    async ({ name, projectId }) =>
+      api<Form>('/api/form', 'post', {
         name,
         projectId
-      })
-
-      return form
-    },
+      }),
     {
       onSuccess(response, { projectId }) {
         queryCache.setQueryData<Form[]>(`forms-${projectId}`, (project) =>
@@ -181,8 +178,7 @@ type UpdateFormVariables = {
 export const useUpdateForm = (): UpdateFormReturns => {
   const [mutate, { isLoading }] = useMutation<Form, void, UpdateFormVariables>(
     ({ formId, name }) =>
-      apiPost<Form>('/api/forms/update', {
-        formId,
+      api<Form>(`/api/form?formId=${formId}`, 'put', {
         name
       }),
     {
@@ -245,10 +241,7 @@ type DeleteFormVariables = {
 
 export const useDeleteForm = (): DeleteFormReturns => {
   const [mutate, { isLoading }] = useMutation<Form, void, DeleteFormVariables>(
-    ({ formId }) =>
-      apiPost('/api/forms/delete', {
-        formId
-      }),
+    ({ formId }) => api<Form>(`/api/form?formId=${formId}`, 'delete'),
     {
       onSuccess(response, { formId, projectId }) {
         queryCache.setQueryData<Form>(`form-${formId}`, null)

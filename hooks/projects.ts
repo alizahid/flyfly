@@ -2,7 +2,7 @@ import update from 'immutability-helper'
 import { useCallback } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { apiPost, queryCache } from '@flyfly/lib'
+import { api, queryCache } from '@flyfly/lib'
 import { Project } from '@flyfly/types'
 
 // projects
@@ -56,7 +56,7 @@ export const useCreateProject = (): CreateProjectReturns => {
     CreateProjectVariables
   >(
     ({ name }) =>
-      apiPost<Project>('/api/projects/create', {
+      api<Project>('/api/project', 'post', {
         name
       }),
     {
@@ -103,9 +103,8 @@ export const useUpdateProject = (): UpdateProjectReturns => {
     UpdateProjectVariables
   >(
     ({ name, projectId }) =>
-      apiPost<Project>('/api/projects/update', {
-        name,
-        projectId
+      api<Project>(`/api/project?projectId=${projectId}`, 'put', {
+        name
       }),
     {
       onSuccess(response, { name, projectId }) {
@@ -168,29 +167,23 @@ export const useDeleteProject = (): DeleteProjectReturns => {
     void,
     void,
     DeleteProjectVariables
-  >(
-    ({ projectId }) =>
-      apiPost('/api/projects/delete', {
-        projectId
-      }),
-    {
-      onSuccess(response, { projectId }) {
-        queryCache.setQueryData(`project-${projectId}`, null)
+  >(({ projectId }) => api(`/api/project?projectId=${projectId}`, 'delete'), {
+    onSuccess(response, { projectId }) {
+      queryCache.setQueryData(`project-${projectId}`, null)
 
-        const exists = queryCache.getQueryData<Project[]>('projects')
+      const exists = queryCache.getQueryData<Project[]>('projects')
 
-        if (exists) {
-          queryCache.setQueryData<Project[]>('projects', (projects) => {
-            const index = projects.findIndex(({ id }) => id === projectId)
+      if (exists) {
+        queryCache.setQueryData<Project[]>('projects', (projects) => {
+          const index = projects.findIndex(({ id }) => id === projectId)
 
-            return update(projects, {
-              $splice: [[index, 1]]
-            })
+          return update(projects, {
+            $splice: [[index, 1]]
           })
-        }
+        })
       }
     }
-  )
+  })
 
   const deleteProject = useCallback(
     (projectId: string) =>
