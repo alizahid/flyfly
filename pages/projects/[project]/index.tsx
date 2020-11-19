@@ -43,7 +43,7 @@ const ProjectPage: NextPage<Props> = (props) => {
         <title>{project.name} / Projects / FlyFly</title>
       </Head>
 
-      <main>
+      <main className="my-16">
         <Link href="/projects">
           <a className="flex items-center text-gray-700">
             <Icon className="mr-2" color="gray" icon="arrowBack" size={16} />
@@ -61,7 +61,7 @@ const ProjectPage: NextPage<Props> = (props) => {
           />
         </header>
         {forms.length > 0 ? (
-          <div className="grid lg:grid-cols-3 gap-8 mt-4">
+          <div className="grid lg:grid-cols-3 2xl:grid-cols-4 gap-8 mt-4">
             {forms.map((form, index) => (
               <Link
                 href={`/projects/${project.id}/forms/${form.id}`}
@@ -71,6 +71,7 @@ const ProjectPage: NextPage<Props> = (props) => {
                   animate={{
                     opacity: 1
                   }}
+                  className="static"
                   initial={{
                     opacity: 0
                   }}

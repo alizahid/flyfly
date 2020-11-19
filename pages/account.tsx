@@ -20,7 +20,7 @@ const Account: NextPage<Props> = (props) => {
         <title>Account / FlyFly</title>
       </Head>
 
-      <main>
+      <main className="my-16">
         <h1 className="text-4xl font-semibold">Account</h1>
 
         <h2 className="text-2xl font-medium mt-8">Profile</h2>

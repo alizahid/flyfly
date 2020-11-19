@@ -1,11 +1,10 @@
+const colors = require('tailwindcss/colors')
+
 module.exports = {
-  future: {
-    purgeLayersByDefault: true,
-    removeDeprecatedGapUtilities: true
-  },
   plugins: [],
   purge: ['./**/*.tsx', './assets/global.scss'],
   theme: {
+    colors,
     extend: {
       colors: {
         highlight: 'rgba(0, 0, 0, 0.5)',

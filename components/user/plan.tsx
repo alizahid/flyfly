@@ -15,7 +15,7 @@ export const PlanCard: FunctionComponent<Props> = ({
   profile: { plan }
 }) => (
   <div
-    className={`bg-white shadow-sm rounded-lg p-8 lg:p-4 flex flex-col lg:flex-row items-center ${className}`}>
+    className={`bg-white shadow-sm rounded-xl p-8 lg:p-4 flex flex-col lg:flex-row items-center ${className}`}>
     <div className="text-center lg:text-left mb-4 lg:mb-0 lg:mr-8">
       <div className="text-xl font-medium">{plan.name}</div>
       <div className="text-2xl font-medium">

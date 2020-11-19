@@ -49,7 +49,7 @@ export const ResponseCard: FunctionComponent<Props> = ({
             transition={{
               duration: 0.2
             }}>
-            <div className="border-t border-gray-200 grid lg:grid-cols-4 gap-4 p-4">
+            <div className="border-t border-gray-100 grid lg:grid-cols-4 gap-4 p-4">
               {Object.entries(response.data).map(([key, value]) => (
                 <div key={`${response.id}-data-${key}`}>
                   <div className="text-gray-600">{key}</div>

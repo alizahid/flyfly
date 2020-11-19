@@ -25,21 +25,30 @@ const icons = Object.keys(ionicons)
     return icons
   }, {})
 
+type IconColor =
+  | 'black'
+  | 'white'
+  | 'gray'
+  | 'red'
+  | 'orange'
+  | 'amber'
+  | 'yellow'
+  | 'lime'
+  | 'green'
+  | 'emerald'
+  | 'teal'
+  | 'cyan'
+  | 'light-blue'
+  | 'blue'
+  | 'indigo'
+  | 'violet'
+  | 'purple'
+  | 'fuchsia'
+  | 'pink'
+
 interface Props {
   className?: string
-  color?:
-    | 'black'
-    | 'white'
-    | 'gray'
-    | 'red'
-    | 'orange'
-    | 'yellow'
-    | 'green'
-    | 'teal'
-    | 'blue'
-    | 'indigo'
-    | 'purple'
-    | 'pink'
+  color?: IconColor
   icon: keyof typeof ionicons
   size?: number
   title?: string
@@ -56,7 +65,7 @@ export const Icon: FunctionComponent<Props> = ({
   title
 }) => (
   <div
-    className={`icon-${color} ${onClick && 'cursor-pointer'} ${className}`}
+    className={`icon-${color} ${onClick ? 'cursor-pointer' : ''} ${className}`}
     dangerouslySetInnerHTML={{
       __html: icons[icon]
     }}

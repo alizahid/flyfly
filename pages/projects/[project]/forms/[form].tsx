@@ -55,7 +55,7 @@ const FormPage: NextPage<Props> = (props) => {
         </title>
       </Head>
 
-      <main>
+      <main className="my-16">
         <Link href={`/projects/${project.id}`}>
           <a className="flex items-center text-gray-700">
             <Icon className="mr-2" color="gray" icon="arrowBack" size={16} />
@@ -110,6 +110,7 @@ const FormPage: NextPage<Props> = (props) => {
         <header className="flex items-center justify-between lg:justify-start mt-16">
           <h2 className="text-2xl font-medium">Responses</h2>
           <Icon className="ml-4" icon="reloadOutline" onClick={refetch} />
+          {loading && <Spinner className="ml-4" />}
         </header>
         {responses.length > 0 ? (
           responses.map((response) => (
@@ -124,7 +125,7 @@ const FormPage: NextPage<Props> = (props) => {
         )}
         {responses.length > 0 && (
           <button
-            className="bg-blue-500 text-white mx-auto py-2 px-4 rounded-full shadow-sm mt-8"
+            className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white mx-auto py-2 px-4 rounded-full shadow-sm mt-8"
             onClick={() => fetchMore()}>
             {loading ? <Spinner className="my-2" light /> : 'Load more'}
           </button>

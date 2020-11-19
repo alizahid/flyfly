@@ -1,5 +1,4 @@
 export { Code, InlineCode } from './code'
-export { Counter } from './counter'
 export { Footer } from './footer'
 export { FormCard } from './forms/card'
 export { GetStarted } from './get-started'

@@ -25,20 +25,21 @@ const Projects: NextPage<Props> = (props) => {
         <title>Projects / FlyFly</title>
       </Head>
 
-      <main>
+      <main className="my-16">
         <header className="flex items-center justify-between lg:justify-start">
           <h1 className="text-4xl font-semibold">Projects</h1>
           <Icon className="ml-4" icon="add" onClick={() => setVisible(true)} />
         </header>
 
         {projects.length > 0 ? (
-          <div className="grid lg:grid-cols-3 gap-8 mt-8">
+          <div className="grid lg:grid-cols-3 2xl:grid-cols-4 gap-8 mt-8">
             {projects.map((project, index) => (
               <Link href={`/projects/${project.id}`} key={project.id} passHref>
                 <motion.a
                   animate={{
                     opacity: 1
                   }}
+                  className="static"
                   initial={{
                     opacity: 0
                   }}

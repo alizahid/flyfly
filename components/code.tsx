@@ -90,7 +90,7 @@ export const InlineCode: FunctionComponent<InlineCodeProps> = ({
     <div
       className={`flex items-center bg-white rounded-lg shadow-sm leading-none overflow-hidden ${className}`}>
       <a
-        className="bg-yellow-200"
+        className="bg-amber-100"
         href="#copy"
         onClick={async (event) => {
           event.preventDefault()

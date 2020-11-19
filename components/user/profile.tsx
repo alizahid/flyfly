@@ -15,9 +15,9 @@ export const ProfileCard: FunctionComponent<Props> = ({
 }) => (
   <>
     <div
-      className={`bg-white shadow-sm rounded-lg p-8 lg:p-4 flex flex-col lg:flex-row items-center ${className}`}>
+      className={`bg-white shadow-sm rounded-xl p-8 lg:p-4 flex flex-col lg:flex-row items-center ${className}`}>
       <img
-        className="bg-blue-200 h-20 w-20 rounded-full shadow-sm"
+        className="bg-emerald-200 h-20 w-20 rounded-full shadow-sm"
         src={profile.image}
       />
       <div className="my-4 lg:my-0 lg:mx-8 text-center lg:text-left">

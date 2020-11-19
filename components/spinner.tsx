@@ -37,17 +37,17 @@ export const Spinner: FunctionComponent<Props> = ({ className, light }) => (
     <div className={`flex items-center w-8 ${className}`}>
       <span
         className={`one h-2 w-2 rounded-full ${
-          light ? 'bg-white' : 'bg-blue-500'
+          light ? 'bg-white' : 'bg-emerald-500'
         }`}
       />
       <span
         className={`two h-2 w-2 rounded-full ml-1 ${
-          light ? 'bg-white' : 'bg-blue-500'
+          light ? 'bg-white' : 'bg-emerald-500'
         }`}
       />
       <span
         className={`three h-2 w-2 rounded-full ml-1 ${
-          light ? 'bg-white' : 'bg-blue-500'
+          light ? 'bg-white' : 'bg-emerald-500'
         }`}
       />
     </div>

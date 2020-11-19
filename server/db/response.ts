@@ -66,7 +66,7 @@ export const getResponses = async (
     .sort({
       createdAt: -1
     })
-    .limit(100)
+    .limit(50)
     .skip(skip)
     .toArray()
 

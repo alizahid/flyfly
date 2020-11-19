@@ -80,9 +80,9 @@ export const Modal: FunctionComponent<Props> = ({
     const { buttonLabel } = props as AlertProps
 
     inner = (
-      <footer className="border-t border-gray-200">
+      <footer className="border-t border-gray-100">
         <button
-          className="p-4 font-medium text-blue-500 w-full"
+          className="p-4 font-medium text-emerald-500 w-full"
           onClick={() => onClose()}>
           {buttonLabel ?? 'Okay'}
         </button>
@@ -94,10 +94,10 @@ export const Modal: FunctionComponent<Props> = ({
     const { destructive = 'yes', loading, onNo, onYes } = props as ConfirmProps
 
     inner = (
-      <footer className="flex justify-between border-t border-gray-200">
+      <footer className="flex justify-between border-t border-gray-100">
         <button
           className={`flex-1 p-4 font-medium ${
-            destructive === 'no' ? 'text-red-500' : 'text-blue-500'
+            destructive === 'no' ? 'text-red-500' : 'text-emerald-500'
           }`}
           onClick={() => {
             onNo?.()
@@ -109,7 +109,7 @@ export const Modal: FunctionComponent<Props> = ({
         </button>
         <button
           className={`flex-1 p-4 font-medium ${
-            destructive === 'yes' ? 'text-red-500' : 'text-blue-500'
+            destructive === 'yes' ? 'text-red-500' : 'text-emerald-500'
           }`}
           onClick={async () => {
             await onYes()
@@ -147,7 +147,7 @@ export const Modal: FunctionComponent<Props> = ({
         <div className="mx-4">
           <input
             autoFocus
-            className="appearance-none bg-gray-100 rounded-lg w-full p-4"
+            className="appearance-none bg-gray-50 focus:bg-gray-100 rounded-lg w-full p-4"
             onChange={(event) => setValue(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
@@ -160,14 +160,14 @@ export const Modal: FunctionComponent<Props> = ({
             value={value}
           />
         </div>
-        <footer className="flex mt-4 border-t border-gray-200">
+        <footer className="flex mt-4 border-t border-gray-100">
           <button
             className="flex-1 p-4 font-medium text-red-500"
             onClick={() => onClose()}>
             Cancel
           </button>
           <button
-            className="flex-1 p-4 font-medium text-green-500"
+            className="flex-1 p-4 font-medium text-emerald-500"
             disabled={loading}
             onClick={submit}>
             {loading ? <Spinner className="mx-auto" /> : 'Submit'}
@@ -203,8 +203,8 @@ export const Modal: FunctionComponent<Props> = ({
           transition={{
             duration: 0.1
           }}>
-          <div className="bg-white rounded-lg w-full max-w-modal shadow-sm m-8">
-            <header className="flex items-stretch justify-between border-b border-gray-200">
+          <div className="bg-white rounded-xl w-full max-w-modal shadow m-8">
+            <header className="flex items-stretch justify-between border-b border-gray-100">
               <h4 className="flex-1 font-medium text-xl m-4">{title}</h4>
               <a
                 className="flex items-center px-4"

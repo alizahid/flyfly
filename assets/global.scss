@@ -10,8 +10,12 @@
 
 // global
 
+::selection {
+  @apply bg-emerald-200;
+}
+
 html {
-  @apply bg-blue-100;
+  @apply bg-trueGray-50;
 }
 
 body {
@@ -20,10 +24,10 @@ body {
 
 a,
 button {
-  @apply text-blue-600 outline-none;
+  @apply text-emerald-600 outline-none;
 
   &:not(.static) {
-    @apply duration-200;
+    @apply transition;
 
     &:hover {
       filter: brightness(1.1);
@@ -53,11 +57,7 @@ textarea {
   @apply flex flex-col h-screen;
 
   > main {
-    @apply flex flex-col my-16 px-8 flex-1;
-
-    &.full {
-      @apply px-0;
-    }
+    @apply flex flex-col px-8 flex-1;
   }
 }
 
@@ -96,50 +96,9 @@ form {
   }
 }
 
-.fly-one,
-.fly-two,
-.fly-three,
-.fly-four {
-  @apply relative py-24;
-
-  &:before {
-    @apply bg-blue-500 block h-full w-full absolute left-0 top-0;
-
-    content: '';
-    z-index: -1;
-  }
-}
-
-.fly-one {
-  &:before {
-    @apply bg-blue-200;
-
-    clip-path: polygon(0 0, 100% 2em, 100% 100%, 0 calc(100% - 2em));
-  }
-}
-
-.fly-two {
-  &:before {
-    @apply bg-blue-200;
-
-    clip-path: polygon(0 2em, 100% 0, 100% calc(100% - 2em), 0% 100%);
-  }
-}
-
-.fly-three {
-  &:before {
-    @apply bg-green-200;
-
-    clip-path: polygon(0 2em, 100% 0, 100% 100%, 0 calc(100% - 2em));
-  }
-}
-
-.fly-four {
-  &:before {
-    @apply bg-indigo-200;
-
-    clip-path: polygon(0 0, 100% 2em, 100% calc(100% - 2em), 0% 100%);
-  }
+.hard-error {
+  filter: grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg)
+    saturate(600%) contrast(0.8);
 }
 
 // ionicon
@@ -165,7 +124,7 @@ form {
 }
 
 .icon-gray {
-  @apply text-gray-500;
+  @apply text-trueGray-500;
 }
 
 .icon-red {
@@ -176,16 +135,36 @@ form {
   @apply text-orange-500;
 }
 
+.icon-amber {
+  @apply text-amber-500;
+}
+
 .icon-yellow {
   @apply text-yellow-500;
+}
+
+.icon-lime {
+  @apply text-lime-500;
 }
 
 .icon-green {
   @apply text-green-500;
 }
 
+.icon-emerald {
+  @apply text-emerald-500;
+}
+
 .icon-teal {
   @apply text-teal-500;
+}
+
+.icon-cyan {
+  @apply text-cyan-500;
+}
+
+.icon-light-blue {
+  @apply text-lightBlue-500;
 }
 
 .icon-blue {
@@ -196,8 +175,16 @@ form {
   @apply text-indigo-500;
 }
 
+.icon-violet {
+  @apply text-violet-500;
+}
+
 .icon-purple {
   @apply text-purple-500;
+}
+
+.icon-fuchsia {
+  @apply text-fuchsia-500;
 }
 
 .icon-pink {

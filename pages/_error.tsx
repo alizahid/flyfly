@@ -1,7 +1,8 @@
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import React from 'react'
 
+import { getUser } from '@flyfly/server'
 import { User } from '@flyfly/types'
 
 interface Props {
@@ -15,38 +16,40 @@ const Error: NextPage<Props> = ({ code }) => (
       <title>{code === 404 ? 'Not found' : 'Error'} / FlyFly</title>
     </Head>
 
-    <main className="fly-one justify-center items-center text-center">
+    <main className="bg-white rounded-xl shadow-sm py-16 justify-center items-center text-center">
       <img
         alt="FlyFly"
-        className="w-40"
+        className={`w-40 ${code >= 500 ? 'hard-error' : ''}`}
         src="/img/flyfly.svg"
-        style={
-          code === 404
-            ? undefined
-            : {
-                filter:
-                  'grayscale(100%) brightness(40%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8)'
-              }
-        }
       />
       <h1 className="text-5xl font-bold mt-8">
         {code === 404 ? 'Not found' : 'Error'}
       </h1>
       {code === 404 ? (
         <>
-          <p className="mt-2">
+          <p className="mt-4">
             Looks what what you were looking for has flown away.
           </p>
           <p className="mt-2">We have dispatched butterfly collectors.</p>
         </>
       ) : (
         <>
-          <p className="mt-2">You killed the butterfly!</p>
+          <p className="mt-4">You killed the butterfly!</p>
           <p className="mt-2">Fear not, we have dispatched medics.</p>
         </>
       )}
     </main>
   </>
 )
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const user = await getUser(req)
+
+  return {
+    props: {
+      user
+    }
+  }
+}
 
 export default Error

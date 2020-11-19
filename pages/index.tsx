@@ -17,7 +17,7 @@ const Home: NextPage<Props> = ({ user }) => (
       <title>FlyFly: Super easy headless forms</title>
     </Head>
 
-    <main className="fly-one justify-center text-center">
+    <main className="bg-white rounded-xl shadow-sm py-16 justify-center text-center">
       <motion.header
         animate={{
           opacity: 1
@@ -30,7 +30,7 @@ const Home: NextPage<Props> = ({ user }) => (
         }}>
         <img alt="FlyFly" className="w-40 m-auto" src="/img/flyfly.svg" />
         <h1 className="text-4xl font-semibold mt-8">FlyFly</h1>
-        <p className="text-gray-700">Super easy headless forms</p>
+        <p className="text-gray-700 mt-2">Super easy headless forms</p>
       </motion.header>
 
       <section className="grid lg:grid-cols-2 gap-8 mx-auto lg:w-2/3 mt-16">

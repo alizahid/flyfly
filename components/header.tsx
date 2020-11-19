@@ -61,7 +61,7 @@ export const Header: FunctionComponent<Props> = ({ user }) => {
       ))}
       {!user && (
         <a
-          className="flex items-center justify-center text-black p-8 lg:p-0 w-full lg:w-auto"
+          className="flex items-center justify-center text-black hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8"
           href="/api/auth/sign-in">
           Sign in with <Icon className="ml-2" icon="logoGithub" />
         </a>
@@ -107,7 +107,7 @@ export const Header: FunctionComponent<Props> = ({ user }) => {
           </motion.nav>
         )}
       </AnimatePresence>
-      <nav className="hidden lg:flex lg:items-center m-8">{nav}</nav>
+      <nav className="hidden lg:flex lg:items-center mx-8">{nav}</nav>
     </header>
   )
 }
@@ -118,8 +118,10 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
   return (
     <Link href={href} passHref>
       <a
-        className={`hover:text-blue-500 p-8 lg:p-0 w-full lg:w-auto lg:mr-8 text-center ${
-          asPath.indexOf(href.toString()) === 0 ? 'text-blue-500' : 'text-black'
+        className={`hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8 first:ml-0 text-center ${
+          asPath.indexOf(href.toString()) === 0
+            ? 'text-emerald-600'
+            : 'text-black'
         }`}>
         {children}
       </a>

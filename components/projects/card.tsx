@@ -13,7 +13,7 @@ export const ProjectCard: FunctionComponent<Props> = ({
   project
 }) => (
   <div
-    className={`bg-white flex flex-col duration-200 rounded-lg shadow-sm hover:shadow p-4 ${className}`}>
+    className={`bg-white flex flex-col transition rounded-lg shadow-sm hover:shadow p-4 ${className}`}>
     <div className="font-medium">{project.name}</div>
     <div className="flex items-center text-gray-600 text-sm mt-2">
       <div>{pluralize('form', project.forms, true)}</div>
