@@ -24,6 +24,10 @@ export const mongo = async (): Promise<Db> => {
       }
     )
 
+    db.collection('users').createIndex({
+      emailNotifications: 1
+    })
+
     // project
 
     db.collection('projects').createIndex({
@@ -49,8 +53,10 @@ export const mongo = async (): Promise<Db> => {
     // response
 
     db.collection('responses').createIndex({
-      formId: 1,
-      userId: 1
+      createdAt: -1,
+      userId: 1,
+      // eslint-disable-next-line sort-keys-fix/sort-keys-fix
+      formId: 1
     })
   } else {
     db = client.db()

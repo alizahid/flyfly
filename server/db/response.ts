@@ -1,10 +1,11 @@
 import dayjs from 'dayjs'
 import { ObjectId } from 'mongodb'
 
+import { sendEmail } from '@flyfly/server'
 import { Response, User } from '@flyfly/types'
 
 import { mongo } from '.'
-import { MongoForm, MongoResponse } from './models'
+import { MongoForm, MongoResponse, MongoUser } from './models'
 
 export const submitForm = async (
   slug: string,
@@ -27,6 +28,18 @@ export const submitForm = async (
     projectId: form.projectId,
     userId: form.userId
   })
+
+  const user: MongoUser = await db.collection('users').findOne({
+    _id: form.userId
+  })
+
+  if (user.emailNotifications === 'immediate') {
+    const project = await db.collection('projects').findOne({
+      _id: form.projectId
+    })
+
+    await sendEmail(user.email, project, form)
+  }
 
   return 'ok'
 }

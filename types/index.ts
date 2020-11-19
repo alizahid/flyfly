@@ -1,3 +1,5 @@
+// models
+
 export type Plan = {
   id: string
   name: string
@@ -13,6 +15,7 @@ export type User = {
   name: string
   image: string
   verified: boolean
+  emailNotifications: 'immediate' | 'daily' | 'weekly'
   plan?: Plan
 }
 
@@ -37,4 +40,20 @@ export type Response = {
   id: string
   data: Record<string, unknown>
   createdAt: string
+}
+
+// other
+
+export type BatchMessage = {
+  email: string
+  data: {
+    title: string
+    projects: {
+      project: string
+      forms: {
+        form: string
+        responses: number
+      }[]
+    }[]
+  }
 }

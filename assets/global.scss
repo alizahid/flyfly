@@ -20,7 +20,7 @@ body {
 
 a,
 button {
-  @apply text-blue-600  outline-none;
+  @apply text-blue-600 outline-none;
 
   &:not(.static) {
     @apply duration-200;

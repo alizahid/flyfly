@@ -1,3 +1,5 @@
+import { ObjectId } from 'mongodb'
+
 import { Plan, User } from '@flyfly/types'
 
 import { mongo } from '.'
@@ -7,6 +9,7 @@ import { getPlan } from './plan'
 const parseUser = ({
   _id,
   email,
+  emailNotifications,
   image,
   name,
   plan,
@@ -15,6 +18,7 @@ const parseUser = ({
   plan?: Plan
 }): User => ({
   email,
+  emailNotifications,
   id: String(_id),
   image,
   name,
@@ -56,17 +60,46 @@ export const createUser = async ({
 }: Pick<MongoUser, 'email' | 'name' | 'image' | 'verified'>): Promise<User> => {
   const db = await mongo()
 
-  const { insertedId } = await db.collection('users').insertOne({
+  const data: Omit<MongoUser, '_id'> = {
     email,
+    emailNotifications: 'immediate',
     image,
     name,
     planId: process.env.FREE_PLAN_ID,
     verified
-  })
+  }
+
+  const { insertedId } = await db.collection('users').insertOne(data)
 
   const user: MongoUser = await db.collection('users').findOne({
     _id: insertedId
   })
 
   return parseUser(user)
+}
+
+export const updateUser = async (
+  user: User,
+  { emailNotifications }: Pick<MongoUser, 'emailNotifications'>
+): Promise<User> => {
+  const db = await mongo()
+
+  const _id = new ObjectId(user.id)
+
+  await db.collection('users').updateOne(
+    {
+      _id
+    },
+    {
+      $set: {
+        emailNotifications
+      }
+    }
+  )
+
+  const next: MongoUser = await db.collection('users').findOne({
+    _id
+  })
+
+  return parseUser(next)
 }

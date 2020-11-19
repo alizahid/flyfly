@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import React from 'react'
 
-import { PlanCard, ProfileCard } from '@flyfly/components'
+import { NotificationsCard, PlanCard, ProfileCard } from '@flyfly/components'
 import { useProfile } from '@flyfly/hooks'
 import { getUser } from '@flyfly/server'
 import { User } from '@flyfly/types'
@@ -30,6 +30,7 @@ const Account: NextPage<Props> = (props) => {
         <PlanCard className="mt-4" profile={profile} />
 
         <h2 className="text-2xl font-medium mt-16">Notifications</h2>
+        <NotificationsCard className="mt-4" profile={profile} />
 
         <h2 className="text-2xl font-medium mt-16">Usage</h2>
       </main>
