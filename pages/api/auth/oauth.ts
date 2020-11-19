@@ -58,6 +58,8 @@ const handler: NextApiHandler = async (req, res) => {
     setTokenCookie(res, token)
 
     res.redirect('/projects')
+
+    return
   }
 
   const user = await createUser({
