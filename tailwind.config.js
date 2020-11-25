@@ -11,31 +11,14 @@ module.exports = {
         modal: 'rgba(0, 0, 0, 0.8)',
         overlay: 'rgba(255, 255, 255, 0.95)'
       },
-      fontFamily: {
-        mono: [
-          'IBM Plex Mono',
-          'Consolas',
-          'Menlo',
-          'Monaco',
-          'Liberation Mono',
-          'Courier New',
-          'monospace'
-        ],
-        sans: [
-          'Rubik',
-          '-apple-system',
-          'BlinkMacSystemFont',
-          'Segoe UI',
-          'Helvetica',
-          'Arial',
-          'sans-serif',
-          'Apple Color Emoji',
-          'Segoe UI Emoji'
-        ]
-      },
       maxWidth: {
         modal: '25rem'
       }
+    },
+    fontFamily: {
+      body: ['Rubik', 'system-ui', 'sans-serif'],
+      display: ['Poppins', 'system-ui', 'sans-serif'],
+      mono: ['IBM Plex Mono', 'system-ui-monospace', 'monospace']
     }
   },
   variants: {

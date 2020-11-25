@@ -10,7 +10,12 @@ import { queryCache } from '@flyfly/lib'
 
 const FlyFly: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
   <ReactQueryCacheProvider queryCache={queryCache}>
-    <Progress color="#059669" />
+    <Progress
+      color="#059669"
+      options={{
+        showSpinner: false
+      }}
+    />
     <Header user={pageProps.user} />
     <Component {...pageProps} />
     <Footer />

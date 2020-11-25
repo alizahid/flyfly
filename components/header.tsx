@@ -74,7 +74,9 @@ export const Header: FunctionComponent<Props> = ({ user }) => {
       <Link href="/">
         <a className="flex items-center p-8">
           <img alt="FlyFly" className="h-8 w-8 mr-4" src="/img/flyfly.svg" />
-          <span className="font-medium text-xl text-black">FlyFly</span>
+          <span className="font-display font-medium text-xl text-black">
+            FlyFly
+          </span>
         </a>
       </Link>
       <a
