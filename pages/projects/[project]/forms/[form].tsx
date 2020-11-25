@@ -109,8 +109,11 @@ const FormPage: NextPage<Props> = (props) => {
 
         <header className="flex items-center justify-between lg:justify-start mt-16">
           <h2 className="text-2xl font-medium">Responses</h2>
-          <Icon className="ml-4" icon="reloadOutline" onClick={refetch} />
-          {loading && <Spinner className="ml-4" />}
+          {loading ? (
+            <Spinner className="ml-4" />
+          ) : (
+            <Icon className="ml-4" icon="reloadOutline" onClick={refetch} />
+          )}
         </header>
         {responses.length > 0 ? (
           responses.map((response) => (
