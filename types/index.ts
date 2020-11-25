@@ -15,7 +15,8 @@ export type User = {
   name: string
   image: string
   verified: boolean
-  emailNotifications: 'immediate' | 'daily' | 'weekly'
+  emailNotifications: 'immediately' | 'daily' | 'weekly'
+  planId: string
   plan?: Plan
 }
 

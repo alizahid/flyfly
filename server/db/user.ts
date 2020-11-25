@@ -62,7 +62,7 @@ export const createUser = async ({
 
   const data: Omit<MongoUser, '_id'> = {
     email,
-    emailNotifications: 'immediate',
+    emailNotifications: 'immediately',
     image,
     name,
     planId: process.env.FREE_PLAN_ID,

@@ -33,7 +33,7 @@ export const submitForm = async (
     _id: form.userId
   })
 
-  if (user.emailNotifications === 'immediate') {
+  if (user.emailNotifications === 'immediately') {
     const project = await db.collection('projects').findOne({
       _id: form.projectId
     })
