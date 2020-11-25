@@ -13,6 +13,7 @@ const parseUser = ({
   image,
   name,
   plan,
+  planId,
   verified
 }: MongoUser & {
   plan?: Plan
@@ -23,6 +24,7 @@ const parseUser = ({
   image,
   name,
   plan: plan || null,
+  planId,
   verified
 })
 
