@@ -1,3 +1,4 @@
+import { buffer } from 'micro'
 import { NextApiHandler } from 'next'
 import { Stripe } from 'stripe'
 
@@ -35,8 +36,10 @@ const handler: NextApiHandler<{
     apiVersion: '2020-08-27'
   })
 
+  const body = await buffer(req)
+
   const event = stripe.webhooks.constructEvent(
-    req.body,
+    body,
     signature,
     process.env.STRIPE_SECRET_KEY
   )
