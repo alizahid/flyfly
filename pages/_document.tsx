@@ -7,7 +7,7 @@ class FlyFly extends Document {
       <Html>
         <Head />
 
-        <body className="container mx-auto">
+        <body>
           <Main />
           <div id="modal"></div>
 
