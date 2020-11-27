@@ -41,7 +41,7 @@ const handler: NextApiHandler<{
   const event = stripe.webhooks.constructEvent(
     body,
     signature,
-    process.env.STRIPE_SECRET_KEY
+    process.env.STRIPE_WEBHOOK_SECRET
   )
 
   const db = await mongo()
