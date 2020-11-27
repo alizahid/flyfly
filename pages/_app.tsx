@@ -13,7 +13,7 @@ const FlyFly: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
     <Progress
       color="#059669"
       options={{
-        showSpinner: false
+        template: '<div role="bar"></div>'
       }}
     />
     <Header user={pageProps.user} />
