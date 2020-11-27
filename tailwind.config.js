@@ -17,7 +17,6 @@ module.exports = {
     },
     fontFamily: {
       body: ['Rubik', 'system-ui', 'sans-serif'],
-      display: ['Poppins', 'system-ui', 'sans-serif'],
       mono: ['IBM Plex Mono', 'system-ui-monospace', 'monospace']
     }
   },
