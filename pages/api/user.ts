@@ -3,8 +3,13 @@ import connect from 'next-connect'
 
 import { getUser, updateUser } from '@flyfly/server'
 
-const handler = connect<NextApiRequest, NextApiResponse>().put(
-  async (req, res) => {
+const handler = connect<NextApiRequest, NextApiResponse>()
+  .get(async (req, res) => {
+    const user = await getUser(req)
+
+    res.json(user)
+  })
+  .put(async (req, res) => {
     const user = await getUser(req)
 
     const {
@@ -20,7 +25,6 @@ const handler = connect<NextApiRequest, NextApiResponse>().put(
     })
 
     res.json(next)
-  }
-)
+  })
 
 export default handler

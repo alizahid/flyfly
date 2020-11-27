@@ -20,7 +20,7 @@ const FlyFly: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
         template: '<div role="bar"></div>'
       }}
     />
-    <Header user={pageProps.user} />
+    <Header />
     <Component {...pageProps} />
     <Footer />
   </ReactQueryCacheProvider>

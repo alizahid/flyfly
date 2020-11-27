@@ -3,16 +3,15 @@ import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FunctionComponent, useEffect, useState } from 'react'
 
-import { User } from '@flyfly/types'
+import { useSession } from '@flyfly/hooks'
 
 import { Icon } from './icon'
+import { Spinner } from './spinner'
 
-interface Props {
-  user?: User
-}
-
-export const Header: FunctionComponent<Props> = ({ user }) => {
+export const Header: FunctionComponent = () => {
   const { asPath } = useRouter()
+
+  const { loading, user } = useSession()
 
   const [visible, setVisible] = useState(false)
 
@@ -89,27 +88,33 @@ export const Header: FunctionComponent<Props> = ({ user }) => {
         }}>
         <Icon icon={visible ? 'close' : 'menu'} />
       </a>
-      <AnimatePresence>
-        {visible && (
-          <motion.nav
-            animate={{
-              opacity: 1
-            }}
-            className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0 z-10"
-            exit={{
-              opacity: 0
-            }}
-            initial={{
-              opacity: 0
-            }}
-            transition={{
-              duration: 0.1
-            }}>
-            {nav}
-          </motion.nav>
-        )}
-      </AnimatePresence>
-      <nav className="hidden lg:flex lg:items-center mx-8">{nav}</nav>
+      {loading ? (
+        <Spinner className="mx-8" />
+      ) : (
+        <>
+          <AnimatePresence>
+            {visible && (
+              <motion.nav
+                animate={{
+                  opacity: 1
+                }}
+                className="flex items-center justify-center flex-col text-2xl lg:hidden fixed bg-overlay top-0 right-0 bottom-0 left-0 z-10"
+                exit={{
+                  opacity: 0
+                }}
+                initial={{
+                  opacity: 0
+                }}
+                transition={{
+                  duration: 0.1
+                }}>
+                {nav}
+              </motion.nav>
+            )}
+          </AnimatePresence>
+          <nav className="hidden lg:flex lg:items-center mx-8">{nav}</nav>
+        </>
+      )}
     </header>
   )
 }

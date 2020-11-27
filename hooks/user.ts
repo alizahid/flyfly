@@ -5,6 +5,20 @@ import { useMutation, useQuery } from 'react-query'
 import { api, queryCache } from '@flyfly/lib'
 import { User } from '@flyfly/types'
 
+type SessionReturns = {
+  loading: boolean
+  user?: User
+}
+
+export const useSession = (): SessionReturns => {
+  const { data, isLoading } = useQuery('session', () => api<User>('/api/user'))
+
+  return {
+    loading: isLoading,
+    user: data
+  }
+}
+
 type ProfileReturns = {
   profile: User
 }

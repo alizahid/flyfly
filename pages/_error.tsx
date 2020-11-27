@@ -1,13 +1,9 @@
-import { GetServerSideProps, NextPage } from 'next'
+import { NextPage } from 'next'
 import Head from 'next/head'
 import React from 'react'
 
-import { getUser } from '@flyfly/server'
-import { User } from '@flyfly/types'
-
 interface Props {
   code: number
-  user?: User
 }
 
 const Error: NextPage<Props> = ({ code }) => (
@@ -41,15 +37,5 @@ const Error: NextPage<Props> = ({ code }) => (
     </main>
   </>
 )
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const user = await getUser(req)
-
-  return {
-    props: {
-      user
-    }
-  }
-}
 
 export default Error
