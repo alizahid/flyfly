@@ -15,7 +15,7 @@ const handler = connect<NextApiRequest, NextApiResponse>().put(
       throw new Error('Invalid interval')
     }
 
-    const next = await updateUser(user, {
+    const next = await updateUser(user.id, {
       emailNotifications
     })
 

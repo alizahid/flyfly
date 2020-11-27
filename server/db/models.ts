@@ -20,6 +20,7 @@ export type MongoUser = {
   verified: boolean
   emailNotifications: 'immediately' | 'daily' | 'weekly'
   planId: string
+  stripeId: string
 }
 
 export type MongoProject = {

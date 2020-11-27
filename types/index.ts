@@ -7,6 +7,7 @@ export type Plan = {
   forms: number
   responses: number
   archive: number
+  stripeId?: string
 }
 
 export type User = {

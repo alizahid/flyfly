@@ -9,14 +9,16 @@ const parsePlan = ({
   name,
   price,
   responses,
-  slug
+  slug,
+  stripeId
 }: MongoPlan): Plan => ({
   archive,
   forms,
   id: slug,
   name,
   price,
-  responses
+  responses,
+  stripeId: stripeId ?? null
 })
 
 export const getPlans = async (): Promise<Plan[]> => {

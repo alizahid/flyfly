@@ -66,6 +66,7 @@ export const mongo = async (): Promise<Db> => {
 }
 
 export * from './form'
+export * from './models'
 export * from './plan'
 export * from './project'
 export * from './response'

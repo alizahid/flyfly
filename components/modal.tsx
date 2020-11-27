@@ -203,7 +203,7 @@ export const Modal: FunctionComponent<Props> = ({
           transition={{
             duration: 0.1
           }}>
-          <div className="bg-white rounded-xl w-full max-w-modal shadow m-8">
+          <div className="bg-white rounded-xl w-full max-w-modal max-h-screen overflow-y-auto shadow m-8">
             <header className="flex items-stretch justify-between border-b border-gray-100">
               <h4 className="flex-1 font-medium text-xl m-4">{title}</h4>
               <a
@@ -217,7 +217,9 @@ export const Modal: FunctionComponent<Props> = ({
                 <Icon icon="close" />
               </a>
             </header>
-            <p className="text-gray-700 m-4">{message}</p>
+            {message.length > 0 && (
+              <p className="text-gray-700 m-4">{message}</p>
+            )}
             {inner}
           </div>
         </motion.div>

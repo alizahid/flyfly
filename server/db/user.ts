@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import { Stripe } from 'stripe'
 
 import { Plan, User } from '@flyfly/types'
 
@@ -62,12 +63,22 @@ export const createUser = async ({
 }: Pick<MongoUser, 'email' | 'name' | 'image' | 'verified'>): Promise<User> => {
   const db = await mongo()
 
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2020-08-27'
+  })
+
+  const customer = await stripe.customers.create({
+    email,
+    name
+  })
+
   const data: Omit<MongoUser, '_id'> = {
     email,
     emailNotifications: 'immediately',
     image,
     name,
     planId: process.env.FREE_PLAN_ID,
+    stripeId: customer.id,
     verified
   }
 
@@ -81,21 +92,19 @@ export const createUser = async ({
 }
 
 export const updateUser = async (
-  user: User,
-  { emailNotifications }: Pick<MongoUser, 'emailNotifications'>
+  userId: string,
+  data: Partial<Pick<MongoUser, 'emailNotifications' | 'planId'>>
 ): Promise<User> => {
   const db = await mongo()
 
-  const _id = new ObjectId(user.id)
+  const _id = new ObjectId(userId)
 
   await db.collection('users').updateOne(
     {
       _id
     },
     {
-      $set: {
-        emailNotifications
-      }
+      $set: data
     }
   )
 

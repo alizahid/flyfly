@@ -9,6 +9,8 @@ class FlyFly extends Document {
 
         <body className="container mx-auto">
           <Main />
+          <div id="modal"></div>
+
           <NextScript />
         </body>
       </Html>

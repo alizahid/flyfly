@@ -4,10 +4,11 @@ import React from 'react'
 
 import { NotificationsCard, PlanCard, ProfileCard } from '@flyfly/components'
 import { useProfile } from '@flyfly/hooks'
-import { getUser } from '@flyfly/server'
-import { User } from '@flyfly/types'
+import { getPlans, getUser } from '@flyfly/server'
+import { Plan, User } from '@flyfly/types'
 
 interface Props {
+  plans: Plan[]
   user: User
 }
 
@@ -27,7 +28,7 @@ const Account: NextPage<Props> = (props) => {
         <ProfileCard className="mt-4" profile={profile} />
 
         <h2 className="text-2xl font-medium mt-16">Plan</h2>
-        <PlanCard className="mt-4" profile={profile} />
+        <PlanCard className="mt-4" plans={props.plans} profile={profile} />
 
         <h2 className="text-2xl font-medium mt-16">Notifications</h2>
         <NotificationsCard className="mt-4" profile={profile} />
@@ -41,7 +42,7 @@ const Account: NextPage<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   req
 }) => {
-  const user = await getUser(req, true)
+  const user = await getUser(req)
 
   if (!user) {
     return {
@@ -52,8 +53,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
   }
 
+  const plans = await getPlans()
+
   return {
     props: {
+      plans,
       user
     }
   }
