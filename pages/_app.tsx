@@ -16,8 +16,9 @@ const FlyFly: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
   <ReactQueryCacheProvider queryCache={queryCache}>
     <Progress
       color="#059669"
+      height={4}
       options={{
-        template: '<div role="bar"></div>'
+        template: '<div class="bar" role="bar"></div>'
       }}
     />
     <Header />
