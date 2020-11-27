@@ -5,7 +5,7 @@ import { Stripe } from 'stripe'
 import { getUser, mongo, MongoUser } from '@flyfly/server'
 
 const handler: NextApiHandler = async (req, res) => {
-  const { email } = await getUser(req, false)
+  const { email } = await getUser(req)
 
   const db = await mongo()
 

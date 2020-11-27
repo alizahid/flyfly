@@ -59,15 +59,14 @@ export const deleteTokenCookie = (res: NextApiResponse): unknown =>
 // auth
 
 export const getUser = async (
-  req: NextPageContext['req'],
-  withPlan?: boolean
+  req: NextPageContext['req']
 ): Promise<User | null> => {
   try {
     const token = getTokenFromCookie(req)
 
     const email = verifyJwt(token)
 
-    const user = await getProfile(email, withPlan)
+    const user = await getProfile(email)
 
     return user
   } catch {

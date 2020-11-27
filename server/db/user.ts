@@ -5,7 +5,6 @@ import { Plan, User } from '@flyfly/types'
 
 import { mongo } from '.'
 import { MongoUser } from './models'
-import { getPlan } from './plan'
 
 const parseUser = ({
   _id,
@@ -29,10 +28,7 @@ const parseUser = ({
   verified
 })
 
-export const getProfile = async (
-  email: string,
-  withPlan?: boolean
-): Promise<User> => {
+export const getProfile = async (email: string): Promise<User> => {
   const db = await mongo()
 
   const user: MongoUser = await db.collection('users').findOne({
@@ -43,16 +39,7 @@ export const getProfile = async (
     return null
   }
 
-  let plan: Plan
-
-  if (withPlan) {
-    plan = await getPlan(user.planId)
-  }
-
-  return parseUser({
-    ...user,
-    plan
-  })
+  return parseUser(user)
 }
 
 export const createUser = async ({

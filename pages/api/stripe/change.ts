@@ -7,7 +7,7 @@ const handler: NextApiHandler<{
   sessionId?: string
   planId?: string
 }> = async (req, res) => {
-  const { email } = await getUser(req, false)
+  const { email } = await getUser(req)
 
   const {
     body: { priceId }
