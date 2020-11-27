@@ -74,7 +74,7 @@ const handler: NextApiHandler<{
     ],
     mode: 'subscription',
     payment_method_types: ['card'],
-    success_url: `${process.env.URL}/api/stripe/change?sessionId={CHECKOUT_SESSION_ID}`
+    success_url: `${process.env.URL}/account`
   })
 
   res.json({
