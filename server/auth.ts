@@ -37,7 +37,7 @@ export const getTokenFromCookie = (
   return token
 }
 
-export const setTokenCookie = (res: NextApiResponse, token: string): void => {
+export const setTokenCookie = (res: NextApiResponse, token: string): unknown =>
   setCookie(
     {
       res
@@ -46,9 +46,8 @@ export const setTokenCookie = (res: NextApiResponse, token: string): void => {
     token,
     cookieOptions
   )
-}
 
-export const deleteTokenCookie = (res: NextApiResponse): void => {
+export const deleteTokenCookie = (res: NextApiResponse): unknown =>
   destroyCookie(
     {
       res
@@ -56,7 +55,6 @@ export const deleteTokenCookie = (res: NextApiResponse): void => {
     'token',
     cookieOptions
   )
-}
 
 // auth
 
