@@ -17,7 +17,7 @@ export const verifyJwt = (token: string): string =>
 // cookie
 
 const cookieOptions = {
-  domain: process.env.NODE_ENV === 'production' ? 'flyfly.dev' : 'localhost',
+  domain: process.env.NODE_ENV === 'production' ? '.flyfly.dev' : 'localhost',
   httpOnly: true,
   path: '/',
   sameSite: 'strict',
