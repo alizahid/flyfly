@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb'
 import { Stripe } from 'stripe'
 
-import { Plan, User } from '@flyfly/types'
+import { User } from '@flyfly/types'
 
 import { mongo } from '.'
 import { MongoUser } from './models'
@@ -12,18 +12,14 @@ const parseUser = ({
   emailNotifications,
   image,
   name,
-  plan,
   planId,
   verified
-}: MongoUser & {
-  plan?: Plan
-}): User => ({
+}: MongoUser): User => ({
   email,
   emailNotifications,
   id: String(_id),
   image,
   name,
-  plan: plan || null,
   planId,
   verified
 })

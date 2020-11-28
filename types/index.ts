@@ -18,7 +18,6 @@ export type User = {
   verified: boolean
   emailNotifications: 'immediately' | 'daily' | 'weekly'
   planId: string
-  plan?: Plan
 }
 
 export type Project = {
