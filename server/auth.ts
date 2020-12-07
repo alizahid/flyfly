@@ -20,7 +20,7 @@ const cookieOptions = {
   domain: process.env.NODE_ENV === 'production' ? 'flyfly.dev' : 'localhost',
   httpOnly: true,
   path: '/',
-  sameSite: 'strict',
+  sameSite: 'lax',
   secure: process.env.NODE_ENV === 'production'
 }
 
