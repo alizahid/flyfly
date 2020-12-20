@@ -12,7 +12,7 @@ const handler: NextApiHandler = async (req, res) => {
   const interval = String(query.interval) as 'daily' | 'weekly'
   const secret = String(query.secret)
 
-  if (secret !== process.env.EASYCRON_KEY) {
+  if (secret !== process.env.JOB_SECRET) {
     res.json({
       message: 'Invalid secret',
       status: 'error'
