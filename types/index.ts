@@ -43,6 +43,12 @@ export type Response = {
   createdAt: string
 }
 
+export type Usage = {
+  count: number
+  startsAt: string
+  endsAt: string
+}
+
 // other
 
 export type BatchMessage = {

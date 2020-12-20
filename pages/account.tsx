@@ -2,13 +2,19 @@ import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import React from 'react'
 
-import { NotificationsCard, PlanCard, ProfileCard } from '@flyfly/components'
+import {
+  NotificationsCard,
+  PlanCard,
+  ProfileCard,
+  UsageCard
+} from '@flyfly/components'
 import { useProfile } from '@flyfly/hooks'
-import { getPlans, getUser } from '@flyfly/server'
-import { Plan, User } from '@flyfly/types'
+import { getPlans, getUsage, getUser } from '@flyfly/server'
+import { Plan, Usage, User } from '@flyfly/types'
 
 type Props = {
   plans: Plan[]
+  usage: Usage
   user: User
 }
 
@@ -34,6 +40,12 @@ const Account: NextPage<Props> = (props) => {
         <NotificationsCard className="mt-4" profile={profile} />
 
         <h2 className="text-2xl font-semibold mt-16">Usage</h2>
+        <UsageCard
+          className="mt-4"
+          plans={props.plans}
+          profile={profile}
+          usage={props.usage}
+        />
       </main>
     </>
   )
@@ -54,10 +66,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
   }
 
   const plans = await getPlans()
+  const usage = await getUsage(user.id)
 
   return {
     props: {
       plans,
+      usage,
       user
     }
   }

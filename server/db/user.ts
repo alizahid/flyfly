@@ -1,7 +1,8 @@
+import dayjs from 'dayjs'
 import { ObjectId } from 'mongodb'
 import { Stripe } from 'stripe'
 
-import { User } from '@flyfly/types'
+import { Usage, User } from '@flyfly/types'
 
 import { mongo } from '.'
 import { MongoUser } from './models'
@@ -96,4 +97,25 @@ export const updateUser = async (
   })
 
   return parseUser(next)
+}
+
+export const getUsage = async (userId: string): Promise<Usage> => {
+  const db = await mongo()
+
+  const start = dayjs().startOf('month').startOf('day')
+  const end = dayjs().endOf('month').endOf('day')
+
+  const count = await db.collection('responses').countDocuments({
+    createdAt: {
+      $gte: start.toDate(),
+      $lte: end.toDate()
+    },
+    userId: new ObjectId(userId)
+  })
+
+  return {
+    count,
+    endsAt: end.toISOString(),
+    startsAt: start.toISOString()
+  }
 }
