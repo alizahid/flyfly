@@ -45,7 +45,7 @@ h6 {
 // layout
 
 #__next {
-  @apply flex flex-col min-h-screen container mx-auto;
+  @apply flex flex-col min-h-screen max-w-5xl mx-auto;
 
   > main {
     @apply flex flex-col px-8 flex-1;
