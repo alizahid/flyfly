@@ -27,9 +27,11 @@ export const ResponseCard: FunctionComponent<Props> = ({
         onClick={() => setExpanded(!expanded)}>
         {dayjs(response.createdAt).format('hh:mm:ss [on] MMM D, YYYY')}
         <Icon
-          className="ml-auto lg:ml-4"
+          className={`ml-auto lg:ml-4 transition-transform transform ${
+            expanded ? '-rotate-180' : ''
+          }`}
           color={expanded ? 'black' : 'gray'}
-          icon={expanded ? 'chevronUp' : 'chevronDown'}
+          icon="chevronDown"
           size={16}
         />
       </header>

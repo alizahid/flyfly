@@ -14,7 +14,7 @@ body {
 
 a,
 button {
-  @apply text-emerald-600 hover:text-emerald-500 outline-none transition-colors;
+  @apply text-emerald-700 text-opacity-75 hover:text-opacity-100 outline-none transition-colors;
 
   &:disabled {
     @apply cursor-not-allowed;

@@ -147,7 +147,7 @@ export const Modal: FunctionComponent<Props> = ({
         <div className="mx-4">
           <input
             autoFocus
-            className="appearance-none bg-gray-50 focus:bg-gray-100 rounded-lg w-full p-4"
+            className="appearance-none transition-colors bg-gray-50 focus:bg-gray-100 rounded-lg w-full p-4"
             onChange={(event) => setValue(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
