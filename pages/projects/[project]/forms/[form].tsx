@@ -66,8 +66,8 @@ const FormPage: NextPage<Props> = (props) => {
 
         <h2 className="text-2xl font-semibold mt-8">Instructions</h2>
         <div className="mt-2">
-          Send a <code>POST</code> request to this url with your data in{' '}
-          <code>JSON</code>.
+          Send a <code className="font-code">POST</code> request to this url
+          with your data in <code className="font-code">JSON</code>.
         </div>
         <InlineCode
           className="mt-4"
@@ -109,11 +109,11 @@ const FormPage: NextPage<Props> = (props) => {
 
         <header className="flex items-center justify-between lg:justify-start mt-16">
           <h2 className="text-2xl font-semibold">Responses</h2>
-          {loading ? (
-            <Spinner className="ml-4" />
-          ) : (
-            <Icon className="ml-4" icon="reloadOutline" onClick={refetch} />
-          )}
+          <Icon
+            className={`ml-4 ${loading ? 'animate-spin' : ''}`}
+            icon="reloadOutline"
+            onClick={() => refetch()}
+          />
         </header>
         {responses.length > 0 ? (
           responses.map((response) => (

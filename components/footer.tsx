@@ -19,7 +19,9 @@ export const Footer: FunctionComponent = () => (
       <Link href="/privacy">
         <a className="text-gray-600">Privacy policy</a>
       </Link>
-      <a className="text-gray-600 mt-2" href="https://github.com/flyforms">
+      <a
+        className="text-gray-600 mt-2"
+        href="https://github.com/alizahid/flyfly">
         GitHub
       </a>
     </nav>

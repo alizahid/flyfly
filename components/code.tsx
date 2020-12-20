@@ -105,7 +105,7 @@ export const InlineCode: FunctionComponent<InlineCodeProps> = ({
         }}>
         <Icon className="m-4" icon={copied ? 'checkmark' : 'copyOutline'} />
       </a>
-      <code className="mx-4">{text}</code>
+      <code className="mx-4 font-code">{text}</code>
     </div>
   )
 }

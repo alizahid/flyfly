@@ -61,7 +61,7 @@ export const Header: FunctionComponent = () => {
       ))}
       {!user && (
         <a
-          className="flex items-center justify-center text-black font-medium hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8"
+          className="flex items-center justify-center text-black font-medium transition-colors hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8"
           href="/api/auth/sign-in">
           Sign in with <Icon className="ml-2" icon="logoGithub" />
         </a>
@@ -126,7 +126,7 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
   return (
     <Link href={href} passHref>
       <a
-        className={`hover:text-emerald-600 font-medium p-8 lg:p-0 w-full lg:w-auto lg:ml-8 first:ml-0 text-center ${
+        className={`hover:text-emerald-600 transition-colors font-medium p-8 lg:p-0 w-full lg:w-auto lg:ml-8 first:ml-0 text-center ${
           asPath.indexOf(href.toString()) === 0
             ? 'text-emerald-600'
             : 'text-black'
