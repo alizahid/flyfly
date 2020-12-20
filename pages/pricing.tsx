@@ -99,7 +99,6 @@ const Pricing: NextPage<Props> = ({ plans }) => {
               opacity: 0
             }}
             transition={{
-              delay: 1,
               duration: 0.2
             }}>
             <GetStarted />
