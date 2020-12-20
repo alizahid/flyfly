@@ -3,6 +3,7 @@ import '../styles/global.scss'
 
 import dayjs from 'dayjs'
 import localizedFormat from 'dayjs/plugin/localizedFormat'
+import timezone from 'dayjs/plugin/timezone'
 import { AppProps } from 'next/app'
 import Progress from 'nextjs-progressbar'
 import React, { FunctionComponent } from 'react'
@@ -12,6 +13,7 @@ import { client } from '@flyfly/client'
 import { Footer, Header } from '@flyfly/components'
 
 dayjs.extend(localizedFormat)
+dayjs.extend(timezone)
 
 const FlyFly: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
   <QueryClientProvider client={client}>
