@@ -4,7 +4,7 @@ import update from 'immutability-helper'
 import { useCallback } from 'react'
 import { useMutation } from 'react-query'
 
-import { api, dialog, queryCache } from '@flyfly/lib'
+import { api, client, dialog } from '@flyfly/client'
 import { User } from '@flyfly/types'
 
 type CancelPlanReturns = {
@@ -18,7 +18,7 @@ type CancelPlanResponse = {
 }
 
 export const useCancelPlan = (): CancelPlanReturns => {
-  const [mutate, { isLoading }] = useMutation<CancelPlanResponse, void>(
+  const { isLoading, mutateAsync } = useMutation<CancelPlanResponse, void>(
     () => api('/api/stripe/cancel'),
     {
       onSuccess({ cancelAt }) {
@@ -32,7 +32,7 @@ export const useCancelPlan = (): CancelPlanReturns => {
     }
   )
 
-  const cancelPlan = useCallback(() => mutate(), [])
+  const cancelPlan = useCallback(() => mutateAsync(), [])
 
   return {
     cancelPlan,
@@ -56,7 +56,7 @@ type ChangePlanResponse = {
 }
 
 export const useChangePlan = (): ChangePlanReturns => {
-  const [mutate, { isLoading }] = useMutation<
+  const { isLoading, mutateAsync } = useMutation<
     ChangePlanResponse,
     void,
     ChangePlanVariables
@@ -68,7 +68,7 @@ export const useChangePlan = (): ChangePlanReturns => {
     {
       async onSuccess({ planId, sessionId }) {
         if (planId) {
-          queryCache.setQueryData<User>('profile', (data) =>
+          client.setQueryData<User>('profile', (data) =>
             update(data, {
               planId: {
                 $set: planId
@@ -90,7 +90,7 @@ export const useChangePlan = (): ChangePlanReturns => {
 
   const changePlan = useCallback(
     (priceId: string) =>
-      mutate({
+      mutateAsync({
         priceId
       }),
     []

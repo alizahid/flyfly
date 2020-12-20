@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react'
 
 import { Form } from '@flyfly/types'
 
-interface Props {
+type Props = {
   className?: string
   form: Form
 }

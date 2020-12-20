@@ -2,7 +2,7 @@ import update from 'immutability-helper'
 import { useCallback, useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { api, queryCache } from '@flyfly/lib'
+import { api, client } from '@flyfly/client'
 import { Form, Project, Response } from '@flyfly/types'
 
 // forms
@@ -108,7 +108,11 @@ type CreateFormVariables = {
 }
 
 export const useCreateForm = (): CreateFormReturns => {
-  const [mutate, { isLoading }] = useMutation<Form, void, CreateFormVariables>(
+  const { isLoading, mutateAsync } = useMutation<
+    Form,
+    void,
+    CreateFormVariables
+  >(
     async ({ name, projectId }) =>
       api<Form>('/api/form', 'post', {
         name,
@@ -116,17 +120,17 @@ export const useCreateForm = (): CreateFormReturns => {
       }),
     {
       onSuccess(response, { projectId }) {
-        queryCache.setQueryData<Form[]>(`forms-${projectId}`, (project) =>
+        client.setQueryData<Form[]>(`forms-${projectId}`, (project) =>
           update(project, {
             $unshift: [response]
           })
         )
 
-        const projects = queryCache.getQueryData<Project[]>('projects')
+        const projects = client.getQueryData<Project[]>('projects')
 
         if (projects) {
-          queryCache.setQueryData<Project[]>('projects', (projects) => {
-            const forms = queryCache.getQueryData<Form[]>(`forms-${projectId}`)
+          client.setQueryData<Project[]>('projects', (projects) => {
+            const forms = client.getQueryData<Form[]>(`forms-${projectId}`)
               .length
 
             const index = projects.findIndex(
@@ -148,7 +152,7 @@ export const useCreateForm = (): CreateFormReturns => {
 
   const createForm = useCallback(
     (projectId: string, name: string) =>
-      mutate({
+      mutateAsync({
         name,
         projectId
       }),
@@ -176,14 +180,18 @@ type UpdateFormVariables = {
 }
 
 export const useUpdateForm = (): UpdateFormReturns => {
-  const [mutate, { isLoading }] = useMutation<Form, void, UpdateFormVariables>(
+  const { isLoading, mutateAsync } = useMutation<
+    Form,
+    void,
+    UpdateFormVariables
+  >(
     ({ formId, name }) =>
       api<Form>(`/api/form?formId=${formId}`, 'put', {
         name
       }),
     {
       onSuccess(response, { formId, name, projectId }) {
-        queryCache.setQueryData<Form>(`form-${formId}`, (data) =>
+        client.setQueryData<Form>(`form-${formId}`, (data) =>
           update(data, {
             name: {
               $set: name
@@ -191,10 +199,10 @@ export const useUpdateForm = (): UpdateFormReturns => {
           })
         )
 
-        const forms = queryCache.getQueryData(`forms-${projectId}`)
+        const forms = client.getQueryData(`forms-${projectId}`)
 
         if (forms) {
-          queryCache.setQueryData<Form[]>(`forms-${projectId}`, (forms) => {
+          client.setQueryData<Form[]>(`forms-${projectId}`, (forms) => {
             const index = forms.findIndex(({ id }) => id === formId)
 
             return update(forms, {
@@ -212,7 +220,7 @@ export const useUpdateForm = (): UpdateFormReturns => {
 
   const updateForm = useCallback(
     (projectId: string, formId: string, name: string) =>
-      mutate({
+      mutateAsync({
         formId,
         name,
         projectId
@@ -240,46 +248,47 @@ type DeleteFormVariables = {
 }
 
 export const useDeleteForm = (): DeleteFormReturns => {
-  const [mutate, { isLoading }] = useMutation<Form, void, DeleteFormVariables>(
-    ({ formId }) => api<Form>(`/api/form?formId=${formId}`, 'delete'),
-    {
-      onSuccess(response, { formId, projectId }) {
-        queryCache.setQueryData<Form>(`form-${formId}`, null)
+  const { isLoading, mutateAsync } = useMutation<
+    Form,
+    void,
+    DeleteFormVariables
+  >(({ formId }) => api<Form>(`/api/form?formId=${formId}`, 'delete'), {
+    onSuccess(response, { formId, projectId }) {
+      client.setQueryData<Form>(`form-${formId}`, null)
 
-        const forms = queryCache.getQueryData(`forms-${projectId}`)
+      const forms = client.getQueryData(`forms-${projectId}`)
 
-        if (forms) {
-          queryCache.setQueryData<Form[]>(`forms-${projectId}`, (forms) => {
-            const index = forms.findIndex(({ id }) => id === formId)
+      if (forms) {
+        client.setQueryData<Form[]>(`forms-${projectId}`, (forms) => {
+          const index = forms.findIndex(({ id }) => id === formId)
 
-            return update(forms, {
-              $splice: [[index, 1]]
-            })
+          return update(forms, {
+            $splice: [[index, 1]]
           })
-        }
+        })
+      }
 
-        const projects = queryCache.getQueryData(`project-${projectId}`)
+      const projects = client.getQueryData(`project-${projectId}`)
 
-        if (projects) {
-          queryCache.setQueryData<Project[]>('projects', (projects) => {
-            const index = projects.findIndex(({ id }) => id === projectId)
+      if (projects) {
+        client.setQueryData<Project[]>('projects', (projects) => {
+          const index = projects.findIndex(({ id }) => id === projectId)
 
-            return update(projects, {
-              [index]: {
-                forms: {
-                  $set: projects[index].forms - 1
-                }
+          return update(projects, {
+            [index]: {
+              forms: {
+                $set: projects[index].forms - 1
               }
-            })
+            }
           })
-        }
+        })
       }
     }
-  )
+  })
 
   const deleteForm = useCallback(
     (projectId: string, formId: string) =>
-      mutate({
+      mutateAsync({
         formId,
         projectId
       }),

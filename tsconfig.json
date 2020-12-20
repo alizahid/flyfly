@@ -11,9 +11,9 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
+      "@flyfly/client": ["./client"],
       "@flyfly/components": ["./components"],
       "@flyfly/hooks": ["./hooks"],
-      "@flyfly/lib": ["./lib"],
       "@flyfly/server": ["./server"],
       "@flyfly/types": ["./types"]
     },

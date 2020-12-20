@@ -46,7 +46,7 @@ type IconColor =
   | 'fuchsia'
   | 'pink'
 
-interface Props {
+type Props = {
   className?: string
   color?: IconColor
   icon: keyof typeof ionicons

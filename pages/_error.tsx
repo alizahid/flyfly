@@ -1,8 +1,9 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import React from 'react'
 
-interface Props {
+type Props = {
   code: number
 }
 
@@ -13,10 +14,12 @@ const Error: NextPage<Props> = ({ code }) => (
     </Head>
 
     <main className="bg-white rounded-xl shadow-sm py-16 justify-center items-center text-center">
-      <img
+      <Image
         alt="FlyFly"
-        className={`w-40 ${code >= 500 ? 'hard-error' : ''}`}
+        className={code >= 500 ? 'hard-error' : ''}
+        height={160}
         src="/img/flyfly.svg"
+        width={160}
       />
       <h1 className="text-5xl font-bold mt-8">
         {code === 404 ? 'Not found' : 'Error'}

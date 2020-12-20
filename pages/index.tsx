@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { NextPage } from 'next'
 import Head from 'next/head'
+import Image from 'next/image'
 import React from 'react'
 
 import { GetStarted, Spinner } from '@flyfly/components'
@@ -26,7 +27,13 @@ const Home: NextPage = () => {
           transition={{
             duration: 0.2
           }}>
-          <img alt="FlyFly" className="w-40 m-auto" src="/img/flyfly.svg" />
+          <Image
+            alt="FlyFly"
+            className="m-auto"
+            height={160}
+            src="/img/flyfly.svg"
+            width={160}
+          />
           <h1 className="text-4xl font-semibold mt-8">FlyFly</h1>
           <p className="text-gray-700 mt-2">Super easy headless forms</p>
         </motion.header>
@@ -43,7 +50,7 @@ const Home: NextPage = () => {
               delay: 0.2,
               duration: 0.2
             }}>
-            <h2 className="text-2xl font-medium">How it works</h2>
+            <h2 className="text-2xl font-semibold">How it works</h2>
             <ul>
               <li className="mt-2 text-gray-700">
                 Create a project and add a form
@@ -66,7 +73,7 @@ const Home: NextPage = () => {
               delay: 0.4,
               duration: 0.2
             }}>
-            <h2 className="text-2xl font-medium">Works everywhere</h2>
+            <h2 className="text-2xl font-semibold">Works everywhere</h2>
             <ul>
               <li className="mt-2 text-gray-700">
                 React, Next.js, React Native

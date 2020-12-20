@@ -16,11 +16,14 @@ module.exports = {
       }
     },
     fontFamily: {
-      body: ['Rubik', 'system-ui', 'sans-serif'],
-      mono: ['IBM Plex Mono', 'system-ui-monospace', 'monospace']
+      body: ['Inter', 'sans-serif'],
+      code: ['IBM Plex Mono', 'monospace'],
+      display: ['Poppins', 'sans-serif']
     }
   },
   variants: {
-    margin: ['responsive', 'first']
+    extend: {
+      margin: ['first']
+    }
   }
 }

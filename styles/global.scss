@@ -1,12 +1,6 @@
 // fonts
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Rubik:wght@400;500;600&display=swap');
-
-// tailwind
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&family=Poppins:wght@500;600&display=swap');
 
 // global
 
@@ -14,32 +8,16 @@
   @apply bg-emerald-200;
 }
 
-html {
-  @apply bg-trueGray-50;
-}
-
 body {
-  @apply text-black font-body cursor-default;
+  @apply bg-gray-50 text-black font-body cursor-default;
 }
 
 a,
 button {
-  @apply text-emerald-600 outline-none;
+  @apply text-emerald-600 hover:text-emerald-500 outline-none transition-colors;
 
   &:disabled {
     @apply cursor-not-allowed;
-  }
-
-  &:not(.static) {
-    @apply transition;
-
-    &:hover {
-      filter: brightness(1.1);
-    }
-
-    &:active {
-      filter: brightness(0.9);
-    }
   }
 }
 
@@ -53,6 +31,15 @@ textarea {
   &:focus {
     @apply outline-none;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-display;
 }
 
 // layout
@@ -128,7 +115,7 @@ form {
 }
 
 .icon-gray {
-  @apply text-trueGray-500;
+  @apply text-gray-500;
 }
 
 .icon-red {

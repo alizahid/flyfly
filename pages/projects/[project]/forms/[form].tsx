@@ -22,7 +22,7 @@ import {
 import { getForm, getProject, getResponses, getUser } from '@flyfly/server'
 import { Form, Project, Response } from '@flyfly/types'
 
-interface Props {
+type Props = {
   form: Form
   project: Project
   responses: Response[]
@@ -64,7 +64,7 @@ const FormPage: NextPage<Props> = (props) => {
         </Link>
         <h1 className="text-4xl font-semibold mt-4">{form.name}</h1>
 
-        <h2 className="text-2xl font-medium mt-8">Instructions</h2>
+        <h2 className="text-2xl font-semibold mt-8">Instructions</h2>
         <div className="mt-2">
           Send a <code>POST</code> request to this url with your data in{' '}
           <code>JSON</code>.
@@ -81,7 +81,7 @@ const FormPage: NextPage<Props> = (props) => {
           for examples.
         </div>
 
-        <h2 className="text-2xl font-medium mt-16">Settings</h2>
+        <h2 className="text-2xl font-semibold mt-16">Settings</h2>
         <nav className="flex flex-col items-start">
           <a
             className="flex items-center mt-4 cursor-pointer text-black"
@@ -108,7 +108,7 @@ const FormPage: NextPage<Props> = (props) => {
         </nav>
 
         <header className="flex items-center justify-between lg:justify-start mt-16">
-          <h2 className="text-2xl font-medium">Responses</h2>
+          <h2 className="text-2xl font-semibold">Responses</h2>
           {loading ? (
             <Spinner className="ml-4" />
           ) : (

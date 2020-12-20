@@ -4,7 +4,7 @@ import { User } from '@flyfly/types'
 
 import { Icon } from '../icon'
 
-interface Props {
+type Props = {
   className?: string
   profile: User
 }

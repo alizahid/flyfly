@@ -2,7 +2,7 @@ import update from 'immutability-helper'
 import { useCallback } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { api, queryCache } from '@flyfly/lib'
+import { api, client } from '@flyfly/client'
 import { Project } from '@flyfly/types'
 
 // projects
@@ -50,7 +50,7 @@ type CreateProjectVariables = {
 }
 
 export const useCreateProject = (): CreateProjectReturns => {
-  const [mutate, { isLoading }] = useMutation<
+  const { isLoading, mutateAsync } = useMutation<
     Project,
     void,
     CreateProjectVariables
@@ -61,7 +61,7 @@ export const useCreateProject = (): CreateProjectReturns => {
       }),
     {
       onSuccess(response) {
-        queryCache.setQueryData<Project[]>('projects', (projects) => [
+        client.setQueryData<Project[]>('projects', (projects) => [
           response,
           ...projects
         ])
@@ -71,7 +71,7 @@ export const useCreateProject = (): CreateProjectReturns => {
 
   const createProject = useCallback(
     (name) =>
-      mutate({
+      mutateAsync({
         name
       }),
     []
@@ -97,7 +97,7 @@ type UpdateProjectVariables = {
 }
 
 export const useUpdateProject = (): UpdateProjectReturns => {
-  const [mutate, { isLoading }] = useMutation<
+  const { isLoading, mutateAsync } = useMutation<
     Project,
     void,
     UpdateProjectVariables
@@ -108,7 +108,7 @@ export const useUpdateProject = (): UpdateProjectReturns => {
       }),
     {
       onSuccess(response, { name, projectId }) {
-        queryCache.setQueryData<Project>(`project-${projectId}`, (data) =>
+        client.setQueryData<Project>(`project-${projectId}`, (data) =>
           update(data, {
             name: {
               $set: name
@@ -116,10 +116,10 @@ export const useUpdateProject = (): UpdateProjectReturns => {
           })
         )
 
-        const exists = queryCache.getQueryData<Project[]>('projects')
+        const exists = client.getQueryData<Project[]>('projects')
 
         if (exists) {
-          queryCache.setQueryData<Project[]>('projects', (projects) => {
+          client.setQueryData<Project[]>('projects', (projects) => {
             const index = projects.findIndex(({ id }) => id === projectId)
 
             return update(projects, {
@@ -137,7 +137,7 @@ export const useUpdateProject = (): UpdateProjectReturns => {
 
   const updateProject = useCallback(
     (projectId: string, name: string) =>
-      mutate({
+      mutateAsync({
         name,
         projectId
       }),
@@ -163,18 +163,18 @@ type DeleteProjectVariables = {
 }
 
 export const useDeleteProject = (): DeleteProjectReturns => {
-  const [mutate, { isLoading }] = useMutation<
+  const { isLoading, mutateAsync } = useMutation<
     void,
     void,
     DeleteProjectVariables
   >(({ projectId }) => api(`/api/project?projectId=${projectId}`, 'delete'), {
     onSuccess(response, { projectId }) {
-      queryCache.setQueryData(`project-${projectId}`, null)
+      client.setQueryData(`project-${projectId}`, null)
 
-      const exists = queryCache.getQueryData<Project[]>('projects')
+      const exists = client.getQueryData<Project[]>('projects')
 
       if (exists) {
-        queryCache.setQueryData<Project[]>('projects', (projects) => {
+        client.setQueryData<Project[]>('projects', (projects) => {
           const index = projects.findIndex(({ id }) => id === projectId)
 
           return update(projects, {
@@ -187,7 +187,7 @@ export const useDeleteProject = (): DeleteProjectReturns => {
 
   const deleteProject = useCallback(
     (projectId: string) =>
-      mutate({
+      mutateAsync({
         projectId
       }),
     []

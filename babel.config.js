@@ -4,11 +4,11 @@ module.exports = {
       'module-resolver',
       {
         alias: {
-          '@pickle/components': './components',
-          '@pickle/hooks': './hooks',
-          '@pickle/lib': './lib',
-          '@pickle/server': './server',
-          '@pickle/types': './types'
+          '@flyfly/client': './client',
+          '@flyfly/components': './components',
+          '@flyfly/hooks': './hooks',
+          '@flyfly/server': './server',
+          '@flyfly/types': './types'
         },
         extensions: ['.ts', '.tsx'],
         root: ['.']

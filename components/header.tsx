@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import Image from 'next/image'
 import Link, { LinkProps } from 'next/link'
 import { useRouter } from 'next/router'
 import React, { FunctionComponent, useEffect, useState } from 'react'
@@ -60,7 +61,7 @@ export const Header: FunctionComponent = () => {
       ))}
       {!user && (
         <a
-          className="flex items-center justify-center text-black hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8"
+          className="flex items-center justify-center text-black font-medium hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8"
           href="/api/auth/sign-in">
           Sign in with <Icon className="ml-2" icon="logoGithub" />
         </a>
@@ -72,8 +73,8 @@ export const Header: FunctionComponent = () => {
     <header className="flex flex-row items-center justify-between leading-none relative">
       <Link href="/">
         <a className="flex items-center p-8">
-          <img alt="FlyFly" className="h-8 w-8 mr-4" src="/img/flyfly.svg" />
-          <span className="font-display font-medium text-xl text-black">
+          <Image alt="FlyFly" height={32} src="/img/flyfly.svg" width={32} />
+          <span className="font-display font-semibold text-xl text-black ml-4">
             FlyFly
           </span>
         </a>
@@ -125,7 +126,7 @@ const NavLink: FunctionComponent<LinkProps> = ({ children, href }) => {
   return (
     <Link href={href} passHref>
       <a
-        className={`hover:text-emerald-600 p-8 lg:p-0 w-full lg:w-auto lg:ml-8 first:ml-0 text-center ${
+        className={`hover:text-emerald-600 font-medium p-8 lg:p-0 w-full lg:w-auto lg:ml-8 first:ml-0 text-center ${
           asPath.indexOf(href.toString()) === 0
             ? 'text-emerald-600'
             : 'text-black'

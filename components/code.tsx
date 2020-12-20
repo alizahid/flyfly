@@ -3,7 +3,7 @@ import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript'
 import nord from 'react-syntax-highlighter/dist/cjs/styles/prism/nord'
 
-import { prettyLanguageName } from '@flyfly/lib'
+import { prettyLanguageName } from '@flyfly/client'
 
 import { Icon } from './icon'
 
@@ -15,7 +15,7 @@ Object.keys(nord).forEach((key) => {
   }
 })
 
-interface Props {
+type Props = {
   className?: string
   code: string
   language: string
@@ -58,7 +58,7 @@ export const Code: FunctionComponent<Props> = ({
       </header>
       <SyntaxHighlighter
         codeTagProps={{
-          className: 'font-mono leading-relaxed'
+          className: 'font-code leading-relaxed'
         }}
         customStyle={{
           background: '#2E3440',
@@ -73,7 +73,7 @@ export const Code: FunctionComponent<Props> = ({
   )
 }
 
-interface InlineCodeProps {
+type InlineCodeProps = {
   className?: string
   text: string
 }

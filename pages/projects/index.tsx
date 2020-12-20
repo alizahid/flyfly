@@ -9,7 +9,7 @@ import { useCreateProject, useProjects } from '@flyfly/hooks'
 import { getProjects, getUser } from '@flyfly/server'
 import { Project } from '@flyfly/types'
 
-interface Props {
+type Props = {
   projects: Project[]
 }
 
@@ -39,7 +39,6 @@ const Projects: NextPage<Props> = (props) => {
                   animate={{
                     opacity: 1
                   }}
-                  className="static"
                   initial={{
                     opacity: 0
                   }}

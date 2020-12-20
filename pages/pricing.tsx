@@ -10,7 +10,7 @@ import { useSession } from '@flyfly/hooks'
 import { getPlans } from '@flyfly/server'
 import { Plan } from '@flyfly/types'
 
-interface Props {
+type Props = {
   plans: Plan[]
 }
 
@@ -62,7 +62,7 @@ const Pricing: NextPage<Props> = ({ plans }) => {
                 delay: 0.4 + 0.2 * index,
                 duration: 0.2
               }}>
-              <h2 className="text-2xl font-medium">{plan.name}</h2>
+              <h2 className="text-2xl font-semibold">{plan.name}</h2>
               <h3 className="text-4xl font-semibold mt-2">
                 ${plan.price}
                 <span className="text-sm font-normal text-gray-600">/m</span>

@@ -2,7 +2,7 @@ import update from 'immutability-helper'
 import { useCallback } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { api, queryCache } from '@flyfly/lib'
+import { api, client } from '@flyfly/client'
 import { User } from '@flyfly/types'
 
 type SessionReturns = {
@@ -44,13 +44,13 @@ type UpdateNotificationsVariables = {
 }
 
 export const useUpdateNotifications = (): UpdateNotificationsReturns => {
-  const [mutate, { isLoading }] = useMutation<
+  const { isLoading, mutateAsync } = useMutation<
     User,
     void,
     UpdateNotificationsVariables
   >(({ user }) => api<User>(`/api/user`, 'put', user), {
     onSuccess(response, { user: { emailNotifications } }) {
-      queryCache.setQueryData<User>('profile', (data) =>
+      client.setQueryData<User>('profile', (data) =>
         update(data, {
           emailNotifications: {
             $set: emailNotifications
@@ -62,7 +62,7 @@ export const useUpdateNotifications = (): UpdateNotificationsReturns => {
 
   const updateNotifications = useCallback(
     (user: Pick<User, 'emailNotifications'>) =>
-      mutate({
+      mutateAsync({
         user
       }),
     []

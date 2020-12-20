@@ -7,7 +7,7 @@ import { Modal } from '@flyfly/components'
 import { useCancelPlan, useChangePlan } from '@flyfly/hooks'
 import { Plan } from '@flyfly/types'
 
-interface Props {
+type Props = {
   plans: Plan[]
   selected: string
   visible: boolean

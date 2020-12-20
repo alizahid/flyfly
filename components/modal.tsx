@@ -205,7 +205,7 @@ export const Modal: FunctionComponent<Props> = ({
           }}>
           <div className="bg-white rounded-xl w-full max-w-modal max-h-screen overflow-y-auto shadow m-8">
             <header className="flex items-stretch justify-between border-b border-gray-100">
-              <h4 className="flex-1 font-medium text-xl m-4">{title}</h4>
+              <h4 className="flex-1 font-semibold text-lg m-4">{title}</h4>
               <a
                 className="flex items-center px-4"
                 href="#close"

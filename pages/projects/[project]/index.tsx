@@ -16,7 +16,7 @@ import {
 import { getForms, getProject, getUser } from '@flyfly/server'
 import { Form, Project } from '@flyfly/types'
 
-interface Props {
+type Props = {
   project: Project
   forms: Form[]
 }
@@ -53,7 +53,7 @@ const ProjectPage: NextPage<Props> = (props) => {
         <h1 className="text-4xl font-semibold mt-4">{project.name}</h1>
 
         <header className="flex items-center justify-between lg:justify-start mt-8">
-          <h2 className="text-2xl font-medium">Forms</h2>
+          <h2 className="text-2xl font-semibold">Forms</h2>
           <Icon
             className="ml-4"
             icon="add"
@@ -71,7 +71,6 @@ const ProjectPage: NextPage<Props> = (props) => {
                   animate={{
                     opacity: 1
                   }}
-                  className="static"
                   initial={{
                     opacity: 0
                   }}
@@ -90,7 +89,7 @@ const ProjectPage: NextPage<Props> = (props) => {
           </div>
         )}
 
-        <h2 className="text-2xl font-medium mt-16">Settings</h2>
+        <h2 className="text-2xl font-semibold mt-16">Settings</h2>
         <nav className="flex flex-col items-start">
           <a
             className="flex items-center mt-4 cursor-pointer text-black"

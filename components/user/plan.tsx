@@ -7,7 +7,7 @@ import { Plan, User } from '@flyfly/types'
 
 import { Plans } from './plans'
 
-interface Props {
+type Props = {
   className?: string
   plans: Plan[]
   profile: User

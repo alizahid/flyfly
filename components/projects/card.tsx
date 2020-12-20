@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react'
 
 import { Project } from '@flyfly/types'
 
-interface Props {
+type Props = {
   className?: string
   project: Project
 }

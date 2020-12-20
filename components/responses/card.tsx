@@ -2,12 +2,12 @@ import dayjs from 'dayjs'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { FunctionComponent, useState } from 'react'
 
-import { parseValue } from '@flyfly/lib'
+import { parseValue } from '@flyfly/client'
 import { Response } from '@flyfly/types'
 
 import { Icon } from '../icon'
 
-interface Props {
+type Props = {
   className?: string
   response: Response
 }
@@ -64,12 +64,12 @@ export const ResponseCard: FunctionComponent<Props> = ({
   )
 }
 
-interface ValueProps {
+type ValueProps = {
   value: unknown
 }
 
 const Value: FunctionComponent<ValueProps> = ({ value }) => {
   const { data, mono } = parseValue(value)
 
-  return <div className={mono ? 'font-sans' : 'font-sans'}>{data}</div>
+  return <div className={mono ? 'font-code' : 'font-body'}>{data}</div>
 }
