@@ -47,12 +47,12 @@ const Pricing: NextPage<Props> = ({ plans }) => {
               animate={{
                 opacity: 1
               }}
-              className={`flex flex-col items-center justify-center rounded-2xl shadow-sm py-16 lg:px-16 bg-gradient-to-br ${
+              className={`flex flex-col items-center justify-center rounded-2xl py-16 lg:px-16 bg-gradient-to-br ${
                 index % 3 === 0
-                  ? 'from-green-200 to-green-300'
+                  ? 'from-green-50 to-green-100'
                   : index % 3 === 1
-                  ? 'from-violet-200 to-violet-300'
-                  : 'from-blue-200 to-blue-300'
+                  ? 'from-violet-50 to-violet-100'
+                  : 'from-blue-50 to-blue-100'
               }`}
               initial={{
                 opacity: 0
