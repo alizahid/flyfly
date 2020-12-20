@@ -128,7 +128,7 @@ const FormPage: NextPage<Props> = (props) => {
         )}
         {responses.length > 0 && (
           <button
-            className="bg-gradient-to-br from-emerald-500 to-emerald-600 text-white mx-auto py-2 px-4 rounded-full shadow-sm mt-8"
+            className="bg-gradient-to-br from-emerald-400 to-emerald-600 font-medium text-white hover:text-white mx-auto py-2 px-4 rounded-full shadow-sm mt-8"
             onClick={() => fetchMore()}>
             {loading ? <Spinner className="my-2" light /> : 'Load more'}
           </button>
