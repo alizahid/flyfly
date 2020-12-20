@@ -40,12 +40,7 @@ const Account: NextPage<Props> = (props) => {
         <NotificationsCard className="mt-4" profile={profile} />
 
         <h2 className="text-2xl font-semibold mt-16">Usage</h2>
-        <UsageCard
-          className="mt-4"
-          plans={props.plans}
-          profile={profile}
-          usage={props.usage}
-        />
+        <UsageCard className="mt-4" usage={props.usage} />
       </main>
     </>
   )

@@ -5,7 +5,7 @@ import { Stripe } from 'stripe'
 import { Usage, User } from '@flyfly/types'
 
 import { mongo } from '.'
-import { MongoUser } from './models'
+import { MongoPlan, MongoUser } from './models'
 
 const parseUser = ({
   _id,
@@ -102,20 +102,31 @@ export const updateUser = async (
 export const getUsage = async (userId: string): Promise<Usage> => {
   const db = await mongo()
 
+  const _id = new ObjectId(userId)
+
+  const user: MongoUser = await db.collection('users').findOne({
+    _id
+  })
+
+  const plan: MongoPlan = await db.collection('plans').findOne({
+    slug: user.planId
+  })
+
   const start = dayjs().startOf('month').startOf('day')
   const end = dayjs().endOf('month').endOf('day')
 
-  const count = await db.collection('responses').countDocuments({
+  const used = await db.collection('responses').countDocuments({
     createdAt: {
       $gte: start.toDate(),
       $lte: end.toDate()
     },
-    userId: new ObjectId(userId)
+    userId: _id
   })
 
   return {
-    count,
     endsAt: end.toISOString(),
-    startsAt: start.toISOString()
+    startsAt: start.toISOString(),
+    total: plan.responses,
+    used
   }
 }

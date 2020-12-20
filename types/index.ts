@@ -44,7 +44,8 @@ export type Response = {
 }
 
 export type Usage = {
-  count: number
+  used: number
+  total: number
   startsAt: string
   endsAt: string
 }

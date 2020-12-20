@@ -6,6 +6,7 @@ import { Response, User } from '@flyfly/types'
 
 import { mongo } from '.'
 import { MongoForm, MongoResponse, MongoUser } from './models'
+import { getUsage } from './user'
 
 export const submitForm = async (
   slug: string,
@@ -18,6 +19,12 @@ export const submitForm = async (
   })
 
   if (!form) {
+    return 'error'
+  }
+
+  const usage = await getUsage(String(form.userId))
+
+  if (usage.used >= usage.total) {
     return 'error'
   }
 
