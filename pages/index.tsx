@@ -35,7 +35,7 @@ const Home: NextPage = () => {
             width={160}
           />
           <h1 className="text-4xl font-semibold mt-8">FlyFly</h1>
-          <p className="text-gray-700 mt-2">Super easy headless forms</p>
+          <div className="text-gray-700 mt-2">Super easy headless forms</div>
         </motion.header>
 
         <section className="grid lg:grid-cols-2 gap-8 mx-auto lg:w-2/3 mt-16">

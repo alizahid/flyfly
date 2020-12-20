@@ -26,15 +26,15 @@ const Error: NextPage<Props> = ({ code }) => (
       </h1>
       {code === 404 ? (
         <>
-          <p className="mt-4">
+          <div className="mt-4">
             Looks what what you were looking for has flown away.
-          </p>
-          <p className="mt-2">We have dispatched butterfly collectors.</p>
+          </div>
+          <div className="mt-2">We have dispatched butterfly collectors.</div>
         </>
       ) : (
         <>
-          <p className="mt-4">You killed the butterfly!</p>
-          <p className="mt-2">Fear not, we have dispatched medics.</p>
+          <div className="mt-4">You killed the butterfly!</div>
+          <div className="mt-2">Fear not, we have dispatched medics.</div>
         </>
       )}
     </main>

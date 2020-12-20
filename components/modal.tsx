@@ -218,7 +218,7 @@ export const Modal: FunctionComponent<Props> = ({
               </a>
             </header>
             {message.length > 0 && (
-              <p className="text-gray-700 m-4">{message}</p>
+              <div className="text-gray-700 m-4">{message}</div>
             )}
             {inner}
           </div>

@@ -36,9 +36,9 @@ const Pricing: NextPage<Props> = ({ plans }) => {
             duration: 0.2
           }}>
           <h1 className="text-4xl font-semibold">Pricing</h1>
-          <p className="text-xl text-gray-700 mt-2">
+          <div className="text-xl text-gray-700 mt-2">
             Flexible pricing as you grow
-          </p>
+          </div>
         </motion.header>
 
         <section className="grid lg:grid-cols-3 lg:mx-auto gap-16 mt-16">

@@ -34,10 +34,10 @@ export const Footer: FunctionComponent = () => {
   return (
     <footer className="flex flex-col p-8 text-sm lg:flex-row">
       <div className="lg:mr-auto">
-        <p className="text-gray-600">
+        <div className="text-gray-600">
           &copy; {new Date().getFullYear()} / FlyFly
-        </p>
-        <p className="text-gray-600 flex items-center mt-2">
+        </div>
+        <div className="text-gray-600 flex items-center mt-2">
           Built with
           <Icon className="mx-1" color="red" icon="heart" size={20} />
           in
@@ -48,7 +48,7 @@ export const Footer: FunctionComponent = () => {
           <span className="ml-1" title="Faisalabad, Pakistan">
             LYP
           </span>
-        </p>
+        </div>
       </div>
       {links.map((links, index) => (
         <nav className="flex flex-col mt-4 lg:mt-0 lg:ml-8" key={index}>
