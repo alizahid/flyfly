@@ -29,17 +29,17 @@ const Home: NextPage = () => {
         </div>
       </header>
 
-      <section>
+      <section className="mt-16">
         <div className="flex flex-col lg:flex-row items-center justify-center mt-16">
           <div className="flex-1 lg:flex lg:justify-end">
             <Image
               alt="How it works"
-              height={300}
-              src="/img/hero/home_one.svg"
-              width={300}
+              height={200}
+              src="/img/hero/home_one.png"
+              width={Math.round((200 / 801) * 1105)}
             />
           </div>
-          <div className="flex-1 lg:ml-8">
+          <div className="flex-1 mt-8 lg:mt-0 lg:ml-16">
             <h2 className="text-2xl font-semibold">How it works</h2>
             <ul className="mt-2 text-gray-700">
               <li>Create a project and add a form</li>
@@ -49,16 +49,16 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row-reverse items-center justify-center">
-          <div className="flex-1 lg:ml-8">
+        <div className="flex flex-col lg:flex-row-reverse items-center justify-center mt-16">
+          <div className="flex-1 lg:ml-16">
             <Image
               alt="Use everywhere"
-              height={300}
-              src="/img/hero/home_two.svg"
-              width={300}
+              height={200}
+              src="/img/hero/home_two.png"
+              width={Math.round((200 / 779) * 1103)}
             />
           </div>
-          <div className="flex-1 lg:text-right">
+          <div className="flex-1 mt-8 lg:mt-0 lg:text-right">
             <h2 className="text-2xl font-semibold">Use everywhere</h2>
             <ul className="mt-2 text-gray-700">
               <li>React, Next.js, React Native</li>
@@ -68,16 +68,16 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center">
+        <div className="flex flex-col lg:flex-row items-center justify-center mt-16">
           <div className="flex-1 lg:flex lg:justify-end">
             <Image
               alt="Integrations"
-              height={300}
-              src="/img/hero/home_three.svg"
-              width={300}
+              height={200}
+              src="/img/hero/home_three.png"
+              width={Math.round((200 / 973) * 1729)}
             />
           </div>
-          <div className="flex-1 lg:ml-8">
+          <div className="flex-1 mt-8 lg:mt-0 lg:ml-16">
             <h2 className="text-2xl font-semibold">Integrations</h2>
             <ul className="mt-2 text-gray-700">
               <li>Coming soon!</li>
