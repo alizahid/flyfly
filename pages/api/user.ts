@@ -16,7 +16,11 @@ const handler = connect<NextApiRequest, NextApiResponse>()
       body: { emailNotifications }
     } = req
 
-    if (!['immediately', 'daily', 'weekly'].includes(emailNotifications)) {
+    if (
+      !['immediately', 'daily', 'weekly', 'disabled'].includes(
+        emailNotifications
+      )
+    ) {
       throw new Error('Invalid interval')
     }
 

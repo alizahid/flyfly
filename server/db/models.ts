@@ -18,7 +18,7 @@ export type MongoUser = {
   email: string
   image: string
   verified: boolean
-  emailNotifications: 'immediately' | 'daily' | 'weekly'
+  emailNotifications: 'immediately' | 'daily' | 'weekly' | 'disabled'
   planId: string
   stripeId: string
 }
