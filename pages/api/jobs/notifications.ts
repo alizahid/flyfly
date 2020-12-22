@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { upperFirst } from 'lodash'
 import { NextApiHandler } from 'next'
-import { MongoProject, MongoUser } from 'server/db/models'
+import { MongoForm, MongoProject, MongoUser } from 'server/db/models'
 
 import { mongo, sendBatchEmail } from '@flyfly/server'
 import { BatchMessage } from '@flyfly/types'
@@ -100,7 +100,7 @@ const handler: NextApiHandler = async (req, res) => {
     })
     .toArray()
 
-  const forms: MongoProject[] = await db
+  const forms: MongoForm[] = await db
     .collection('forms')
     .find({
       _id: {
