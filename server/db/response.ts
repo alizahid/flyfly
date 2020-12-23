@@ -6,6 +6,7 @@ import { Response, User } from '@flyfly/types'
 
 import { mongo } from '.'
 import { MongoForm, MongoResponse, MongoUser } from './models'
+import { getPlan } from './plan'
 import { getUsage } from './user'
 
 export const submitForm = async (
@@ -51,11 +52,24 @@ export const submitForm = async (
   return 'ok'
 }
 
-const parseResponse = ({ _id, createdAt, data }: MongoResponse): Response => ({
-  createdAt: dayjs(createdAt).toISOString(),
-  data,
-  id: String(_id)
-})
+const parseResponse = (
+  { _id, createdAt, data }: MongoResponse,
+  archive: number
+): Response => {
+  const date = dayjs(createdAt)
+  const difference = dayjs().diff(date, 'day')
+
+  return {
+    createdAt: date.toISOString(),
+    data:
+      difference > archive
+        ? {
+            'Archive limit reached': `You need to upgrade your plan to view responses older than ${archive} days.`
+          }
+        : data,
+    id: String(_id)
+  }
+}
 
 export const getResponses = async (
   user: User,
@@ -63,6 +77,8 @@ export const getResponses = async (
   skip: number
 ): Promise<Response[]> => {
   const db = await mongo()
+
+  const plan = await getPlan(user.planId)
 
   const responses = await db
     .collection('responses')
@@ -77,5 +93,5 @@ export const getResponses = async (
     .skip(skip)
     .toArray()
 
-  return responses.map(parseResponse)
+  return responses.map((response) => parseResponse(response, plan.archive))
 }
