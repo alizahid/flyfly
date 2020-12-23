@@ -1,11 +1,32 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import connect from 'next-connect'
 
-import { createForm, deleteForm, getUser, updateForm } from '@flyfly/server'
+import {
+  createForm,
+  deleteForm,
+  getForms,
+  getPlan,
+  getUser,
+  updateForm
+} from '@flyfly/server'
 
 const handler = connect<NextApiRequest, NextApiResponse>()
   .post(async (req, res) => {
     const user = await getUser(req)
+
+    const forms = await getForms(user)
+
+    const plan = await getPlan(user.planId)
+
+    if (forms.length >= plan.forms) {
+      return res.status(403).json({
+        error: {
+          body:
+            'You have reached the form limit for your plan. Upgrade now to add more forms.',
+          title: 'Plan limit reached'
+        }
+      })
+    }
 
     const {
       body: { name, projectId }

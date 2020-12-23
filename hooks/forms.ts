@@ -1,8 +1,9 @@
+import { AxiosError } from 'axios'
 import update from 'immutability-helper'
 import { useCallback, useEffect, useState } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
-import { api, client } from '@flyfly/client'
+import { api, client, dialog } from '@flyfly/client'
 import { Form, Project, Response } from '@flyfly/types'
 
 // forms
@@ -110,7 +111,7 @@ type CreateFormVariables = {
 export const useCreateForm = (): CreateFormReturns => {
   const { isLoading, mutateAsync } = useMutation<
     Form,
-    void,
+    AxiosError,
     CreateFormVariables
   >(
     async ({ name, projectId }) =>
@@ -119,6 +120,11 @@ export const useCreateForm = (): CreateFormReturns => {
         projectId
       }),
     {
+      onError(error) {
+        const { body, title } = error.response.data.error
+
+        dialog.alert(title, body)
+      },
       onSuccess(response, { projectId }) {
         client.setQueryData<Form[]>(`forms-${projectId}`, (project) =>
           update(project, {

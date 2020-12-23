@@ -112,10 +112,12 @@ export const Modal: FunctionComponent<Props> = ({
             destructive === 'yes' ? 'text-red-500' : 'text-emerald-500'
           }`}
           onClick={async () => {
-            await onYes()
-
-            onClose()
-            setValue('')
+            try {
+              await onYes()
+            } finally {
+              onClose()
+              setValue('')
+            }
           }}>
           {loading ? <Spinner className="mx-auto" /> : 'Yes'}
         </button>
@@ -133,12 +135,14 @@ export const Modal: FunctionComponent<Props> = ({
         return
       }
 
-      await onSubmit(value)
+      try {
+        await onSubmit(value)
+      } finally {
+        onClose()
 
-      onClose()
-
-      if (!(props as PromptProps).value) {
-        setValue('')
+        if (!(props as PromptProps).value) {
+          setValue('')
+        }
       }
     }
 

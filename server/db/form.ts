@@ -63,17 +63,19 @@ export const createForm = async (
 
 export const getForms = async (
   user: User,
-  projectId: string
+  projectId?: string
 ): Promise<Form[]> => {
   const db = await mongo()
 
-  const forms = await db
-    .collection('forms')
-    .find({
-      projectId: new ObjectId(projectId),
-      userId: new ObjectId(user.id)
-    })
-    .toArray()
+  const query: Record<string, unknown> = {
+    userId: new ObjectId(user.id)
+  }
+
+  if (projectId) {
+    query.projectId = new ObjectId(projectId)
+  }
+
+  const forms = await db.collection('forms').find(query).toArray()
 
   const responses = await db
     .collection('responses')
