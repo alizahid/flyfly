@@ -18,6 +18,8 @@ export const ResponseCard: FunctionComponent<Props> = ({
 }) => {
   const [expanded, setExpanded] = useState(false)
 
+  const keys = Object.keys(response.data).length
+
   return (
     <article
       className={`bg-white shadow-sm rounded-lg ${className}`}
@@ -51,7 +53,10 @@ export const ResponseCard: FunctionComponent<Props> = ({
             transition={{
               duration: 0.2
             }}>
-            <div className="border-t border-gray-100 grid lg:grid-cols-4 gap-4 p-4">
+            <div
+              className={`border-t border-gray-100 grid gap-4 p-4 ${
+                keys >= 3 ? 'lg:grid-cols-3' : keys >= 2 ? 'lg:grid-cols-2' : ''
+              }`}>
               {Object.entries(response.data).map(([key, value]) => (
                 <div key={`${response.id}-data-${key}`}>
                   <div className="font-medium text-gray-600">{key}</div>
