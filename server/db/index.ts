@@ -1,21 +1,20 @@
 import { Db, MongoClient } from 'mongodb'
 
-export const client = new MongoClient(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+let client: MongoClient
+let db: Db
 
 export const mongo = async (): Promise<Db> => {
-  let db: Db
-
-  if (!client.isConnected()) {
-    await client.connect()
+  if (!db) {
+    client = await MongoClient.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
 
     db = client.db()
 
     // user
 
-    db.collection('users').createIndex(
+    await db.collection('users').createIndex(
       {
         email: 1
       },
@@ -24,24 +23,24 @@ export const mongo = async (): Promise<Db> => {
       }
     )
 
-    db.collection('users').createIndex({
+    await db.collection('users').createIndex({
       emailNotifications: 1
     })
 
     // project
 
-    db.collection('projects').createIndex({
+    await db.collection('projects').createIndex({
       userId: 1
     })
 
     // form
 
-    db.collection('forms').createIndex({
+    await db.collection('forms').createIndex({
       projectId: 1,
       userId: 1
     })
 
-    db.collection('forms').createIndex(
+    await db.collection('forms').createIndex(
       {
         slug: 1
       },
@@ -52,14 +51,12 @@ export const mongo = async (): Promise<Db> => {
 
     // response
 
-    db.collection('responses').createIndex({
+    await db.collection('responses').createIndex({
       createdAt: -1,
       userId: 1,
       // eslint-disable-next-line sort-keys-fix/sort-keys-fix
       formId: 1
     })
-  } else {
-    db = client.db()
   }
 
   return db
