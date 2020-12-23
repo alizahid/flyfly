@@ -118,7 +118,7 @@ export const getForm = async (user: User, formId: string): Promise<Form> => {
   })
 
   if (!form) {
-    throw new Error('Form not found')
+    return null
   }
 
   const project: MongoProject = await db.collection('projects').findOne({
@@ -127,7 +127,7 @@ export const getForm = async (user: User, formId: string): Promise<Form> => {
   })
 
   if (!project) {
-    throw new Error('Form not found')
+    return null
   }
 
   const responses = await db.collection('responses').countDocuments({
