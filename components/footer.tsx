@@ -13,10 +13,6 @@ export const Footer: FunctionComponent = () => {
       {
         href: '/pricing',
         label: 'Pricing'
-      },
-      {
-        href: '/help',
-        label: 'Help'
       }
     ],
     [
