@@ -25,7 +25,7 @@ export const Footer: FunctionComponent = () => {
         label: 'Privacy policy'
       },
       {
-        href: 'https://github.com/alizahid/flyfly',
+        href: 'https://github.com/flyflydev',
         label: 'GitHub'
       }
     ]
