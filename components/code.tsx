@@ -48,7 +48,7 @@ export const Code: FunctionComponent<Props> = ({
     <div
       className={`rounded-lg overflow-hidden shadow-sm ${className}`}
       style={{
-        background: '#2E3440',
+        background: '#2e3440',
         color: '#f8f8f2'
       }}>
       <header className="bg-gray-800 flex items-stretch leading-none">
@@ -78,7 +78,7 @@ export const Code: FunctionComponent<Props> = ({
           className: 'font-code leading-relaxed'
         }}
         customStyle={{
-          background: '#2E3440',
+          background: '#2e3440',
           overflowX: 'auto',
           padding: '1rem'
         }}
@@ -107,7 +107,7 @@ export const InlineCode: FunctionComponent<InlineCodeProps> = ({
     <div
       className={`flex items-center bg-white rounded-lg shadow-sm leading-none overflow-hidden ${className}`}>
       <button
-        className="bg-gray-300"
+        className="border-r border-gray-100"
         onClick={async (event) => {
           event.preventDefault()
 
