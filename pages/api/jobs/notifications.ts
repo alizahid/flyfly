@@ -109,8 +109,9 @@ const handler: NextApiHandler = async (req, res) => {
     })
     .toArray()
 
-  const messages: BatchMessage[] = users.map((user) => {
-    return {
+  const messages: BatchMessage[] = users
+    .filter(({ _id }) => data.some(({ userId }) => _id.equals(userId)))
+    .map((user) => ({
       data: {
         projects: data
           .filter(({ userId }) => userId.equals(user._id))
@@ -132,8 +133,7 @@ const handler: NextApiHandler = async (req, res) => {
         title: `${upperFirst(interval)} digest`
       },
       email: user.email
-    }
-  })
+    }))
 
   await sendBatchEmail(messages)
 
