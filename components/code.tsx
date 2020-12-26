@@ -1,5 +1,12 @@
 import React, { FunctionComponent, useRef, useState } from 'react'
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
+// import csharp from 'react-syntax-highlighter/dist/cjs/languages/prism/csharp'
+// import java from 'react-syntax-highlighter/dist/cjs/languages/prism/java'
+// import kotlin from 'react-syntax-highlighter/dist/cjs/languages/prism/kotlin'
+import php from 'react-syntax-highlighter/dist/cjs/languages/prism/php'
+import python from 'react-syntax-highlighter/dist/cjs/languages/prism/python'
+import ruby from 'react-syntax-highlighter/dist/cjs/languages/prism/ruby'
+// import swift from 'react-syntax-highlighter/dist/cjs/languages/prism/swift'
 import typescript from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript'
 import nord from 'react-syntax-highlighter/dist/cjs/styles/prism/nord'
 
@@ -7,6 +14,13 @@ import { prettyLanguageName } from '@flyfly/client'
 
 import { Icon } from './icon'
 
+// SyntaxHighlighter.registerLanguage('csharp', csharp)
+// SyntaxHighlighter.registerLanguage('java', java)
+// SyntaxHighlighter.registerLanguage('kotlin', kotlin)
+SyntaxHighlighter.registerLanguage('php', php)
+SyntaxHighlighter.registerLanguage('python', python)
+SyntaxHighlighter.registerLanguage('ruby', ruby)
+// SyntaxHighlighter.registerLanguage('swift', swift)
 SyntaxHighlighter.registerLanguage('typescript', typescript)
 
 Object.keys(nord).forEach((key) => {
@@ -37,11 +51,10 @@ export const Code: FunctionComponent<Props> = ({
         background: '#2E3440',
         color: '#f8f8f2'
       }}>
-      <header className="bg-highlight flex items-stretch leading-none">
-        <span className="p-4">{prettyLanguageName(language)}</span>
-        <a
+      <header className="bg-gray-800 flex items-stretch leading-none">
+        <div className="font-medium p-4">{prettyLanguageName(language)}</div>
+        <button
           className="flex items-center justify-center h-12 w-12 ml-auto"
-          href="#copy"
           onClick={async (event) => {
             event.preventDefault()
 
@@ -53,8 +66,12 @@ export const Code: FunctionComponent<Props> = ({
 
             timer.current = setTimeout(() => setCopied(false), 3000)
           }}>
-          <Icon color="white" icon={copied ? 'checkmark' : 'copyOutline'} />
-        </a>
+          <Icon
+            color="white"
+            icon={copied ? 'checkmark' : 'copyOutline'}
+            size={20}
+          />
+        </button>
       </header>
       <SyntaxHighlighter
         codeTagProps={{
@@ -89,9 +106,8 @@ export const InlineCode: FunctionComponent<InlineCodeProps> = ({
   return (
     <div
       className={`flex items-center bg-white rounded-lg shadow-sm leading-none overflow-hidden ${className}`}>
-      <a
-        className="bg-amber-100"
-        href="#copy"
+      <button
+        className="bg-gray-300"
         onClick={async (event) => {
           event.preventDefault()
 
@@ -103,8 +119,12 @@ export const InlineCode: FunctionComponent<InlineCodeProps> = ({
 
           timer.current = setTimeout(() => setCopied(false), 3000)
         }}>
-        <Icon className="m-4" icon={copied ? 'checkmark' : 'copyOutline'} />
-      </a>
+        <Icon
+          className="m-4"
+          icon={copied ? 'checkmark' : 'copyOutline'}
+          size={20}
+        />
+      </button>
       <code className="mx-4 font-code">{text}</code>
     </div>
   )

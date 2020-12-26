@@ -36,8 +36,17 @@ export const parseValue = (
 
 export const prettyLanguageName = (language: string): string => {
   switch (language) {
-    case 'typescript':
-      return 'TypeScript'
+    case 'js':
+      return 'JavaScript'
+
+    case 'ruby':
+      return 'Ruby'
+
+    case 'python':
+      return 'Python'
+
+    case 'php':
+      return 'PHP'
 
     default:
       return language
