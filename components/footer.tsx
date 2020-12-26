@@ -13,9 +13,7 @@ export const Footer: FunctionComponent = () => {
       {
         href: '/pricing',
         label: 'Pricing'
-      }
-    ],
-    [
+      },
       {
         href: '/privacy',
         label: 'Privacy policy'
@@ -35,7 +33,13 @@ export const Footer: FunctionComponent = () => {
         </div>
         <div className="text-gray-600 flex items-center mt-2">
           Built with
-          <Icon className="mx-1" color="red" icon="heart" size={20} />
+          <Icon
+            className="mx-1"
+            color="red"
+            icon="heart"
+            size={20}
+            title="tremendous love"
+          />
           in
           <span className="mx-1" title="Dubai, United Arab Emirates">
             DXB
