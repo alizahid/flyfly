@@ -42,7 +42,7 @@ const Docs: NextPage = () => {
   },
   method: 'post'
 })`,
-    php: `$ch = curl_init('https://flyfly.dev/f/mmbres');
+    php: `$ch = curl_init('https://flyfly.dev/f/xxx');
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, array('content-type: application/json'));
 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(
