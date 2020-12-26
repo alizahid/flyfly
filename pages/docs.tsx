@@ -118,6 +118,8 @@ Net::HTTP.post(
         <Code code={code[language]} language={language} />
       </section>
 
+      <p className="mt-8">More examples coming soon!</p>
+
       <h2 className="text-2xl font-semibold mt-16">Limits</h2>
 
       <ul className="mt-4">
