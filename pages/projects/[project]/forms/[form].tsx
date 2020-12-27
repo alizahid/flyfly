@@ -14,6 +14,7 @@ import {
 } from '@flyfly/components'
 import {
   useDeleteForm,
+  useDeleteResponse,
   useForm,
   useProject,
   useResponses,
@@ -35,13 +36,15 @@ const FormPage: NextPage<Props> = (props) => {
   const { loading: updating, updateForm } = useUpdateForm()
   const { deleteForm, loading: deleting } = useDeleteForm()
 
-  const { fetchMore, loading, refetch, responses } = useResponses(
+  const { fetchMore, fetching, loading, refetch, responses } = useResponses(
     props.form.id,
     props.responses
   )
+  const { deleteResponse, loading: deletingResponse } = useDeleteResponse()
 
   const [updateFormVisible, setUpdateFormVisible] = useState(false)
   const [deleteFormVisible, setDeleteFormVisible] = useState(false)
+  const [deleteResponseVisible, setDeleteResponseVisible] = useState<string>()
 
   if (!form) {
     return <Loading />
@@ -120,6 +123,7 @@ const FormPage: NextPage<Props> = (props) => {
             <ResponseCard
               className="mt-4"
               key={response.id}
+              onDelete={() => setDeleteResponseVisible(response.id)}
               response={response}
             />
           ))
@@ -130,7 +134,7 @@ const FormPage: NextPage<Props> = (props) => {
           <button
             className="bg-gradient-to-br from-emerald-400 to-emerald-600 font-medium text-white mx-auto py-2 px-4 rounded-full shadow-sm mt-8"
             onClick={() => fetchMore()}>
-            {loading ? <Spinner className="my-2" light /> : 'Load more'}
+            {fetching ? <Spinner className="my-2" light /> : 'Load more'}
           </button>
         )}
       </main>
@@ -159,6 +163,16 @@ const FormPage: NextPage<Props> = (props) => {
         title="Delete form"
         type="confirm"
         visible={deleteFormVisible}
+      />
+
+      <Modal
+        loading={deletingResponse}
+        message="Are you sure you want to delete this response? This cannot be undone."
+        onClose={() => setDeleteResponseVisible(undefined)}
+        onYes={() => deleteResponse(form.id, deleteResponseVisible)}
+        title="Delete response"
+        type="confirm"
+        visible={!!deleteResponseVisible}
       />
     </>
   )

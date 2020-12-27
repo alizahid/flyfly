@@ -95,3 +95,27 @@ export const getResponses = async (
 
   return responses.map((response) => parseResponse(response, plan.archive))
 }
+
+export const deleteResponse = async (
+  user: User,
+  responseId: string
+): Promise<boolean> => {
+  const db = await mongo()
+
+  const _id = new ObjectId(responseId)
+
+  const response: MongoResponse = await db.collection('responses').findOne({
+    _id,
+    userId: new ObjectId(user.id)
+  })
+
+  if (!response) {
+    throw new Error('Response not found')
+  }
+
+  await db.collection('responses').deleteMany({
+    _id
+  })
+
+  return true
+}

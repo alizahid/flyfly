@@ -10,10 +10,13 @@ import { Icon } from '../icon'
 type Props = {
   className?: string
   response: Response
+
+  onDelete: () => void
 }
 
 export const ResponseCard: FunctionComponent<Props> = ({
   className,
+  onDelete,
   response
 }) => {
   const [expanded, setExpanded] = useState(false)
@@ -26,16 +29,35 @@ export const ResponseCard: FunctionComponent<Props> = ({
       key={response.id}>
       <header
         className="flex items-center text-gray-600 leading-none cursor-pointer p-4"
-        onClick={() => setExpanded(!expanded)}>
-        {dayjs(response.createdAt).format('hh:mm:ss [on] MMM D, YYYY')}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) {
+            setExpanded(!expanded)
+          }
+        }}>
+        <div className="pointer-events-none">
+          {dayjs(response.createdAt).format('HH:mm:ss [on] MMM D, YYYY')}
+        </div>
         <Icon
-          className={`ml-auto lg:ml-4 transition-transform transform ${
+          className={`pointer-events-none ml-auto lg:ml-4 transition-transform transform ${
             expanded ? '-rotate-180' : ''
           }`}
           color={expanded ? 'black' : 'gray'}
           icon="chevronDown"
           size={16}
         />
+        <button
+          onClick={(event) => {
+            event.preventDefault()
+
+            onDelete()
+          }}>
+          <Icon
+            className="ml-4 pointer-events-none"
+            color="red"
+            icon="trash"
+            size={16}
+          />
+        </button>
       </header>
       <AnimatePresence>
         {expanded && (

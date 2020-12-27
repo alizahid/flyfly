@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios'
 import update from 'immutability-helper'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback } from 'react'
 import { useMutation, useQuery } from 'react-query'
 
 import { api, client, dialog } from '@flyfly/client'
-import { Form, Project, Response } from '@flyfly/types'
+import { Form, Project } from '@flyfly/types'
 
 // forms
 
@@ -38,60 +38,6 @@ export const useForm = (initialData: Form): FormReturns => {
 
   return {
     form: data
-  }
-}
-
-// responses
-
-type ResponsesReturns = {
-  loading: boolean
-  responses: Response[]
-
-  fetchMore: () => void
-  refetch: () => void
-}
-
-export const useResponses = (
-  formId: string,
-  initial: Response[]
-): ResponsesReturns => {
-  const [responses, setResponses] = useState<Response[]>(initial)
-  const [loading, setLoading] = useState(false)
-  const [skip, setSkip] = useState(0)
-
-  useEffect(() => {
-    setSkip(responses.length)
-  }, [responses.length])
-
-  const fetch = async (formId: string, skip: number) => {
-    setLoading(true)
-
-    const next = await api<Response[]>(
-      `/api/responses?formId=${formId}&skip=${skip}`
-    )
-
-    setLoading(false)
-
-    return next
-  }
-
-  const refetch = useCallback(async () => {
-    const responses = await fetch(formId, 0)
-
-    setResponses(responses)
-  }, [])
-
-  const fetchMore = useCallback(async () => {
-    const next = await fetch(formId, skip)
-
-    setResponses([...responses, ...next])
-  }, [skip])
-
-  return {
-    fetchMore,
-    loading,
-    refetch,
-    responses
   }
 }
 
